@@ -1,18 +1,97 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,700;1,100;1,400;1,700&family=Unbounded:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./Lab2-Part1-Team10.css" />
-    <title>Art Work Database</title>
-    <h1 class="heading">Art Work Database</h1>
-  </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Lab2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <title>Lab02</title>
+</head>
+<body>
 
-  <body>
-  </body>
+    <!-- BUTTONS FOR SAVING/CLEARING WORK -->
+    <div class="buttons">
+        <button type="submit" name="saveRecord">Save Record</button>
+        <button type="submit" name="clearRecord">Clear Record</button>
+    </div>
 
+    <!-- HEADING + DESCRIPTION-->
+    <div class="heading">
+        <h2>Art Work Database</h2>
+        <p>type of artwork: <br> amount: <br> age:</p>
+    </div>
+
+    <div class="container">
+        <!-- FORM FOR SELECTING ARTWORK -->
+        <form action="Lab2.php" method="post">
+            <!-- BUTTONS FOR SAVING/CLEARING WORK -->
+    <div class="buttons">
+        <button type="submit" name="saveRecord">Save Record</button>
+        <button type="submit" name="clearRecord">Clear Record</button>
+    </div>
+
+            <div class="inp">
+                <label for="genre">Genre</label>
+                <select name="genre" id="genre">
+                    <option value="">Abstract</option>
+                    <option value="">Baroque</option>
+                    <option value="">Gothic</option>
+                    <option value="">Renaissance</option>
+                </select>
+            </div>
+            <div class="inp">
+                <label for="genre">Type</label>
+                <select name="type" id="genre">
+                    <option value="">Painting</option>
+                    <option value="">Sculpture</option>
+                </select>
+            </div>
+            <div class="inp">
+                <label for="genre">Subject</label>
+                <select name="subject" id="genre">
+                    <option value="">Landscape</option>
+                    <option value="">Portrait</option>
+                </select>
+            </div>
+            <div class="inp">
+                <label for="genre">Specification</label>
+                <select name="specification" id="genre">
+                    <option value="">Commercial</option>
+                    <option value="">Non-Commercial</option>
+                    <option value="">Derivative</option>
+                    <option value="">Non-Derivative</option>
+                </select>
+            </div>
+            <div class="inp">
+                <label for="genre">Year</label>
+                <input type="text" name="year">
+            </div>
+            <div class="inp">
+                <label for="genre">Museum</label>
+                <input type="text" name="museum">
+            </div>
+            <p>Enter Index: <input type="text" name="index"></p>
+            <input type="submit" name="getRecord" value="Get Record">
+        </form>
+
+        <!-- BOX FOR ARTWORK DISPLAY -->
+        <div class="box">
+            <div id="record">
+                <?php if (isset($_POST['submit'])): ?>
+                  <h2>Art Work Record:</h2>
+                  <p>Genre: <?= $_POST['genre'] ?></p>
+                  <p>Type: <?= $_POST['type'] ?></p>
+                  <p>Subject: <?= $_POST['subject'] ?></p>
+                  <p>Specification: <?= $_POST['specification'] ?></p>
+                  <p>Year: <?= $_POST['year'] ?></p>
+                  <p>Museum: <?= $_POST['museum'] ?></p>
+                <?php endif ?>
+              </div>
+        </div>
+    </div>
+
+</body>
 </html>

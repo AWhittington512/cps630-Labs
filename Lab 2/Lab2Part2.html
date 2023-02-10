@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="Lab2Part2.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+        href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+        rel="stylesheet"
+        />
+        <title>Lab02</title>
+    </head>
+    <body>
+		<div class="heading">
+			<h1>Student Records</h1>
+		</div>
+
+        <div class="container">
+			<h3>create a new table</h3>
+			<form action="part2.php" method="post">
+				<div class="inp">
+					<label>table name:</label>
+					<input type="text" name="table-name">
+				</div>	
+				<div class="inp">
+					<label>field 1:</label>
+					<input type="text" name="field1">
+				</div>
+				<div class="inp">
+					<label>field 2:</label>
+					<input type="text" name="field2">
+				</div>	
+				<div class="inp">
+					<label>field 3:</label>
+					<input type="text" name="field3">
+				</div>
+				<input type="submit" name="create-table" value="create table" />
+			</form>
+		</div>
+
+		<div class="container">
+			<h3>insert records</h3>
+			<form action="part2.php" method="post">
+				<div class="inp">
+					<label>table name:</label>
+					<input type="text" name="table-name">
+				</div>
+				<div class="inp">
+					<label>field 1:</label>
+					<input type="text" name="field1">
+				</div>
+				<div class="inp">
+					<label>field 2:</label>
+					<input type="text" name="field2">
+				</div>	
+				<div class="inp">
+					<label>field 3:</label>
+					<input type="text" name="field3">
+				</div>
+				<input type="submit" name="insert-records" value="insert records" />
+			</form>
+		</div>
+
+		<div class="container">
+			<h3>delete records</h3>
+			<form action="part2.php" method="post">
+				<div class="inp">
+					<label>table name:</label>
+					<input type="text" name="table-name">
+				</div>
+				<div class="inp">
+					<label>key to be deleted:</label>
+					<input type="text" name="deleting-key">
+				</div>
+				<input type="submit" name="delete-records" value="delete records" />
+			</form>
+		</div>
+
+		<div class="button-container">
+			<input type="submit" name="show-records" value="show records" />
+		</div>
+	</body>
+
+</html>

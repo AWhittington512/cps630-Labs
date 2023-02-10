@@ -1,0 +1,26 @@
+    command to run mysql shell:
+    mysql -u [user_name] -h localhost mysql
+    (default user name is root)
+
+    command to create database:
+    CREATE DATABASE testnew;
+
+    command to create a table:
+    CREATE TABLE StRec(
+    StudentID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Major varchar(255)); 
+
+    sample insert commands:
+    INSERT INTO StRec (StudentID, LastName, FirstName, Major)
+    VALUES (1, 'Doe', 'John', 'Computer Science');
+    INSERT INTO StRec (StudentID, LastName, FirstName, Major)
+    VALUES (2, 'Doe', 'Jane', 'Business Management');
+
+    sample select commands:
+    SELECT * FROM StRec;
+    SELECT StudentID, LastName, FirstName FROM StRec; 
+
+    sample delete commands:
+    DELETE FROM StRec WHERE Major='Computer Science';

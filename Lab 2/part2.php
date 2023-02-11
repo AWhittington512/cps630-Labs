@@ -39,7 +39,7 @@
             }
         ?> 
 		<div class="heading">
-			<h1>Student Records</h1>
+			<h1>Student Records 👨‍🎓</h1>
 		</div>
 
         <div class="container">

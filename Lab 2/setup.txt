@@ -24,3 +24,5 @@
 
     sample delete commands:
     DELETE FROM StRec WHERE Major='Computer Science';
+
+    can import testnew.sql by going into phpMyAdmin -> Import tab

@@ -24,60 +24,70 @@
     <div class="heading">
       <h2>Art Work Database</h2>
       <p>
-        type of artwork: <br />
-        amount: <br />
-        age:
+        This is a database for storing information about various art works, including paintings and sculptures from ages such as Baroque or Renaissance.
       </p>
     </div>
 
     <div class="container">
+      <script>
+        function updatePreview()
+        {
+          document.getElementById("genrecell").innerHTML = document.getElementById("genre").value;
+          document.getElementById("typecell").innerHTML = document.getElementById("type").value;
+          document.getElementById("subjectcell").innerHTML = document.getElementById("subject").value;
+          document.getElementById("specificationcell").innerHTML = document.getElementById("specification").value;
+          document.getElementById("yearcell").innerHTML = document.getElementById("year").value;
+          document.getElementById("museumcell").innerHTML = document.getElementById("museum").value;
+        }
+      </script>
+
       <!-- FORM FOR SELECTING ARTWORK -->
       <form action="Lab2.php" method="post">
         <!-- BUTTONS FOR SAVING/CLEARING WORK -->
         <div class="buttons">
           <button type="submit" name="saveRecord">Save Record</button>
-          <button type="submit" name="clearRecord">Clear Record</button>
+          <button type="reset" name="clearRecord">Clear Record</button>
         </div>
 
         <div class="inp">
           <label for="genre">Genre</label>
-          <select name="genre" id="genre">
-            <option value="">Abstract</option>
-            <option value="">Baroque</option>
-            <option value="">Gothic</option>
-            <option value="">Renaissance</option>
+          <select name="genre" id="genre" onchange="updatePreview()">
+            <option value="Abstract">Abstract</option>
+            <option value="Baroque">Baroque</option>
+            <option value="Gothic">Gothic</option>
+            <option value="Renaissance">Renaissance</option>
           </select>
         </div>
         <div class="inp">
-          <label for="genre">Type</label>
-          <select name="type" id="genre">
-            <option value="">Painting</option>
-            <option value="">Sculpture</option>
+          <label for="type">Type</label>
+          <select name="type" id="type" onchange="updatePreview()">
+            <option value="Painting">Painting</option>
+            <option value="Sculpture">Sculpture</option>
           </select>
         </div>
         <div class="inp">
-          <label for="genre">Subject</label>
-          <select name="subject" id="genre">
-            <option value="">Landscape</option>
-            <option value="">Portrait</option>
+          <label for="subject">Subject</label>
+          <select name="subject" id="subject" onchange="updatePreview()">
+            <option value="Landscape">Landscape</option>
+            <option value="Portrait">Portrait</option>
           </select>
         </div>
         <div class="inp">
-          <label for="genre">Specification</label>
-          <select name="specification" id="genre">
-            <option value="">Commercial</option>
-            <option value="">Non-Commercial</option>
-            <option value="">Derivative</option>
-            <option value="">Non-Derivative</option>
+          <label for="specification">Specification</label>
+          <select name="specification" id="specification" onchange="updatePreview()">
+            <option value="Commercial">Commercial</option>
+            <option value="Non-Commercial">Non-Commercial</option>
+            <option value="Derivative">Derivative</option>
+            <option value="Non-Derivative">Non-Derivative</option>
           </select>
         </div>
         <div class="inp">
-          <label for="genre">Year</label>
-          <input type="text" name="year" />
+          <label for="year">Year</label>
+          <input type="text" name="year" id="year" onchange="updatePreview()" />
         </div>
         <div class="inp">
-          <label for="genre">Museum</label>
-          <input type="text" name="museum" />
+          <label for="museum">Museum</label>
+          <input type="text" name="museum" id="museum" onchange="updatePreview()" />
         </div>
         <p>Enter Index: <input type="text" name="index" /></p>
         <input type="submit" name="getRecord" value="Get Record" />
@@ -86,33 +96,25 @@
       <!-- BOX FOR ARTWORK DISPLAY -->
       <div class="box">
         <div id="record">
-          <?php if (isset($_POST['submit'])): ?>
           <h2>Art Work Record:</h2>
-          <p>
-            Genre:
-            <?= $_POST['genre'] ?>
-          </p>
-          <p>
-            Type:
-            <?= $_POST['type'] ?>
-          </p>
-          <p>
-            Subject:
-            <?= $_POST['subject'] ?>
-          </p>
-          <p>
-            Specification:
-            <?= $_POST['specification'] ?>
-          </p>
-          <p>
-            Year:
-            <?= $_POST['year'] ?>
-          </p>
-          <p>
-            Museum:
-            <?= $_POST['museum'] ?>
-          </p>
-          <?php endif ?>
+          <table>
+            <tr>
+              <th>Genre</th>
+              <th>Type</th>
+              <th>Subject</th>
+              <th>Specification</th>
+              <th>Year</th>
+              <th>Museum</th>
+            </tr>
+            <tr>
+              <td id="genrecell"></td>
+              <td id="typecell"></td>
+              <td id="subjectcell"></td>
+              <td id="specificationcell"></td>
+              <td id="yearcell"></td>
+              <td id="museumcell"></td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>

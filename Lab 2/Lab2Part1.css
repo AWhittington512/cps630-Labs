@@ -5,6 +5,10 @@
     color: rgb(72, 72, 72);
 }
 
+table, th, td {
+    border: 0.1em rgb(244, 132, 132) solid;
+}
+
 body {
     padding: 5em;
 }
@@ -67,3 +71,4 @@ form {
 input {
     border: 0.1em rgb(72, 72, 72) solid;
 }
+

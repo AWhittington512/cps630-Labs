@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browser Detection</title>
+  </head>
+
+  <script>
+    function checkBrowser() {
+        var browser;
+        console.log(navigator.userAgent);
+        if (navigator.userAgent.indexOf("Trident") != -1) {
+            browser = "Internet Explorer";
+        } if (navigator.userAgent.indexOf("Edg") != -1) {
+            browser = "Microsoft Edge";
+        } else if (navigator.userAgent.indexOf("Chrome") != -1) {
+            browser = "Google Chrome";
+        } else if (navigator.userAgent.indexOf("Firefox") != -1) {
+            browser = "Mozilla Firefox";
+        } else {
+            browser = "Unknown Browser";
+        }
+        document.getElementById("output").innerHTML = "You are using " + "<span style='color: green'>" + browser + "</span>";
+    }
+  </script>
+
+  <style>
+    html {
+        text-align: center;
+        font-family: sans-serif;
+    }
+    button {
+        font-family: sans-serif;
+        background-color: white;
+        color: black;
+        border: 1px solid;
+        padding: 1em;
+        cursor: pointer;
+    }
+    #output, h4 {font-weight: 300;}
+  </style>
+
+  <body>
+    <h4>Detect your browser by clicking the button below</h4>
+    <button onclick="checkBrowser()">Detect Browser</button>
+    <h2 id="output"></h2>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab05 - Google Maps</title>
+
+    <style>
+        *{
+              margin: 0;
+              padding: 0;
+          }
+         #map{
+              height: 500px;
+              width: 500px;
+          }    
+   </style>
+
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <script>
+        function initMap() {
+            var loc = {lat: 43.65800227880846, lng: -79.37824216664713};
+            var loc2 = {lat: 43.652817020875794, lng: -79.38178268258154};
+
+            var map = new google.maps.Map(
+                document.getElementById("map"),
+                {zoom: 12, center: loc});
+                const marker = new google.maps.Marker(
+                    {position: loc, map: map});
+                const marker2 = new google.maps.Marker(
+                    {position: loc2, map: map});
+                
+            var infoWindow = new google.maps.InfoWindow(
+                    { content: contentString});
+                marker.addListener("click", function()
+                    { infoWindow.open(map, marker); });
+
+            var infoWindow2 = new google.maps.InfoWindow(
+                    { content: contentString2});
+                marker2.addListener("click", function()
+                    { infoWindow2.open(map, marker2); });
+		}
+
+        const contentString =
+            '<div id="content">' +
+            '<div id="siteNotice">' +
+            "</div>" +
+            '<h1 id="firstHeading" class="firstHeading">Toronto Metropolitan University</h1>' +
+            '<div id="bodyContent">' +
+            "<p><b>Toronto Metropolitan University</b>, also referred to as <b>TMU</b>, " +
+            "is a public research university located in Toronto, Ontario, Canada. " +
+            "The university's core campus is situated within the Garden District, " +
+            "although it also operates facilities elsewhere in Toronto. </p>" +
+            '<p><a href="https://en.wikipedia.org/wiki/Toronto_Metropolitan_University"> </p>'
+            "</div>" +
+            "</div>";
+        
+        const contentString2 =
+            '<div id="content">' +
+            '<div id="siteNotice">' +
+            "</div>" +
+            '<h1 id="firstHeading" class="firstHeading">THe Old City Hall</h1>' +
+            '<div id="bodyContent">' +
+            "<p><b>The Old City Hall</b> is a Romanesque-style civic building and court, " +
+            "house in Toronto, Ontario, Canada. It was the home of the Toronto " +
+            "City Council from 1899 to 1966 and remains one of the city's most " +
+            "prominent structures. </p>" +
+            '<p><a href="https://en.wikipedia.org/wiki/Old_City_Hall_(Toronto)"> </p>'
+            "</div>" +
+            "</div>";
+
+    </script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgEhxoik76va_nhG6KsA4DTa5JBr_Iz0I&callback=initMap"></script>
+</body>
+</html>

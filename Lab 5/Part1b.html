@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab05 - Geolocation</title>
+</head>
+<body>
+    <h2>Click Here to Get the Coordinates:</h2>
+    <button onclick="getLocation()">Get Location</button>
+    <p id="loc"></p>
+
+    <script>
+       var loc = document.getElementById("loc");
+
+       function getLocation() {
+        if (navigator.geolocation) {
+            alert("This will show your location");
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            loc.innerHTML = "Geolocation is not supported by Browser";
+        }
+       }
+
+       function showPosition(position) {
+        loc.innerHTML = "Latitude: " + position.coords.latitude +
+        "<br>Longitude: " + position.coords.longitude;
+       }
+
+       function showError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                loc.innerHTML = "Permission was denied by user"
+                break;
+            case error.POSITION_UNAVAILABLE:
+                loc.innerHTML = "Position could not be located"
+                break;
+            case error.TIMEOUT: 
+                loc.innerHTML = "The request for user location timedout"
+                break;
+            case error.UNKNOWN_ERROR: 
+                loc.innerHTML = "An unknown error occurred"
+                break;
+        }
+       }
+
+    </script>
+
+</body>
+</html>

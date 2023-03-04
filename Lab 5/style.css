@@ -1,0 +1,23 @@
+html {
+    text-align: center;
+    font-family: sans-serif;
+    margin: 3em auto;
+}
+
+button {
+    transition: all 200ms ease;
+    font-family: sans-serif;
+    background-color: white;
+    color: black;
+    border: 1px solid;
+    padding: 1em;
+    cursor: pointer;
+}
+h2 {font-weight:300}
+button:hover { background-color:#4285f4}
+
+#map {
+    margin: 2em auto;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    border-radius: 1em;
+}

@@ -24,17 +24,22 @@
     <div id="map"></div>
 
     <script>
+        var geocoder;
+        var map;
+
         function initMap() {
             var loc = {lat: 43.65800227880846, lng: -79.37824216664713};
             var loc2 = {lat: 43.652817020875794, lng: -79.38178268258154};
 
-            var map = new google.maps.Map(
+            geocoder = new google.maps.Geocoder();
+            map = new google.maps.Map(
                 document.getElementById("map"),
                 {zoom: 12, center: loc});
-                const marker = new google.maps.Marker(
-                    {position: loc, map: map});
-                const marker2 = new google.maps.Marker(
-                    {position: loc2, map: map});
+
+            const marker = new google.maps.Marker(
+                {position: loc, map: map});
+            const marker2 = new google.maps.Marker(
+                {position: loc2, map: map});
                 
             var infoWindow = new google.maps.InfoWindow(
                     { content: contentString});
@@ -46,6 +51,33 @@
                 marker2.addListener("click", function()
                     { infoWindow2.open(map, marker2); });
 		}
+
+        // Geocoding functionality
+        // from https://developers.google.com/maps/documentation/javascript/geocoding
+        var resultMarker;
+        function codeAddress() {
+            var address = document.getElementById('address').value;
+            geocoder.geocode( {'address': address}, function(results, status) {
+                if (status == 'OK') {
+                    map.setCenter(results[0].geometry.location);
+                    if (! resultMarker) {
+                        resultMarker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+
+                        var resultInfo = new google.maps.InfoWindow({content: "<p>Geocoding Search Result</p>"});
+                        resultMarker.addListener("click", () => {resultInfo.open(map, resultMarker);});
+                        resultInfo.open(map, resultMarker);
+                    } else {
+                        // Move marker
+                        resultMarker.setPosition(results[0].geometry.location);
+                    }
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
 
         const contentString =
             '<div id="content">' +
@@ -77,6 +109,12 @@
 
     </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgEhxoik76va_nhG6KsA4DTa5JBr_Iz0I&callback=initMap"></script>
+    <div id="search">
+        <h3 style="padding-bottom: 5px;">Or enter a location to search for:</h3>
+        <input type="text" id="address" name="Location">
+        <input type="submit" value="Submit" onclick="codeAddress()">
+    </div>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgEhxoik76va_nhG6KsA4DTa5JBr_Iz0I&callback=initMap"></script>
 </body>
 </html>

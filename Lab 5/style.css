@@ -4,7 +4,7 @@ html {
     margin: 3em auto;
 }
 
-button {
+button, input[type=submit] {
     transition: all 200ms ease;
     font-family: sans-serif;
     background-color: white;
@@ -12,9 +12,10 @@ button {
     border: 1px solid;
     padding: 1em;
     cursor: pointer;
+    border-radius: 0.5em;
 }
-h2, h3 {font-weight:300}
-button:hover { background-color:#4285f4}
+h1, h2, h3 {font-weight:300}
+button:hover, input[type=submit]:hover { background-color:#4285f4}
 
 #map {
     margin: 2em auto;

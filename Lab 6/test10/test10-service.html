@@ -1,32 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-   <meta charset="UTF-8">
-   <title>Event Registration</title>
-</head>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Event Registration</title>
+    </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 
-<body>
+    <body>
+        <div ng-app="serviceApp" ng-controller="serviceController">
+            <p>First value: {{a}}</p>
+            <p>Second value: {{b}}</p>
+            <p>Result: {{value}}</p>
+        </div>
 
-<div ng-app = "serviceApp" ng-controller = "serviceController">
-   <p>Result: {{value}}</p>
-</div>
-
-<script>
-   var p1 = angular.module("serviceApp", []);
-   p1.service('addtwo', function()
-     {
-        this.Add = function(a,b) 
-              { return a+b; }
-      });    
-    p1.controller('serviceController', function($scope, addtwo) 
-       { $scope.value = addtwo.Add(20,30); } );
- </script>
-
+        <script>
+            var p1 = angular.module("serviceApp", []);
+            p1.service("addtwo", function () {
+                this.Add = function (a, b) {
+                    return a + b;
+                };
+            });
+            p1.controller("serviceController", function ($scope, addtwo) {
+                $scope.a = 20;
+                $scope.b = 30;
+                $scope.value = addtwo.Add($scope.a, $scope.b);
+            });
+        </script>
     </body>
 </html>
-
-  
-
-     
-

@@ -18,10 +18,22 @@ class Product implements Renderable
 
     public function renderHtml()
     {
-        $output = "<div>\n";
-        $output .= "<b>" . $this->productName ."</b><br>\n";
-        $output .= "<img src='productImages/" . $this->productImageURL . "' alt='Picture of " . $this->productName . "'><br>\n";
-        $output .= "Price: $" . number_format((float)$this->productPrice, 2, '.', '') . "\n";
+        // $output = "<div>\n";
+        // $output .= "<b>" . $this->productName ."</b><br>\n";
+        // $output .= "<img src='productImages/" . $this->productImageURL . "' alt='Picture of " . $this->productName . "'><br>\n";
+        // $output .= "Price: $" . number_format((float)$this->productPrice, 2, '.', '') . "\n";
+        // $output .= "</div>";
+
+        $output = "<div class='col border rounded p-3' draggable='true'>";
+        $output .= "<img src='productImages/" . $this->productImageURL . "' width='300' height='300'  draggable='false'>";
+        $output .= "<h2>" . $this->productName . "</h2>";
+        $output .= "<select name='size' id='size' class='form-select form-select-sm'>";
+        $output .= "<option value='s'>S</option>";
+        $output .= "<option value='m'>M</option>";
+        $output .= "<option value='l'>L</option>";
+        $output .= "</select>";
+        $output .= "<p>$" . number_format((float)$this->productPrice, 2, '.', '') . "</p>";
+        $output .= "<button type='button' class='btn btn-outline-primary'>Add to Cart</button>";
         $output .= "</div>";
 
         return $output;

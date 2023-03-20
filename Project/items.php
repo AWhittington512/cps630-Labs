@@ -17,8 +17,8 @@
     ?>
 </head>
 <body>
-    <?php include 'navbar.html'?>
-    <?php include 'storeSelector.html'?>
+    <?php include 'navbar.html';?>
+    <?php include 'storeSelector.html';?>
     <div class="container">
         <h1>Items</h1>
 

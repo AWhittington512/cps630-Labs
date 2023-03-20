@@ -121,6 +121,13 @@
 </body>
 
 <script>
+    window.onload = getLocationOnLoad();
+    function getLocationOnLoad() {
+        if (window.localStorage.getItem("location")) {
+            document.getElementById("storeLocation").innerHTML = window.localStorage.getItem("location")
+        }
+    }
+
     async function codeAddress(apiUrl) {
         fetch(apiUrl)
         .then(response => response.json())
@@ -140,12 +147,16 @@
         switch(city) {
             case 'Toronto':
                 document.getElementById('storeLocation').innerHTML = "Queen St W, Toronto"
+                setLocation("Queen St W, Toronto")
                 break
             case 'Markham': 
                 document.getElementById('storeLocation').innerHTML = "CF Markville, Markham"
+                setLocation("CF Markville, Markham")
                 break
             case 'Mississauga': 
                 document.getElementById('storeLocation').innerHTML = "Square One Shopping Centre, Mississauga"
+                setLocation("Square One Shopping Centre, Mississauga")
+                break
             default:
                 document.getElementById('storeLocation').innerHTML = "No store selected"
         }
@@ -172,11 +183,20 @@
         selectButtons.forEach(button => {
         button.addEventListener('click', () => {
             const storeName = button.closest('.store').querySelector('.store-name').textContent;
-            
+            setLocation(storeName);
             document.getElementById('storeLocation').innerHTML = storeName;
         });
         });
     }
+
+    function setLocation(value) {
+        if (typeof(Storage) != "undefined") {
+            localStorage.setItem("location", value)
+        } else {
+            console.log("Local storage unavailable")
+        }
+    }
+
 </script>
 
 </html>

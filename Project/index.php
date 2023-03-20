@@ -13,8 +13,8 @@
 </head>
 
 <body>
-  <?php include 'navbar.html' ?>
-  <?php include 'storeSelector.html'?>
+  <?php include 'navbar.html';?>
+  <?php include 'storeSelector.html';?>
 
   <div class="row justify-content-center text-center border p-3">
     <h1>Hello</h1>

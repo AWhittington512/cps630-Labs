@@ -26,7 +26,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body p-4">
-          <form action="signup.php" method="POST" novalidate>
+          <form action="login.php" method="POST">
             <div class="mb-3">
               <label for="email" class="form-label">Email address</label>
               <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
@@ -40,7 +40,7 @@
               <label class="form-check-label" for="remember-me">Remember me</label>
             </div>
             <button type="submit" class="btn btn-outline-success d-block m-auto my-2">Log In</button>
-            <button class="btn btn-outline-primary d-block m-auto my-2" data-bs-target="#signUpModal" data-bs-toggle="modal">Sign Up</button>
+            <button type="button" class="btn btn-outline-primary d-block m-auto my-2" data-bs-target="#signUpModal" data-bs-toggle="modal">Sign Up</button>
           </form>
         </div>
       </div>

@@ -147,27 +147,21 @@
         </div>
         <div class="container">
             <h1>Items</h1>
-            <!-- this nav might be too complicated -->
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">All</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#tops">Tops</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#outer">Outerwear</a>
-                    </li>
-                </ul>
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">All</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tops">Tops</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#outer">Outerwear</a>
+                </li>
+            </ul>
+
             <div id="itemList" class="container text-center">
-                <!-- <script>loadItems();</script> -->
                 <?php
-                    // $result = mysqli_query($connection, "select * from Item");
-                    // if ($result) {
-                    //     while ($item = mysqli_fetch_row($result)) {
-                    //         echo ($item[0]);
-                    //     }
-                    // }
                     $result = $connection->query("select * from Item");
                     $items = [];
                     if ($result) {
@@ -185,27 +179,7 @@
                     $output .= "</div>";
 
                     echo ($output);
-                    //echo (renderList($items));
-                    // $row = $result->fetch_assoc();
-                    // echo ($row["ItemName"]);
                 ?>
-                <!-- <div class="row">
-                    <div class="col">
-                        <img src="box.png" width="300" height="300">
-                        <h2>Item Name</h2>
-                        <p>Item Price</p>
-                    </div>
-                    <div class="col">
-                        <img src="box.png" width="300" height="300">
-                        <h2>Item Name</h2>
-                        <p>Item Price</p>
-                    </div>
-                    <div class="col">
-                        <img src="box.png" width="300" height="300">
-                        <h2>Item Name</h2>
-                        <p>Item Price</p>
-                    </div>
-                </div> -->
             </div>
         </div>
     </div>

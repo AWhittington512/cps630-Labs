@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body>
-    <?php include 'navbar.html';?>
+    <?php include 'navbar2.php';?>
 
     <!-- <div class="d-inline-flex p-2"></div>Invoice #12345</div> -->
     <div class="row">

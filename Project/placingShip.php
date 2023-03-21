@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +12,7 @@
 </head>
 
 <body>
-  <?php include 'navbar.html'; ?>
+  <?php include 'navbar2.php'; ?>
 
   <!-- <div class="d-inline-flex p-2"></div>Invoice #12345</div> -->
   <div class="container-fluid">

@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,21 +14,29 @@
 </head>
 
 <body>
-  <?php include 'navbar.html';?>
-  <?php include 'storeSelector.html';?>
+  <?php
+    if (isset($_SESSION['email'])) {
+      include 'navbar2.php';
+    } else {
+      include 'navbar.html';
+    }
+    include 'storeSelector.html';
+  ?>
 
-  <div class="row justify-content-center text-center border p-3">
-    <h1>Hello</h1>
-    <a href="items.php" class="btn btn-outline-primary w-auto">Shop All</a>
-  </div>
-  <div class="row justify-content-center text-center">
-    <div class="col border p-3">
-      <h2>Tops</h2>
-      <a href="#" class="btn btn-outline-primary w-auto">Shop Now</a>
+  <div class="container-fluid">
+    <div class="row justify-content-center text-center border p-5">
+        <h1>Welcome to SCS</h1>
+        <a href="items.php" class="btn btn-outline-primary w-auto">Shop All</a>
     </div>
-    <div class="col border p-3">
-      <h2>Bottoms</h2>
-      <a href="#" class="btn btn-outline-primary w-auto">Shop Now</a>
+    <div class="row justify-content-center text-center">
+        <div class="col border p-5">
+        <h2>Tops</h2>
+        <a href="#" class="btn btn-outline-primary w-auto">Shop Now</a>
+        </div>
+        <div class="col border p-5">
+        <h2>Bottoms</h2>
+        <a href="#" class="btn btn-outline-primary w-auto">Shop Now</a>
+        </div>
     </div>
   </div>
 </body>

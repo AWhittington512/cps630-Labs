@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,13 +12,19 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgEhxoik76va_nhG6KsA4DTa5JBr_Iz0I&callback=initMap"></script>
 
     <?php
-        include "phpScripts/DBConnect.php";
-        include "phpScripts/Product.php";
-        include "phpScripts/RenderList.php";
+      include "phpScripts/DBConnect.php";
+      include "phpScripts/Product.php";
+      include "phpScripts/RenderList.php";
     ?>
 </head>
 <body>
-    <?php include 'navbar.html';?>
+    <?php
+      if (isset($_SESSION['email'])) {
+        include 'navbar2.php';
+      } else {
+        include 'navbar.html';
+      }
+    ?>
     <?php include 'storeSelector.html';?>
     <div class="container">
         <h1>Items</h1>

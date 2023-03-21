@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +12,13 @@
 </head>
 
 <body>
-  <?php include 'navbar.html'; ?>
+  <?php
+    if (isset($_SESSION['email'])) {
+      include 'navbar2.php';
+    } else {
+      include 'navbar.html';
+    }
+    ?>
   <div class="bg-primary bg-gradient d-flex align-items-center justify-content-center flex-column" style="height:300px;">
     <h1 class="display-4 text-white">About Us</h1>
     <p class="text-white lead">General and contact information of our team</p>

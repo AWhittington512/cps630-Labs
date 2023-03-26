@@ -8,6 +8,8 @@ import { ItemsComponent } from './items/items.component';
 import { IndexComponent } from './index/index.component';
 import { AboutComponent } from './about/about.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+// import { StoreSelectorComponent } from './store-selector/store-selector.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -16,11 +18,13 @@ import { CheckoutComponent } from './checkout/checkout.component';
     ItemsComponent,
     IndexComponent,
     AboutComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    // StoreSelectorComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

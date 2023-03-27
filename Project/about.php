@@ -16,7 +16,7 @@
     if (isset($_SESSION['email'])) {
       include 'navbar2.php';
     } else {
-      include 'navbar.html';
+      include 'navbar.php';
     }
     ?>
   <div class="bg-primary bg-gradient d-flex align-items-center justify-content-center flex-column" style="height:300px;">

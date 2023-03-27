@@ -18,7 +18,7 @@
     if (isset($_SESSION['email'])) {
       include 'navbar2.php';
     } else {
-      include 'navbar.html';
+      include 'navbar.php';
     }
     include 'storeSelector.html';
   ?>

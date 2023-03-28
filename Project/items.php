@@ -15,7 +15,6 @@
   include "phpScripts/DBConnect.php";
   include "phpScripts/Product.php";
   include "phpScripts/RenderList.php";
-  include "phpScripts/CartController.php";
   ?>
 </head>
 

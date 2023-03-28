@@ -56,10 +56,10 @@
   </div>
   <div class="d-flex w-75 m-auto">
     <div class="m-auto">
-      <button class="btn btn-success d-block m-auto my-2" (click)="this.clearCart()">Update cart</button>
+      <button class="btn btn-success d-block m-auto my-2"">Update cart</button>
     </div>
     <div class="m-auto">
-      <button class="btn btn-danger d-block m-auto my-2" (click)="this.clearCart()">Clear cart</button>
+      <button class="btn btn-danger d-block m-auto my-2"">Clear cart</button>
     </div>
     <div class="m-auto">
       <a class="btn btn-outline-primary d-block m-auto my-2" type="submit" href="placingStore.php">Checkout</a>

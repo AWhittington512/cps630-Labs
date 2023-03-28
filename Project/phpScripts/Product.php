@@ -27,7 +27,7 @@ class Product implements Renderable
 
         $output = "<div class='col border rounded p-3' draggable='true'>";
         $output .= '<form method="post">';
-        $output .= "<img name='productImage' src='productImages/" . getProductImageURL() . "' width='300' height='300'  draggable='false'>";
+        $output .= "<img name='productImage' src='productImages/" . $this->productImageURL . "' width='300' height='300'  draggable='false'>";
         $output .= "<p class='invisible' name='productID'>" . $this->productID . "</p>";
         $output .= "<h2 name='productName'>" . $this->productName . "</h2>";
         $output .= '

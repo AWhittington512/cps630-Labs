@@ -5,11 +5,11 @@ import { GeocodingService } from '../geocoding.service';
 import { StoreSelectorService } from '../store-selector.service';
 
 @Component({
-  selector: 'app-store-selector',
-  templateUrl: './store-selector.component.html',
-  styleUrls: ['./store-selector.component.css']
+  selector: 'app-storeselector-nav',
+  templateUrl: './storeselector-nav.component.html',
+  styleUrls: ['./storeselector-nav.component.css']
 })
-export class StoreSelectorComponent {
+export class StoreSelectorNavComponent {
 
   constructor(
     private geocodingService: GeocodingService,

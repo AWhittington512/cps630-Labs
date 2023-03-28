@@ -12,9 +12,10 @@ import { ItemsComponent } from './items/items.component';
 import { IndexComponent } from './index/index.component';
 import { AboutComponent } from './about/about.component';
 import { CheckoutComponent } from './checkout/checkout.component';
-import { StoreSelectorComponent } from './store-selector/store-selector.component';
+import { StoreSelectorNavComponent } from './storeselector-nav/storeselector-nav.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { CartComponent } from './cart/cart.component';
+import { StoreselectorCheckoutComponent } from './storeselector-checkout/storeselector-checkout.component';
 
 @NgModule({
   declarations: [
@@ -24,9 +25,10 @@ import { CartComponent } from './cart/cart.component';
     IndexComponent,
     AboutComponent,
     CheckoutComponent,
-    StoreSelectorComponent,
+    StoreSelectorNavComponent,
     InvoiceComponent,
     CartComponent,
+    StoreselectorCheckoutComponent,
   ],
   imports: [
     BrowserModule,

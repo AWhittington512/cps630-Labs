@@ -30,7 +30,9 @@
             <?php
                 include "phpScripts/DBConnect.php";
 
-                $result = $connection->query("SELECT * FROM Order_Info WHERE OrderID = ".$_POST["orderID"]);
+                $result = $connection->query("SELECT OrderID, DateIssued, DateReceived, TotalPrice, PaymentCode
+                                                FROM Order_Info INNER JOIN User_Info ON Order_Info.UserID = User_Info.UserID
+                                                WHERE OrderID = ".$_POST["orderID"]." AND Email = '".$_SESSION["email"]."'");
                 if ($result->num_rows != 0) {
                     $row = $result->fetch_assoc();
                     

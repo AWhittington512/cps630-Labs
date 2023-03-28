@@ -19,4 +19,28 @@ export class ItemsComponent implements OnInit {
         this.items = response;
       });
   }
+
+  onDrag(event) {
+    //event.dataTransfer.clearData();
+    //console.log(event.target.id)
+    event.dataTransfer.setData("text", event.target.id);
+    //event.dataTransfer.setData("text/plain", "text");
+  }
+
+  addToCart(event) {
+    const itemId = event.target.parentElement.id;
+
+    var cartItems = {};
+    if (! sessionStorage.getItem("cart")) {
+      cartItems = {
+        "cartItemIds": [itemId]
+      }
+    } else {
+      cartItems = JSON.parse(sessionStorage.getItem("cart"));
+      cartItems["cartItemIds"].push(itemId);
+    }
+
+    sessionStorage.setItem("cart", JSON.stringify(cartItems));
+    console.log(cartItems);
+  }
 }

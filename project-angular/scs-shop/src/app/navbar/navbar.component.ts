@@ -139,7 +139,12 @@ export class NavbarComponent {
 
   clearCurrentUser() {
     // maybe don't do this
-    sessionStorage.clear()
+    sessionStorage.removeItem('name');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('phone');
+    sessionStorage.removeItem('address');
+    sessionStorage.removeItem('postcode');
+    sessionStorage.removeItem('balance');
     window.location.reload();
   }
 
@@ -152,8 +157,39 @@ export class NavbarComponent {
       "postcode": sessionStorage.getItem('postcode'),
       "balance": sessionStorage.getItem('balance')
     }
+  }
 
-    console.log(this.currentUser);
+  allowDrop(event) {
+    event.preventDefault();
+  }
+
+  onDrop(event) {
+    event.preventDefault();
+    const itemId = event.dataTransfer.getData("text");
+    //console.log(itemId);
+
+    var cartItems = {};
+    if (! sessionStorage.getItem("cart")) {
+      cartItems = {
+        "cartItemIds": [itemId]
+      }
+    } else {
+      cartItems = JSON.parse(sessionStorage.getItem("cart"));
+      cartItems["cartItemIds"].push(itemId);
+    }
+
+    sessionStorage.setItem("cart", JSON.stringify(cartItems));
+    console.log(cartItems);
+  }
+
+  getCartItemsNumber() {
+    let cartItems = sessionStorage.getItem("cart");
+    //console.log(cartItems.length);
+    if (cartItems) {
+      return JSON.parse(cartItems)["cartItemIds"].length;
+    } else {
+      return 0;
+    }
   }
   
   // getUserOnLoad() {

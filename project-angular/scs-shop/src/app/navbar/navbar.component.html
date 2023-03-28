@@ -12,8 +12,9 @@
             <a href="/about" class="nav-item nav-link ms-2">About Us</a>
             <a href="#" class="nav-item nav-link ms-2">Reviews</a>
             <a href="#" class="nav-item nav-link ms-2">Services</a>
-            <a class="btn btn-primary ms-2" data-bs-toggle="modal" href="#logInModal" role="button">Log In</a>
-            <a href="#" class="nav-item nav-link ms-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/></svg></a>
+            <a class="btn btn-primary ms-2" data-bs-toggle="modal" href="#logInModal" role="button" id="loginButton" *ngIf="!this.currentUser['name']">Login</a>
+            <a class="btn btn-primary ms-2" data-bs-toggle="modal" href="#userModal" role="button" id="userInfoButton" *ngIf="this.currentUser['name'] != null">Welcome, {{this.currentUser["name"]}}!</a>
+            <a routerLink="/cart" class="nav-item nav-link ms-2 mr-0" (dragover)="this.allowDrop($event)" (drop)="this.onDrop($event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/></svg>{{this.getCartItemsNumber()}}</a>
           </div>
         </div>
       </div>
@@ -24,17 +25,18 @@
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5 lead">Log in to your account</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeLoginModal"></button>
           </div>
           <div class="modal-body p-4">
-            <form action="login.php" method="POST">
+            <span id="loginErrorMsg" style="color: red"></span>
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
               <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
+                <input type="email" class="form-control" id="email" name="email" formControlName="email" aria-describedby="emailHelp" required>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+                <input type="password" class="form-control" id="password" name="password" formControlName="password" required>
               </div>
               <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="remember-me">
@@ -51,45 +53,85 @@
     <div class="modal fade" id="signUpModal" aria-hidden="true" aria-labelledby="signUpModalLabel" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5 lead">Create an account</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-              <form action="signup.php" method="POST" novalidate>
-                <div class="mb-3">
-                  <label for="name" class="form-label">Name</label>
-                  <input type="name" class="form-control" id="name" name="name" aria-describedby="userName" required>
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
-                </div>
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-                <div class="mb-3">
-                  <label for="password" class="form-label">Repeat Password</label>
-                  <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-                </div>
-                <div class="mb-3">
-                  <label for="telephone" class="form-label">Phone</label>
-                  <input type="tel" class="form-control" id="telephone" name="phone" aria-describedby="phoneNumber">
-                </div>
-                <div class="mb-3">
-                  <label for="address" class="form-label">Address</label>
-                  <input type="text" class="form-control" id="address" name="address" aria-describedby="userAddress">
-                </div>
-                <button type="submit" class="btn btn-outline-primary d-block m-auto my-2">Sign Up</button>
-                <div class="form-text text-center">
-                  Already have an account?
-                  <a class="link-primary" href="logInModal" data-bs-target="#logInModal" data-bs-toggle="modal">Log In</a>
-                </div>
-              </form>
+          <div class="modal-header">
+            <h1 class="modal-title fs-5 lead">Create an account</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeSignupModal"></button>
+          </div>
+          <div class="modal-body p-4">
+            <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+              <h1 class="fs-6 fw-bold">Personal Info</h1>
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="name" class="form-control" id="name" name="name" formControlName="name" aria-describedby="userName" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" formControlName="email" aria-describedby="emailHelp" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" formControlName="password" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Repeat Password</label>
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" formControlName="password_confirmation" required>
+              </div>
+              <div class="mb-3">
+                <label for="telephone" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="telephone" name="telephone" formControlName="telephone" aria-describedby="phoneNumber">
+              </div>
+              <h1 class="fs-6 fw-bold mt-4">Address</h1>
+              <div class="mb-3">
+                <label for="streetaddr" class="form-label">Street Address</label>
+                <input type="text" class="form-control" id="streetaddr" name="streetaddr" formControlName="streetaddr"  aria-describedby="streetAddress">
+              </div>
+              <div class="mb-3">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city" name="city" formControlName="city"  aria-describedby="cityAddress">
+              </div>
+              <div class="mb-3">
+                <label for="province" class="form-label">Province</label>
+                <input type="text" class="form-control" id="province" name="province" formControlName="province" aria-describedby="provinceAddress">
+              </div>
+              <div class="mb-3">
+                <label for="postcode" class="form-label">Postal Code</label>
+                <input type="text" class="form-control" id="postcode" name="postcode" formControlName="postcode" aria-describedby="postAddress">
+              </div>
+              <span id="signupError" style="color:red"></span>
+              <button type="submit" class="btn btn-outline-primary d-block m-auto my-2">Sign Up</button>
+              <div class="form-text text-center">
+                Already have an account?
+                <a class="link-primary" href="logInModal" data-bs-target="#logInModal" data-bs-toggle="modal">Log In</a>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="userModal" aria-hidden="true" aria-labelledby="userModalLabel" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5 lead">Account information</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p4">
+            <h5 class="fs-5 lead">Name</h5>
+            <p>{{this.currentUser["name"]}}</p>
+            <h5 class="fs-5 lead">Email</h5>
+            <p>{{this.currentUser["email"]}}</p>
+            <h5 class="fs-5 lead">Phone</h5>
+            <p>{{this.currentUser["phone"]}}</p>
+            <h5 class="fs-5 lead">Address</h5>
+            <p>{{this.currentUser["address"]}}, {{this.currentUser["postcode"]}}</p>
+            <h5 class="fs-5 lead">Balance</h5>
+            <p>{{this.currentUser["balance"]}}</p>
+            <button class="btn btn-danger" data-bs-dismiss="modal" (click)="this.clearCurrentUser()">Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
   

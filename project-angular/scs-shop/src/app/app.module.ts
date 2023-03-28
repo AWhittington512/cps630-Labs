@@ -12,6 +12,7 @@ import { IndexComponent } from './index/index.component';
 import { AboutComponent } from './about/about.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { StoreSelectorComponent } from './store-selector/store-selector.component';
+import { InvoiceComponent } from './invoice/invoice.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { StoreSelectorComponent } from './store-selector/store-selector.componen
     AboutComponent,
     CheckoutComponent,
     StoreSelectorComponent,
+    InvoiceComponent,
   ],
   imports: [
     BrowserModule,

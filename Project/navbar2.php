@@ -11,6 +11,33 @@
           <a href="./about.php" class="nav-item nav-link ms-2">About Us</a>
           <a href="#" class="nav-item nav-link ms-2">Reviews</a>
           <a href="#" class="nav-item nav-link ms-2">Services</a>
+          <?php
+            include "phpScripts/DBConnect.php";
+
+            $stmt = $connection->prepare("SELECT Administrator FROM user_info WHERE Email = ?");
+            $stmt->bind_param("s", $_SESSION['email']);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $admin = $result->fetch_assoc()["Administrator"];
+
+            if($admin == 'Y')
+            {
+              echo('
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    DB Maintain
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="./insert.php">Insert</a>
+                    <a class="dropdown-item" href="./delete.php">Delete</a>
+                    <a class="dropdown-item" href="./select.php">Select</a>
+                    <a class="dropdown-item" href="./update.php">Update</a>
+                  </div>
+                </div>
+              ');
+            }
+            $connection->close();
+          ?>
           <a class="btn btn-primary ms-2" data-bs-toggle="modal" href="#userModal" role="button">Welcome, <?php echo $_SESSION["username"];?>!</a>
           <a href="cart.php" class="nav-item nav-link ms-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/></svg></a>
         </div>

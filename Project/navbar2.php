@@ -36,6 +36,15 @@
                 </div>
               ');
             }
+            else
+            {
+              echo('
+                <form action="search.php" method="POST">
+                    <input type="text" class="form-control" id="orderID" name="orderID" placeholder="OrderID" required>
+                    <button type="submit" name="SubmitButton" class="btn btn-secondary">Search</button>
+                </form>
+              ');
+            }
             $connection->close();
           ?>
           <a class="btn btn-primary ms-2" data-bs-toggle="modal" href="#userModal" role="button">Welcome, <?php echo $_SESSION["username"];?>!</a>

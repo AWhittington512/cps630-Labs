@@ -87,8 +87,8 @@
           </div>
         </div>
         <div class="row justify-content-evenly">
-          <a href="placingShip.html" class="btn btn-outline-secondary w-auto"><- Back</a>
-          <a href="complete.html" class="btn btn-outline-primary w-auto">Place Order</a>
+          <a href="placingShip.php" class="btn btn-outline-secondary w-auto"><- Back</a>
+          <a href="complete.php" class="btn btn-outline-primary w-auto">Place Order</a>
         </div>
       </div>
     </div>

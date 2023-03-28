@@ -118,8 +118,8 @@
           </div>
         </div>
         <div class="row justify-content-evenly">
-          <button class="btn btn-outline-secondary w-auto"><- Back</button>
-              <a href="placingShip.html" class="btn btn-outline-primary w-auto">Next -></a>
+            <a href="cart.php" class="btn btn-outline-secondary w-auto"><- Back</a>
+            <a href="placingShip.php" class="btn btn-outline-primary w-auto">Next -></a>
         </div>
       </div>
     </div>

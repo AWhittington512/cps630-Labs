@@ -23,12 +23,12 @@
   <div class="container text-center">
     <div class="row align-items-center">
       <h2>Hi name, order #number has been received!</h2>
-      <h3>You can view your invoice <a href="invoice.html#number">here</a></h3>
+      <h3>You can view your invoice <a href="invoice.php#number">here</a></h3>
       <p>Truck #number has been assigned to your order.</p>
     </div>
     <div id="map-canvas" class="row"></div>
     <div class="row justify-content-center">
-      <a href="index.html" class="btn btn-outline-primary w-auto">Back</a>
+      <a href="placingPayment.php" class="btn btn-outline-primary w-auto">Back</a>
     </div>
   </div>
 </body>

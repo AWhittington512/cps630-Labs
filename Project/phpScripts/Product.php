@@ -9,8 +9,9 @@ class Product implements Renderable
     private string $productImageURL;
     private int $productID;
 
-    function __construct(string $productName, float $productPrice, string $productImageURL)
+    function __construct(int $productID, string $productName, float $productPrice, string $productImageURL)
     {
+        $this->productID = $productID;
         $this->productName = $productName;
         $this->productPrice = $productPrice;
         $this->productImageURL = $productImageURL;
@@ -25,16 +26,33 @@ class Product implements Renderable
         // $output .= "</div>";
 
         $output = "<div class='col border rounded p-3' draggable='true'>";
-        $output .= "<img src='productImages/" . $this->productImageURL . "' width='300' height='300'  draggable='false'>";
-        $output .= "<h2>" . $this->productName . "</h2>";
-        $output .= "<select name='size' id='size' class='form-select form-select-sm'>";
-        $output .= "<option value='s'>S</option>";
-        $output .= "<option value='m'>M</option>";
-        $output .= "<option value='l'>L</option>";
-        $output .= "</select>";
-        $output .= "<p>$" . number_format((float)$this->productPrice, 2, '.', '') . "</p>";
-        $output .= "<button type='button' class='btn btn-outline-primary'>Add to Cart</button>";
-        $output .= "</div>";
+        $output .= '<form method="post">';
+        $output .= "<img name='productImage' src='productImages/" . getProductImageURL() . "' width='300' height='300'  draggable='false'>";
+        $output .= "<p class='invisible' name='productID'>" . $this->productID . "</p>";
+        $output .= "<h2 name='productName'>" . $this->productName . "</h2>";
+        $output .= '
+                <div class="m-2">
+                    <label for="productSize">Size</label>
+                    <select name="productSize" id="productSize" class="form-select form-select-sm">;
+                        <option value="s">S</option>
+                        <option value="m">M</option>
+                        <option value="l">L</option>
+                    </select>
+                </div>
+                <div class="m-2">
+                    <label for="productQuantity">Quantity</label>
+                    <select name="productQuantity" id="productQuantity" class="form-select form-select-sm">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            ';
+        $output .= "<p name='productPrice'>$" . number_format((float)$this->productPrice, 2, '.', '') . "</p>";
+        $output .= "<button type='submit' name='addToCart' class='btn btn-outline-primary'>Add to Cart</button>";
+        $output .= "</div></form>";
 
         return $output;
     }
@@ -79,5 +97,5 @@ class Product implements Renderable
         $this->productImageURL = $productImageURL;
     }
 }
-
 ?>
+

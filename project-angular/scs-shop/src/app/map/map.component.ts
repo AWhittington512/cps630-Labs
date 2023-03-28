@@ -85,7 +85,6 @@ export class MapComponent {
                 animation: google.maps.Animation.DROP,
               };
             } else {
-
             }
           })
           .finally(() => {
@@ -96,11 +95,8 @@ export class MapComponent {
         this.geolocationWorking = false;
 
         if (error.PERMISSION_DENIED) {
-
         } else if (error.POSITION_UNAVAILABLE) {
-
         } else if (error.TIMEOUT) {
-
         } else {
         }
       },
@@ -146,10 +142,16 @@ export class MapComponent {
 
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
   @ViewChild(MapInfoWindow, { static: false }) infoWindow: MapInfoWindow;
-  
-  mapZoom = 12;
+
+  mapZoom = 9;
   mapCenter: google.maps.LatLng;
+  Center: google.maps.LatLngLiteral = {
+    lat: 43.652817020875794,
+    lng: -79.38178268258154,
+  };
+
   mapOptions: google.maps.MapOptions = {
+    center: this.Center,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     zoomControl: true,
     scrollwheel: false,
@@ -163,6 +165,12 @@ export class MapComponent {
     draggable: false,
     animation: google.maps.Animation.DROP,
   };
+
+  markerPositions: google.maps.LatLngLiteral[] = [
+    { lat: 43.654919, lng: -79.379288 },
+    { lat: 43.868599, lng: -79.279297 },
+    { lat: 43.593079, lng: -79.642494 },
+  ];
 
   geocoderWorking = false;
   geolocationWorking = false;

@@ -1,4 +1,4 @@
-<?php session_start();?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,18 +18,21 @@
   } else {
     include 'navbar.php';
   }
+
   ?>
 
   <div class="container text-center">
-    <div class="row align-items-center">
-      <h2>Hi name, order #number has been received!</h2>
-      <h3>You can view your invoice <a href="invoice.php#number">here</a></h3>
-      <p>Truck #number has been assigned to your order.</p>
-    </div>
-    <div id="map-canvas" class="row"></div>
-    <div class="row justify-content-center">
-      <a href="placingPayment.php" class="btn btn-outline-primary w-auto">Back</a>
-    </div>
+    <form method="post" action="index.php">
+      <div class="row align-items-center">
+        <h2>Hi <?php echo $_SESSION['username']; ?>, order #1 has been received!</h2>
+        <h3>You can view your invoice <a href="invoice.php#number">here</a></h3>
+        <p>Truck #1 has been assigned to your order.</p>
+      </div>
+      <div id="map-canvas" class="row"></div>
+      <div class="row justify-content-center">
+        <button type="submit" class="btn btn-outline-primary w-auto">Return to home</a>
+      </div>
+    </form>
   </div>
 </body>
 

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,12 +28,52 @@
   }
   include 'storeSelector.html';
 
-  // if (isset($_POST['addToCart']) && (!isset($_SESSION['email']))) { ?>
-    <!-- <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
-      <strong>You must log in first before adding items to your cart. </strong>
+  if (isset($_POST['addToCart']) && isset($_SESSION['email'])) {
+    // Sanitize and validate the input values
+    $productID = $_POST['productID'];
+    $productName = $_POST['productName'];
+    $productSize = $_POST['productSize'];
+    $productQuantity = $_POST['productQuantity'];
+    $productPrice = $_POST['productPrice'];
+    $productImageURL = $_POST['productImageURL'];
+
+    // Create a new array with the product details
+    $session_array = array(
+      "productID" => $productID,
+      "productName" => $productName,
+      "productSize" => $productSize,
+      "productQuantity" => $productQuantity,
+      "productPrice" => $productPrice,
+      "productImageURL" => $productImageURL
+    );
+
+    // Check if the cart is empty
+    if (empty($_SESSION['cart'])) {
+      // Create a new cart session variable with the product details
+      $_SESSION['cart'][] = $session_array;
+    } else {
+      // Check if the product already exists in the cart
+      $product_exists = false;
+      foreach ($_SESSION['cart'] as &$cart_item) {
+        if ($cart_item['productID'] == $productID) {
+          // Increase the quantity of the existing product
+          $cart_item['productQuantity'] += $productQuantity;
+          $product_exists = true;
+          break;
+        }
+      }
+
+      // If the product doesn't exist in the cart, add it
+      if (!$product_exists) {
+        $_SESSION['cart'][] = $session_array;
+      }
+    }
+  } else if (isset($_POST['addToCart']) && (!isset($_SESSION['email']))) { ?>
+    <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
+      <strong>You have to log in first before adding items to cart.</strong>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div> -->
-  ?>
+    </div>
+  <?php } ?>
   <div class="container">
     <h1>Items</h1>
 
@@ -67,22 +108,9 @@
       $output .= "</div>";
 
       echo ($output);
+      var_dump($_SESSION['cart']);
+      ?>
 
-      // if (isset($_POST['addToCart']) && (isset($_SESSION['email']))) {
-      //   $productID = $_POST['productID'];
-      //   $productName = $_POST['productName'];
-      //   $productSize = $_POST['productSize'];
-      //   $productQuantity = $_POST['productQuantity'];
-      //   $productPrice = $_POST['productPrice'];
-      //   $productImageURL = $_POST['productImageURL'];
-      //   echo $productID . $productName . $productSize . $productQuantity . $productPrice . $productImageURL;
-      // ?>
-        <!-- <div class="alert alert-success alert-dismissible fade show m-1" role="alert">
-          <strong><?php $productQuantity . ' ' . $productName . ' size ' . $productSize ?> added to cart.</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div> -->
-     
- 
     </div>
   </div>
   </div>

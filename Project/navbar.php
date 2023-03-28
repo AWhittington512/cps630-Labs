@@ -8,6 +8,7 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto">
           <a href="./index.php" class="nav-item nav-link ms-2">Home</a>
+          <a href="./items.php" class="nav-item nav-link ms-2">Shop</a>
           <a href="./about.php" class="nav-item nav-link ms-2">About Us</a>
           <a href="#" class="nav-item nav-link ms-2">Reviews</a>
           <a href="#" class="nav-item nav-link ms-2">Services</a>

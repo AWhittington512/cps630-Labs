@@ -1,4 +1,4 @@
-<?php session_start();?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,59 +12,45 @@
 </head>
 
 <body>
-  <?php include 'navbar2.php'; ?>
+  <?php
+  include 'navbar2.php';
+  ?>
 
   <!-- <div class="d-inline-flex p-2"></div>Invoice #12345</div> -->
   <div class="container-fluid">
-    <div class="row m-0">
-      <div class="col">
-        <div class="row p-2">
-          <h1>Order</h1>
-        </div>
-        <div class="row p-2">
-          <h2>Originating store</h2>
-          <div class="container">
-            <div class="store card mb-3">
-              <div class="card-body">
-                <h5 class="store-name card-title">Queen St W, Toronto</h5>
-                <p class="card-text">Phone number: 416-128-3280</p>
-                <button class="store btn btn-primary stretched-link" onclick="selectStore()">Select this store</button>
-              </div>
-            </div>
-            <div class="store card mb-3">
-              <div class="card-body">
-                <h5 class="store-name card-title">CF Markville, Markham</h5>
-                <p class="card-text">Phone number: 416-124-1199</p>
-                <button class="store btn btn-primary stretched-link" onclick="selectStore()">Select this store</button>
-              </div>
-            </div>
-            <div class="store card mb-3">
-              <div class="card-body">
-                <h5 class="store-name card-title">Square One Shopping Centre, Mississauga</h5>
-                <p class="card-text">Phone number: 416-927-5682</p>
-                <button class="store btn btn-primary stretched-link" onclick="selectStore()">Select this store</button>
-              </div>
+    <form method="POST" action="placingShip.php">
+      <div class="row m-0">
+        <div class="col">
+          <div class="row p-2">
+            <h1>Order</h1>
+          </div>
+          <div class="row p-2">
+            <h2>Originating store</h2>
+            <div class="container">
+              <select class="form-select" name="store">
+                <option value="Queen St W, Toronto">Queen St W, Toronto</option>
+                <option value="CF Markville, Markham">CF Markville, Markham</option>
+                <option value="Square One Shopping Centre, Mississauga">Square One Shopping Centre, Mississauga</option>
+              </select>
             </div>
           </div>
-        </div>
-        <div class="row p-2">
-          <h2>Ship to</h2>
-          <form>
+          <div class="row p-2">
+            <h2>Ship to</h2>
             <div class="row p-2">
               <div class="col">
-                <input type="text" class="form-control" placeholder="First name">
+                <input type="text" name="firstName" class="form-control" placeholder="First name" required>
               </div>
               <div class="col">
-                <input type="text" class="form-control" placeholder="Last name">
+                <input type="text" name="lastName" class="form-control" placeholder="Last name" required>
               </div>
             </div>
-            <input type="text" class="form-control" placeholder="Address">
+            <input type="text" name="shippingAddr" class="form-control" placeholder="Address" required>
             <div class="row p-2">
               <div class="col">
-                <input type="text" class="form-control" placeholder="City">
+                <input type="text" name="cityAddr" class="form-control" placeholder="City" required>
               </div>
               <div class="col col-sm-2">
-                <select class="form-select" id="province" name="province">
+                <select class="form-select" id="province" name="provinceAddr" required>
                   <option disabled>Province</option>
                   <option value="AB">AB</option>
                   <option value="BC">BC</option>
@@ -82,47 +68,67 @@
                 </select>
               </div>
               <div class="col col-sm-3">
-                <input type="text" class="form-control" placeholder="Postal Code">
+                <input type="text" class="form-control" name="postcodeAddr" placeholder="Postal Code" required>
               </div>
-            </div>
-          </form>
-        </div>
-
-      </div>
-      <div class="col col-sm-4 p-2">
-        <div class="row p-2">
-          <h2>Order summary</h2>
-          <div class="row" id="items">
-            <div class="d-flex justify-content-between align-items-center p-2">
-              <div class="col d-flex flex-row p-2">
-                <img src="productImages/1.webp" width="100" height="100">
-                <p class="p-2">T-Shirt x 1<br>S</p>
-              </div>
-              <h5>$19.99</h5>
             </div>
           </div>
-          <div class="row" id="totals">
+
+        </div>
+        <div class="col col-sm-5 p-2">
+          <div class="card w-75 rounded-3 m-auto">
+            <table class="table bg-light m-auto rounded-3 text-center">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Size</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                foreach ($_SESSION['cart'] as $cart_item) { ?>
+                  <tr>
+                    <td scope="row"><?php echo $cart_item['productID']; ?></td>
+                    <td><?php echo $cart_item['productName']; ?></td>
+                    <td><?php echo $cart_item['productSize']; ?></td>
+                    <td><?php echo $cart_item['productQuantity']; ?></td>
+                    <td>$<?php echo $cart_item['productPrice']; ?></td>
+                    <input type='hidden' name='IDtoRemove' value=<?php echo $cart_item['productID'] ?>>
+                  </tr>
+                <?php
+                }
+                ?>
+              </tbody>
+            </table>
+          </div>
+          <div class="w-75 m-auto" id="totals">
             <div class="d-flex justify-content-between p-2">
-              <h5>Subtotal</h5>
-              <h5>$19.99</h5>
+              <h5 class="fs-5">Subtotal</h5>
+              <h5 class="fs-5">
+                <?php echo $_SESSION['subtotal']; ?>
+              </h5>
             </div>
             <div class="d-flex justify-content-between p-2">
-              <h5>Taxes</h5>
-              <h5>$0.00</h5>
+              <h5 class="fs-5">Taxes</h5>
+              <h5 class="fs-5">$<?php echo $_SESSION['taxes']; ?></h5>
             </div>
             <hr>
             <div class="d-flex justify-content-between p-2">
-              <h4>Total</h4>
-              <h4>$19.99</h4>
+              <h4 class="fs-5">Total</h4>
+              <h4 class="fs-5">$<?php echo $_SESSION['total']; ?></h4>
             </div>
           </div>
-        </div>
-        <div class="row justify-content-evenly">
+          <div class="d-flex justify-content-center m-2">
             <a href="cart.php" class="btn btn-outline-secondary w-auto"><- Back</a>
-            <a href="placingShip.php" class="btn btn-outline-primary w-auto">Next -></a>
+                <a href="placingShip.php">
+                  <button type="submit" class="btn btn-outline-primary w-auto">Next -></button>
+                </a>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </body>
 

@@ -1,99 +1,118 @@
-<?php session_start();?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Invoice</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
-      crossorigin="anonymous"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  </head>
-  <body>
-    <?php include 'navbar2.php';?>
 
-    <!-- <div class="d-inline-flex p-2"></div>Invoice #12345</div> -->
-    <div class="row">
-      <div class="col">
-        <div class="row p-2">
-          <h1>Payment</h1>
-        </div>
-        <div class="row p-2">
-          <div class="col">
-            <h2>From branch</h2>
-            <p>Branch info here</p>
-          </div>
-          <div class="col">
-            <h2>Ship to</h2>
-            <p>First Last<br>123 House Road<br>City, Province<br>A1A 2A1</p>
-          </div>
-        </div>
-        <div class="row p-2">
-          <h2>Pay by card</h2>
-          <h3>Card details</h3>
-          <form>
-            <label class="form-label">Card number</label>
-            <input type="text" class="form-control" placeholder="1234 5678 9012 3456">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
 
-            <div class="row p-2">
-              <div class="col">
-                <label class="form-label">Expiry</label>
-                <input type="text" class="form-control" placeholder="01/23">
-              </div>
-              <div class="col">
-                <label class="form-label">CVV</label>
-                <input type="text" class="form-control" placeholder="3 to 4 digits">
-              </div>
-              <div class="col col-sm-3">
-                <label class="form-label">Billing postal code</label>
-                <input type="text" class="form-control" placeholder="A1A 1A1">
-              </div>
-            </div>
-          </form>
-        </div>
-        
+<body>
+  <?php include 'navbar2.php'; ?>
+
+  <!-- <div class="d-inline-flex p-2"></div>Invoice #12345</div> -->
+  <div class="row">
+    <div class="col">
+      <div class="row p-2">
+        <h1>Payment</h1>
       </div>
-      <div class="col col-sm-4 p-2">
-        <div class="row p-2">
-          <h2>Order summary</h2>
-          <div class="row" id="items">
-            <div class="d-flex justify-content-between align-items-center p-2">
-              <div class="col d-flex flex-row p-2">
-                <img src="productImages/1.webp" width="100" height="100">
-                <p class="p-2">T-Shirt x 1<br>S</p>
-              </div>
-              <h5>$19.99</h5>
+      <div class="row p-2">
+        <div class="col">
+          <h2>From branch</h2>
+          <p><?php echo $_SESSION['store'] ?></p>
+        </div>
+        <div class="col">
+          <h2>Ship to</h2>
+          <p>
+            <?php echo $_SESSION['name'] ?><br>
+            <?php echo $_SESSION['shippingAddr'] ?>
+          </p>
+        </div>
+      </div>
+      <div class="row p-2">
+        <h2>Pay by card</h2>
+        <h3>Card details</h3>
+        <form>
+          <label class="form-label">Card number</label>
+          <input type="text" class="form-control" placeholder="1234 5678 9012 3456" required>
+
+          <div class="row p-2">
+            <div class="col">
+              <label class="form-label">Expiry</label>
+              <input type="text" class="form-control" placeholder="01/23" required>
+            </div>
+            <div class="col">
+              <label class="form-label">CVV</label>
+              <input type="text" class="form-control" placeholder="3 to 4 digits" required>
+            </div>
+            <div class="col col-sm-3">
+              <label class="form-label">Postal Code</label>
+              <input type="text" class="form-control" placeholder="A1A 1A1" required>
             </div>
           </div>
-          <div class="row" id="totals">
-            <div class="d-flex justify-content-between p-2">
-              <h5>Subtotal</h5>
-              <h5>$19.99</h5>
-            </div>
-            <div class="d-flex justify-content-between p-2">
-              <h5>Taxes</h5>
-              <h5>$0.00</h5>
-            </div>
-            <hr>
-            <div class="d-flex justify-content-between p-2">
-              <h4>Total</h4>
-              <h4>$19.99</h4>
-            </div>
-          </div>
+        </form>
+      </div>
+
+    </div>
+    <div class="col col-sm-5 p-2">
+      <div class="card w-75 rounded-3 m-auto">
+        <table class="table bg-light m-auto rounded-3 text-center">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Size</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            foreach ($_SESSION['cart'] as $cart_item) { ?>
+              <tr>
+                <td scope="row"><?php echo $cart_item['productID']; ?></td>
+                <td><?php echo $cart_item['productName']; ?></td>
+                <td><?php echo $cart_item['productSize']; ?></td>
+                <td><?php echo $cart_item['productQuantity']; ?></td>
+                <td>$<?php echo $cart_item['productPrice']; ?></td>
+                <input type='hidden' name='IDtoRemove' value=<?php echo $cart_item['productID'] ?>>
+              </tr>
+            <?php
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+      <div class="w-75 m-auto" id="totals">
+        <div class="d-flex justify-content-between p-2">
+          <h5 class="fs-5">Subtotal</h5>
+          <h5 class="fs-5">
+            <?php echo $_SESSION['subtotal']; ?>
+          </h5>
         </div>
-        <div class="row justify-content-evenly">
-          <a href="placingShip.php" class="btn btn-outline-secondary w-auto"><- Back</a>
-          <a href="complete.php" class="btn btn-outline-primary w-auto">Place Order</a>
+        <div class="d-flex justify-content-between p-2">
+          <h5 class="fs-5">Taxes</h5>
+          <h5 class="fs-5">$<?php echo $_SESSION['taxes']; ?></h5>
         </div>
+        <hr>
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="fs-5">Total</h4>
+          <h4 class="fs-5">$<?php echo $_SESSION['total']; ?></h4>
+        </div>
+      </div>
+      <div class="row justify-content-evenly">
+        <a href="placingShip.php" class="btn btn-outline-secondary w-auto"><- Back</a>
+            <a href="complete.php" class="btn btn-outline-primary w-auto">Place Order</a>
       </div>
     </div>
-  
-  </body>
+  </div>
+
+</body>
+
 </html>
 
 <style>
@@ -101,6 +120,7 @@
     margin: 0;
     padding: 0;
   }
+
   #map-canvas {
     height: 300px;
     width: 300px;
@@ -108,6 +128,7 @@
     box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
     border-radius: 1em;
   }
+
   button,
   input[type="submit"] {
     transition: all 200ms ease;
@@ -119,11 +140,13 @@
     cursor: pointer;
     border-radius: 0.5em;
   }
+
   h1,
   h2,
   h3 {
     font-weight: 300;
   }
+
   button:hover,
   input[type="submit"]:hover {
     background-color: #4285f4;
@@ -134,21 +157,27 @@
   var resultMarker, geocoder, map, pointA, pointB, lat, lng;
 
   function initMap() {
-    pointA = { lat: 43.65800227880846, lng: -79.37824216664713 };
-    pointB = { lat: 43.652817020875794, lng: -79.38178268258154 };
+    pointA = {
+      lat: 43.65800227880846,
+      lng: -79.37824216664713
+    };
+    pointB = {
+      lat: 43.652817020875794,
+      lng: -79.38178268258154
+    };
     (myOptions = {
       zoom: 7,
       center: pointB,
     }),
-      (map = new google.maps.Map(
-        document.getElementById("map-canvas"),
-        myOptions
-      )),
-      // Instantiate a directions service.
-      (directionsService = new google.maps.DirectionsService()),
-      (directionsDisplay = new google.maps.DirectionsRenderer({
-        map: map,
-      }));
+    (map = new google.maps.Map(
+      document.getElementById("map-canvas"),
+      myOptions
+    )),
+    // Instantiate a directions service.
+    (directionsService = new google.maps.DirectionsService()),
+    (directionsDisplay = new google.maps.DirectionsRenderer({
+      map: map,
+    }));
 
     // get route from A to B
     calculateAndDisplayRoute(
@@ -166,15 +195,14 @@
     pointB
   ) {
 
-    directionsService.route(
-      {
+    directionsService.route({
         origin: pointA,
         destination: pointB,
         avoidTolls: true,
         avoidHighways: false,
         travelMode: google.maps.TravelMode.DRIVING,
       },
-      function (response, status) {
+      function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
           directionsDisplay.setDirections(response);
         } else {
@@ -185,7 +213,9 @@
   }
 
   function codeAddress(coords) {
-    geocoder.geocode({ address: coords }, function (results, status) {
+    geocoder.geocode({
+      address: coords
+    }, function(results, status) {
       if (status == "OK") {
         map.setCenter(results[0].geometry.location);
         if (!resultMarker) {
@@ -224,8 +254,4 @@
     codeAddress(address);
   }
 </script>
-<script
-  async
-  defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJxUi5ZgzqycwNyxR4W7JjPTqmT935IEE&callback=initMap"
-></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJxUi5ZgzqycwNyxR4W7JjPTqmT935IEE&callback=initMap"></script>

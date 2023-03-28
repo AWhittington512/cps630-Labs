@@ -125,7 +125,7 @@ CREATE TABLE `user_info` (
   `Phone` varchar(10) DEFAULT NULL,
   `Email` varchar(255) NOT NULL,
   `UserAddress` mediumtext DEFAULT NULL,
-  `CityCode` int(11) DEFAULT NULL,
+  `CityCode` varchar(7) DEFAULT NULL,
   `LoginID` varchar(255) NOT NULL,
   `PW` varchar(255) NOT NULL,
   `Balance` decimal(10,2) DEFAULT NULL

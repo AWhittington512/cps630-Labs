@@ -51,6 +51,10 @@ class Product implements Renderable
                 </div>
             ';
         $output .= "<p name='productPrice'>$" . number_format((float)$this->productPrice, 2, '.', '') . "</p>";
+        $output .= "<input type='hidden' name='productImageURL' value=" . $this->productImageURL . ">";
+        $output .= "<input type='hidden' name='productID' value=" . $this->productID . ">";
+        $output .= "<input type='hidden' name='productName' value=" . $this->productName . ">";
+        $output .= "<input type='hidden' name='productPrice' value=" . number_format((float)$this->productPrice, 2, '.', '') . ">";
         $output .= "<button type='submit' name='addToCart' class='btn btn-outline-primary'>Add to Cart</button>";
         $output .= "</div></form>";
 

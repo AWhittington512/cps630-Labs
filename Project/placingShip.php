@@ -1,4 +1,4 @@
-<?php session_start();?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +12,14 @@
 </head>
 
 <body>
-  <?php include 'navbar2.php'; ?>
+  <?php include 'navbar2.php'; 
+    function setInfo() {
+      $_SESSION['store'] = $_POST['store'];
+      $_SESSION['name'] = $_POST['firstName'] . ' ' . $_POST['lastName'];
+      $_SESSION['shippingAddr'] = $_POST['shippingAddr'] . ', ' . $_POST['cityAddr'] . ', ' . $_POST['provinceAddr'] . ' ' . $_POST['postcodeAddr'];
+    }
+    setInfo();
+  ?>
 
   <!-- <div class="d-inline-flex p-2"></div>Invoice #12345</div> -->
   <div class="container-fluid">
@@ -24,10 +31,15 @@
         <div class="row p-2">
           <div class="col">
             <h2>From branch</h2>
+            <p><?php echo $_POST['store'] ?></p>
           </div>
           <div class="col">
             <h2>Ship to</h2>
-            <p>First Last<br>123 House Road<br>City, Province<br>A1A 2A1</p>
+            <p><?php echo $_POST['firstName'] . ' ' . $_POST['lastName']; ?><br>
+              <?php echo $_POST['shippingAddr']; ?><br>
+              <?php echo $_POST['cityAddr'] . ', ' . $_POST['provinceAddr']; ?><br>
+              <?php echo $_POST['postcodeAddr']; ?>
+            </p>
           </div>
         </div>
         <div class="row p-2">
@@ -38,37 +50,57 @@
         </div>
 
       </div>
-      <div class="col col-sm-4 p-2">
-        <div class="row p-2">
-          <h2>Order summary</h2>
-          <div class="row" id="items">
-            <div class="d-flex justify-content-between align-items-center p-2">
-              <div class="col d-flex flex-row p-2">
-                <img src="productImages/1.webp" width="100" height="100">
-                <p class="p-2">T-Shirt x 1<br>S</p>
-              </div>
-              <h5>$19.99</h5>
-            </div>
+      <div class="col col-sm-5 p-2">
+        <div class="card w-75 rounded-3 m-auto">
+          <table class="table bg-light m-auto rounded-3 text-center">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Size</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              foreach ($_SESSION['cart'] as $cart_item) { ?>
+                <tr>
+                  <td scope="row"><?php echo $cart_item['productID']; ?></td>
+                  <td><?php echo $cart_item['productName']; ?></td>
+                  <td><?php echo $cart_item['productSize']; ?></td>
+                  <td><?php echo $cart_item['productQuantity']; ?></td>
+                  <td>$<?php echo $cart_item['productPrice']; ?></td>
+                  <input type='hidden' name='IDtoRemove' value=<?php echo $cart_item['productID'] ?>>
+                </tr>
+              <?php
+              }
+              ?>
+            </tbody>
+          </table>
+        </div>
+        <div class="w-75 m-auto" id="totals">
+          <div class="d-flex justify-content-between p-2">
+            <h5 class="fs-5">Subtotal</h5>
+            <h5 class="fs-5">
+              <?php echo $_SESSION['subtotal']; ?>
+            </h5>
           </div>
-          <div class="row" id="totals">
-            <div class="d-flex justify-content-between p-2">
-              <h5>Subtotal</h5>
-              <h5>$19.99</h5>
-            </div>
-            <div class="d-flex justify-content-between p-2">
-              <h5>Taxes</h5>
-              <h5>$0.00</h5>
-            </div>
-            <hr>
-            <div class="d-flex justify-content-between p-2">
-              <h4>Total</h4>
-              <h4>$19.99</h4>
-            </div>
+          <div class="d-flex justify-content-between p-2">
+            <h5 class="fs-5">Taxes</h5>
+            <h5 class="fs-5">$<?php echo $_SESSION['taxes']; ?></h5>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between p-2">
+            <h4 class="fs-5">Total</h4>
+            <h4 class="fs-5">$<?php echo $_SESSION['total']; ?></h4>
           </div>
         </div>
-        <div class="row justify-content-evenly">
+        <div class="d-flex justify-content-center m-2">
           <a href="placingStore.php" class="btn btn-outline-secondary w-auto"><- Back</a>
-              <a href="placingPayment.php" class="btn btn-outline-primary w-auto">Next -></a>
+              <a href="placingPayment.php">
+                <button type="submit" class="btn btn-outline-primary w-auto">Next -></button>
+              </a>
         </div>
       </div>
     </div>

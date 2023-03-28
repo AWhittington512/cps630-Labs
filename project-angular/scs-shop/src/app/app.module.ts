@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -11,8 +12,10 @@ import { ItemsComponent } from './items/items.component';
 import { IndexComponent } from './index/index.component';
 import { AboutComponent } from './about/about.component';
 import { CheckoutComponent } from './checkout/checkout.component';
-import { StoreSelectorComponent } from './store-selector/store-selector.component';
 import { InvoiceComponent } from './invoice/invoice.component';
+import { MapComponent } from './map/map.component';
+import { StoreselectorCheckoutComponent } from './storeselector-checkout/storeselector-checkout.component';
+import { StoreSelectorNavComponent } from './storeselector-nav/storeselector-nav.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +25,10 @@ import { InvoiceComponent } from './invoice/invoice.component';
     IndexComponent,
     AboutComponent,
     CheckoutComponent,
-    StoreSelectorComponent,
     InvoiceComponent,
+    MapComponent,
+    StoreselectorCheckoutComponent,
+    StoreSelectorNavComponent
   ],
   imports: [
     BrowserModule,
@@ -31,8 +36,11 @@ import { InvoiceComponent } from './invoice/invoice.component';
     AppRoutingModule,
     NgbModule,
     GoogleMapsModule,
+    FormsModule,
+    ReactiveFormsModule,
+
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

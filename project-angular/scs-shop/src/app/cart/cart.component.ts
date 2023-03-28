@@ -50,6 +50,10 @@ export class CartComponent {
     window.location.reload();
   }
 
+  // deleteItem() {
+  //   console.log(event.target)
+  // }
+
   cartSubtotal() {
     let prices = this.fullCart.map((item) => {
       return item.ItemPrice;

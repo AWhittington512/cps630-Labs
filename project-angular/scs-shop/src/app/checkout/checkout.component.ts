@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { StoreSelectorService } from '../store-selector.service';
 
 @Component({
   selector: 'app-checkout',
@@ -12,14 +11,8 @@ export class CheckoutComponent {
   defaultProvince = "ON";
   currentStore = "";
 
-  constructor (
-    private storeService: StoreSelectorService,
-  ) {}
-
   ngOnInit() {
-    this.cart = JSON.parse(sessionStorage.getItem("fullCart"))
-    //console.log(this.cart);
-    this.currentStore = this.getSelectedStore();
+    this.cart = JSON.parse(sessionStorage.getItem("fullCart"));
   }
 
   cartSubtotal() {
@@ -30,12 +23,5 @@ export class CheckoutComponent {
     return subtotal;
   }
 
-  selectStore() {
-    this.storeService.selectStore();
-    window.location.reload();
-  };
-
-  getSelectedStore() {
-    return this.storeService.getLocation();
-  }
+  
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { ItemService } from '../item.service';
 
 @Component({
@@ -11,7 +12,10 @@ export class CartComponent {
   cartItems;
   fullCart = []
 
-  constructor(private itemService: ItemService) { }
+  constructor(
+    private itemService: ItemService,
+    private router: Router
+  ) { }
 
   ngOnInit() {      
     this.itemService.getItems()
@@ -44,5 +48,18 @@ export class CartComponent {
   clearCart() {
     sessionStorage.removeItem("cart");
     window.location.reload();
+  }
+
+  cartSubtotal() {
+    let prices = this.fullCart.map((item) => {
+      return item.ItemPrice;
+    })
+    const subtotal = prices.reduce((a, b) => a + b, 0);
+    return subtotal;
+  }
+
+  checkout() {
+    sessionStorage.setItem("fullCart", JSON.stringify(this.fullCart));
+    this.router.navigate(['/checkout']);
   }
 }

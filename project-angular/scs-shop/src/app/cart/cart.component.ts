@@ -35,13 +35,12 @@ export class CartComponent {
 
   // item ids from cart => full item info
   mapCartItems(cart: Array<string>) {
-    //let test = this.availableItems.filter(item => item.ItemID == "1");
-
     let itemList = cart.map((id) => {
-      //console.log(id)
+      // const itemInfo = this.availableItems.filter(item => item.ItemID == id)[0];
+      // itemInfo.InCart = 1;
       return this.availableItems.filter(item => item.ItemID == id)[0];
     })
-    //console.log(itemList);
+    //console.log(itemList)
     return itemList;
   }
   

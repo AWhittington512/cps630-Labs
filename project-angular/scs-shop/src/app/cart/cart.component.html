@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Cart</h1>
 
-    <div id="cartItems" class="container">
+    <div id="cartItems" class="container" *ngIf="this.cartItems && this.cartItems.length > 0; else elseBlock">
         <div *ngFor="let item of this.fullCart" class="row">
             <div class="col col-sm-2">
                 <img src='assets/products/{{ item.Picture_URL }}' width='100' height='100' draggable='false'>
@@ -41,4 +41,8 @@
             </div>
         </div>
     </div>
+    <ng-template #elseBlock>
+        <h3>Your cart is empty!</h3>
+        <a routerLink="/items" class="btn btn-outline-primary m-auto my-2">Shop Now</a>
+    </ng-template>
 </div>

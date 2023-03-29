@@ -42,7 +42,7 @@
                 <input type="checkbox" class="form-check-input" id="remember-me">
                 <label class="form-check-label" for="remember-me">Remember me</label>
               </div>
-              <button type="submit" class="btn btn-outline-success d-block m-auto my-2">Log In</button>
+              <button type="submit" class="btn btn-outline-success d-block m-auto my-2" [disabled]="!loginForm.valid">Log In</button>
               <button type="button" class="btn btn-outline-primary d-block m-auto my-2" data-bs-target="#signUpModal" data-bs-toggle="modal">Sign Up</button>
             </form>
           </div>
@@ -63,42 +63,74 @@
               <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="name" class="form-control" id="name" name="name" formControlName="name" aria-describedby="userName" required>
+                <span *ngIf="signupForm.controls['name'].invalid && (signupForm.controls['name'].dirty || signupForm.controls['name'].touched)" class="alert">
+                  <span *ngIf="signupForm.controls['name'].errors?.['required']">Name is required.</span>
+                </span>
               </div>
               <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" name="email" formControlName="email" aria-describedby="emailHelp" required>
+                <input type="email" class="form-control" id="email" name="email" formControlName="email" aria-describedby="emailHelp" required email>
+                <span *ngIf="signupForm.controls['email'].invalid && (signupForm.controls['email'].dirty || signupForm.controls['email'].touched)" class="alert">
+                  <span *ngIf="signupForm.controls['email'].errors?.['required']">Email is required.</span>
+                  <span *ngIf="signupForm.controls['email'].errors?.['email']">Invalid email.</span>
+                </span>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password" formControlName="password" required>
+                <span *ngIf="signupForm.controls['password'].invalid && (signupForm.controls['password'].dirty || signupForm.controls['password'].touched)" class="alert">
+                  <p *ngIf="signupForm.controls['password'].errors?.['required']">Password cannot be empty!</p>
+                  <p *ngIf="signupForm.controls['password'].errors?.['minlength']">Password must be at least 8 characters long.</p>
+                  <p *ngIf="signupForm.controls['password'].errors?.['invalidMsg']">{{signupForm.controls['password'].errors?.['invalidMsg']}}</p>
+                </span>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Repeat Password</label>
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" formControlName="password_confirmation" required>
+                <span *ngIf="signupForm.hasError('notMatched') && (signupForm.controls['password_confirmation'].dirty || signupForm.controls['password_confirmation'].touched)" class="alert">
+                  <p>Passwords do not match!</p>
+                </span>
               </div>
               <div class="mb-3">
                 <label for="telephone" class="form-label">Phone</label>
                 <input type="tel" class="form-control" id="telephone" name="telephone" formControlName="telephone" aria-describedby="phoneNumber">
+                <span *ngIf="signupForm.controls['telephone'].invalid && (signupForm.controls['telephone'].dirty || signupForm.controls['telephone'].touched)" class="alert">
+                  <p *ngIf="signupForm.controls['telephone'].errors?.['required']">Telephone cannot be empty!</p>
+                  <p *ngIf="signupForm.controls['telephone'].errors?.['maxlength'] || signupForm.controls['telephone'].errors?.['invalidMsg']">Invalid phone number.</p>
+                </span>
               </div>
               <h1 class="fs-6 fw-bold mt-4">Address</h1>
               <div class="mb-3">
                 <label for="streetaddr" class="form-label">Street Address</label>
                 <input type="text" class="form-control" id="streetaddr" name="streetaddr" formControlName="streetaddr"  aria-describedby="streetAddress">
+                <span *ngIf="signupForm.controls['streetaddr'].invalid && (signupForm.controls['streetaddr'].dirty || signupForm.controls['streetaddr'].touched)" class="alert">
+                  <span *ngIf="signupForm.controls['streetaddr'].errors?.['required']">Street address is required.</span>
+                </span>
               </div>
               <div class="mb-3">
                 <label for="city" class="form-label">City</label>
                 <input type="text" class="form-control" id="city" name="city" formControlName="city"  aria-describedby="cityAddress">
+                <span *ngIf="signupForm.controls['city'].invalid && (signupForm.controls['city'].dirty || signupForm.controls['city'].touched)" class="alert">
+                  <span *ngIf="signupForm.controls['city'].errors?.['required']">City is required.</span>
+                </span>
               </div>
               <div class="mb-3">
                 <label for="province" class="form-label">Province</label>
-                <input type="text" class="form-control" id="province" name="province" formControlName="province" aria-describedby="provinceAddress">
+                <!-- <input type="text" class="form-control" id="province" name="province" formControlName="province" aria-describedby="provinceAddress"> -->
+                <select class="form-select" id="province" name="province" formControlName="province">
+                  <option disabled>Province</option>
+                  <option value="{{prov}}" *ngFor="let prov of this.provinces">{{prov}}</option>
+                </select>
               </div>
               <div class="mb-3">
                 <label for="postcode" class="form-label">Postal Code</label>
                 <input type="text" class="form-control" id="postcode" name="postcode" formControlName="postcode" aria-describedby="postAddress">
+                <span *ngIf="signupForm.controls['postcode'].invalid && (signupForm.controls['postcode'].dirty || signupForm.controls['postcode'].touched)" class="alert">
+                  <span *ngIf="signupForm.controls['postcode'].errors?.['required']">Postal code is required.</span>
+                </span>
               </div>
               <span id="signupError" style="color:red"></span>
-              <button type="submit" class="btn btn-outline-primary d-block m-auto my-2">Sign Up</button>
+              <button type="submit" class="btn btn-outline-primary d-block m-auto my-2" [disabled]="!signupForm.valid">Sign Up</button>
               <div class="form-text text-center">
                 Already have an account?
                 <a class="link-primary" href="logInModal" data-bs-target="#logInModal" data-bs-toggle="modal">Log In</a>

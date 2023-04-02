@@ -3,39 +3,153 @@
 <div class="container-fluid">
     <div class="row m-0">
       <div class="col">
-        <div class="row p-2">
+        <!-- <div class="row p-2" *ngIf="this.checkoutStep == 0">
           <h1>Order</h1>
         </div>
-        <div class="row p-2">
-            <app-storeselector-checkout></app-storeselector-checkout>
+        <div class="row p-2" *ngIf="this.checkoutStep == 1">
+          <h1>Confirm shipment</h1>
         </div>
-        <div class="row p-2">
-          <h2>Ship to</h2>
-          <form>
-            <div class="row p-2">
-              <div class="col">
-                <input type="text" class="form-control" placeholder="First name" required>
+        <div class="row p-2" *ngIf="this.checkoutStep == 2">
+          <h1>Payment</h1>
+        </div> -->
+
+        <span *ngIf="this.checkoutStep == 0">
+          <div class="row p-2">
+            <h1>Order</h1>
+          </div>
+          <div class="row p-2">
+              <app-storeselector-checkout></app-storeselector-checkout>
+          </div>
+          <div class="row p-2" >
+            <h2>Ship to</h2>
+            <form [formGroup]="shipToForm">
+              <!-- Beautification possible -->
+              <span *ngIf="fn.invalid && (fn.dirty || fn.touched)" class="alert">
+                <span *ngIf="fn.errors?.['required']">First name is required.</span>
+              </span>
+              <span *ngIf="ln.invalid && (ln.dirty || ln.touched)" class="alert">
+                <span *ngIf="ln.errors?.['required']">Last name is required.</span>
+              </span>
+              <span *ngIf="address.invalid && (address.dirty || address.touched)" class="alert">
+                <span *ngIf="address.errors?.['required']">Address is required.</span>
+              </span>
+              <span *ngIf="city.invalid && (city.dirty || city.touched)" class="alert">
+                <span *ngIf="city.errors?.['required']">City is required.</span>
+              </span>
+              <span *ngIf="postcode.invalid && (postcode.dirty || postcode.touched)" class="alert">
+                <span *ngIf="postcode.errors?.['required']">Postal code is required.</span>
+                <span *ngIf="postcode.errors?.['invalidMsg']">{{postcode.errors?.['invalidMsg']}}</span>
+              </span>
+
+              <div class="row p-2">
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="First name" formControlName="fn" required>
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="Last name" formControlName="ln" required>
+                </div>
               </div>
-              <div class="col">
-                <input type="text" class="form-control" placeholder="Last name" required>
+              <div class="row p-2">
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="Address" formControlName="address" required>
+                </div>
               </div>
+              
+              <div class="row p-2">
+                <div class="col">
+                  <input type="text" id="city" class="form-control" placeholder="City" formControlName="city" required>
+                </div>
+                <div class="col col-sm-2">
+                  <select class="form-select" id="province" name="province" formControlName="province">
+                    <option disabled>Province</option>
+                    <option value="{{prov}}" *ngFor="let prov of this.provinces">{{prov}}</option>
+                  </select>
+                </div>
+                <div class="col col-sm-3">
+                  <input type="text" id="postcode" class="form-control" placeholder="Postal Code" formControlName="postcode" required>
+                </div>
+              </div>
+            </form>
+          </div>
+        </span>
+
+        <div class="row p-2" *ngIf="this.checkoutStep == 1 || this.checkoutStep == 2">
+          <div class="row p-2" *ngIf="this.checkoutStep == 1">
+            <h1>Confirm shipment</h1>
+          </div>
+          <div class="row p-2" *ngIf="this.checkoutStep == 2">
+            <h1>Payment</h1>
+          </div>
+          <div class="row p-2">
+            <div class="col">
+              <h2>From branch</h2>
+              <p>{{currentStore}}</p>
             </div>
-            <input type="text" class="form-control" placeholder="Address" required>
-            <div class="row p-2">
-              <div class="col">
-                <input type="text" class="form-control" placeholder="City" required>
-              </div>
-              <div class="col col-sm-2">
-                <select class="form-select" id="province" name="province" [(ngModel)]="defaultProvince">
-                  <option disabled>Province</option>
-                  <option value="{{prov}}" *ngFor="let prov of this.provinces">{{prov}}</option>
-                </select>
-              </div>
-              <div class="col col-sm-3">
-                <input type="text" class="form-control" placeholder="Postal Code" required>
-              </div>
+            <div class="col">
+              <h2>Ship to</h2>
+              <p>
+                {{fn.value}} {{ln.value}}<br>
+                {{address.value}}<br>
+                {{city.value}}, {{province.value}} {{postcode.value}}
+              </p>
             </div>
-          </form>
+          </div>
+          <div class="row p-2" *ngIf="this.checkoutStep == 1">
+            <app-map></app-map>
+          </div>
+        </div>
+
+        <div class="row p-2" *ngIf="this.checkoutStep == 2">
+          <div class="row p-2">
+            <h2>Pay by card</h2>
+            <h3>Card details</h3>
+
+            <form [formGroup]="paymentForm">
+              <span *ngIf="card.invalid && (card.dirty || card.touched)" class="alert">
+                <span *ngIf="card.errors?.['required']">Card number is required.</span>
+                <span *ngIf="card.errors?.['invalidMsg']">{{card.errors?.['invalidMsg']}}</span>
+              </span>
+              <span *ngIf="expiry.invalid && (expiry.dirty || expiry.touched)" class="alert">
+                <span *ngIf="expiry.errors?.['required']">Expiry is required.</span>
+                <span *ngIf="expiry.errors?.['invalidMsg']">{{expiry.errors?.['invalidMsg']}}</span>
+              </span>
+              <span *ngIf="cvv.invalid && (cvv.dirty || cvv.touched)" class="alert">
+                <span *ngIf="cvv.errors?.['required']">CVV is required.</span>
+                <span *ngIf="cvv.errors?.['invalidMsg']">{{cvv.errors?.['invalidMsg']}}</span>
+              </span>
+              <span *ngIf="paymentPC.invalid && (paymentPC.dirty || paymentPC.touched)" class="alert">
+                <span *ngIf="paymentPC.errors?.['required']">Postal code is required.</span>
+                <span *ngIf="paymentPC.errors?.['invalidMsg']">{{paymentPC.errors?.['invalidMsg']}}</span>
+              </span>
+
+              <div class="row p-2">
+                <label class="form-label">Card number</label><br>
+                <div class="input-group">
+                  <span class="input-group-text">VISA/MC</span>
+                  <input type="text" class="form-control" placeholder="1234 5678 9012 3456" formControlName="card" required>
+                </div>
+              </div>
+    
+              <div class="row p-2">
+                <div class="col">
+                  <label class="form-label">Expiry</label>
+                  <input type="text" class="form-control" placeholder="MM/YY" formControlName="expiry" required>
+                </div>
+                <div class="col">
+                  <label class="form-label">CVV</label>
+                  <input type="text" class="form-control" placeholder="3 digits" formControlName="cvv" required>
+                </div>
+                <div class="col col-sm-3">
+                  <label class="form-label">Postal Code</label>
+                  <input type="text" class="form-control" placeholder="A1A 1A1" formControlName="paymentPC" required>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="row p-2" *ngIf="this.checkoutStep == 3">
+          <p>Go to Invoice</p>
         </div>
 
       </div>
@@ -68,8 +182,10 @@
           </div>
         </div>
         <div class="row justify-content-evenly">
-          <button routerLink="/cart" class="btn btn-outline-secondary w-auto"><- Back</button>
-            <a routerLink="/invoice" class="btn btn-outline-primary w-auto">Next -></a>
+          <button class="btn btn-outline-secondary w-auto" (click)="back()"><- Back</button>
+          <button *ngIf="this.checkoutStep == 0" class="btn btn-outline-primary w-auto" (click)="toDelivery()" [disabled]="!shipToForm.valid">Next -></button>
+          <button *ngIf="this.checkoutStep == 1" class="btn btn-outline-primary w-auto" (click)="toPayment()">Next -></button>
+          <button *ngIf="this.checkoutStep == 2" class="btn btn-outline-primary w-auto" (click)="submitOrder()" [disabled]="!paymentForm.valid">Submit order</button>
         </div>
       </div>
     </div>

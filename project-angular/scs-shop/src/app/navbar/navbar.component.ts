@@ -49,7 +49,6 @@ export class NavbarComponent {
     province: ["ON", Validators.required],
     postcode: ["", [
       Validators.required,
-      Validators.maxLength(7),
       this.regexValidator({pattern: NavbarComponent.POSTCHECK, msg: "Invalid postal code"})
     ]]
   }, {

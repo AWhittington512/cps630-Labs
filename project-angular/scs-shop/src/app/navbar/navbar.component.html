@@ -127,6 +127,7 @@
                 <input type="text" class="form-control" id="postcode" name="postcode" formControlName="postcode" aria-describedby="postAddress">
                 <span *ngIf="signupForm.controls['postcode'].invalid && (signupForm.controls['postcode'].dirty || signupForm.controls['postcode'].touched)" class="alert">
                   <span *ngIf="signupForm.controls['postcode'].errors?.['required']">Postal code is required.</span>
+                  <p *ngIf="signupForm.controls['postcode'].errors?.['invalidMsg']">{{signupForm.controls['postcode'].errors?.['invalidMsg']}}</p>
                 </span>
               </div>
               <span id="signupError" style="color:red"></span>

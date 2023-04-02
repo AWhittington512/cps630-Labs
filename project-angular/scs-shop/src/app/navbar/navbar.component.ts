@@ -88,7 +88,7 @@ export class NavbarComponent {
     this.auth.login(this.loginForm.value.email, this.loginForm.value.password)
       .subscribe((result) => {
         console.log(result);
-        this.setCurrentUser(result);
+        this.auth.setCurrentUser(result);
         window.location.reload();
         //document.getElementById('closeLoginModal').click();
       },
@@ -127,23 +127,17 @@ export class NavbarComponent {
       })
   }
 
-  setCurrentUser(userInfo: Object) {
+  /* setCurrentUser(userInfo: Object) {
     sessionStorage.setItem('name', userInfo["UserName"]);
     sessionStorage.setItem('email', userInfo["Email"]);
     sessionStorage.setItem('phone', userInfo["Phone"]);
     sessionStorage.setItem('address', userInfo["UserAddress"]);
     sessionStorage.setItem('postcode', userInfo["CityCode"]);
     sessionStorage.setItem('balance', userInfo["Balance"]);
-  }
+  } */
 
   clearCurrentUser() {
-    // maybe don't do this
-    sessionStorage.removeItem('name');
-    sessionStorage.removeItem('email');
-    sessionStorage.removeItem('phone');
-    sessionStorage.removeItem('address');
-    sessionStorage.removeItem('postcode');
-    sessionStorage.removeItem('balance');
+    this.auth.logout();
     window.location.reload();
   }
 

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 import { ItemService } from '../item.service';
 
 @Component({
@@ -14,10 +15,13 @@ export class CartComponent {
 
   constructor(
     private itemService: ItemService,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) { }
 
-  ngOnInit() {      
+  ngOnInit() {
+    //console.log(this.auth.loggedIn());
+    console.log(this.auth.getCurrentUser());      
     this.itemService.getItems()
       .subscribe(response => {
         this.availableItems = response;
@@ -64,5 +68,9 @@ export class CartComponent {
   checkout() {
     sessionStorage.setItem("fullCart", JSON.stringify(this.fullCart));
     this.router.navigate(['/checkout']);
+  }
+
+  loggedIn() {
+    return this.auth.loggedIn();
   }
 }

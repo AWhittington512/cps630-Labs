@@ -37,8 +37,10 @@
                 <button class="btn btn-danger d-block m-auto my-2" (click)="this.clearCart()">Clear cart</button>
             </div>
             <div class="col col-sm-2">
-                <button class="btn btn-outline-primary d-block m-auto my-2" (click)="this.checkout()">Checkout</button>
+                <button class="btn btn-outline-primary d-block m-auto my-2" (click)="this.checkout()" [disabled]="!loggedIn()">Checkout</button>
+                <p *ngIf="!loggedIn()">Log in to checkout</p>
             </div>
+            
         </div>
     </div>
     <ng-template #elseBlock>

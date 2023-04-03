@@ -3,8 +3,9 @@
   <div class="row">
     <div class="col-sm">
       <div class="col pt-4 col-md-8 offset-md-1">
-        <h2>Invoice #001</h2>
+        <h2>Invoice #{{order}}</h2>
         <h4>Order Summary</h4>
+        <p *ngFor="let row of rows">{{row.ItemID}}, {{row.OrderQuantity}}</p>
       </div>
     </div>
 

@@ -8,6 +8,7 @@ import { StoreSelectorService } from '../store-selector.service';
 })
 export class StoreselectorCheckoutComponent {
   currentStore = ""
+  stores: any;
 
   constructor (
     private storeService: StoreSelectorService,
@@ -15,6 +16,9 @@ export class StoreselectorCheckoutComponent {
 
   ngOnInit() {
     this.currentStore = this.getSelectedStore();
+    this.storeService.getAllStores().subscribe(response => {
+      this.stores = response;
+    });
   }
 
   selectStore() {

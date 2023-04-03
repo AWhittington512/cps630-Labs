@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,7 +6,13 @@ import { Injectable } from '@angular/core';
 })
 export class StoreSelectorService {
 
-  constructor() { }
+  constructor(
+    private httpClient: HttpClient
+  ) { }
+
+  getAllStores() {
+    return this.httpClient.get('api/stores');
+  }
 
   selectStore() {
     const selectButtons = document.querySelectorAll('.store');
@@ -13,15 +20,17 @@ export class StoreSelectorService {
     selectButtons.forEach(button => {
       button.addEventListener('click', () => {
         const storeName = button.closest('.store').querySelector('.store-name').textContent;
-        this.setLocation(storeName);
+        const storeId = button.closest('.store').children[0].id;
+        this.setLocation(storeName, storeId);
         document.getElementById('storeLocation').innerHTML = storeName;
       });
     });
   }
   
-  setLocation(value: string) {
+  setLocation(name: string, id: string) {
     if (typeof(Storage) != "undefined") {
-      localStorage.setItem("location", value)
+      localStorage.setItem("location", name);
+      localStorage.setItem("locationID", id);
     } else {
       console.log("Local storage unavailable")
     }
@@ -37,7 +46,13 @@ export class StoreSelectorService {
     if (window.localStorage.getItem("location")) {
       return window.localStorage.getItem("location")
     }
+    return null;
+  }
 
+  getLocationID() {
+    if (window.localStorage.getItem("locationID")) {
+      return window.localStorage.getItem("locationID")
+    }
     return null;
   }
 }

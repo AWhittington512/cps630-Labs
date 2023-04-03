@@ -10,6 +10,7 @@ import { StoreSelectorService } from '../store-selector.service';
   styleUrls: ['./storeselector-nav.component.css']
 })
 export class StoreSelectorNavComponent {
+  stores : any;
 
   constructor(
     private geocodingService: GeocodingService,
@@ -39,23 +40,28 @@ export class StoreSelectorNavComponent {
 
   findStores(city: string, postcode: string) {
     document.getElementById('postalCode').innerHTML = postcode
-    switch (city) {
-      case 'Toronto':
-        document.getElementById('storeLocation').innerHTML = "Queen St W, Toronto"
-        this.storeService.setLocation("Queen St W, Toronto")
-        break
-      case 'Markham':
-        document.getElementById('storeLocation').innerHTML = "CF Markville, Markham"
-        this.storeService.setLocation("CF Markville, Markham")
-        break
-      case 'Mississauga':
-        document.getElementById('storeLocation').innerHTML = "Square One Shopping Centre, Mississauga"
-        this.storeService.setLocation("Square One Shopping Centre, Mississauga")
-        break
-      default:
-        document.getElementById('storeLocation').innerHTML = "No store selected"
-    }
+    console.log(this.stores)
+    // switch (city) {
+    //   case 'Toronto':
+    //     document.getElementById('storeLocation').innerHTML = "Queen St W, Toronto"
+    //     this.storeService.setLocation("Queen St W, Toronto")
+    //     break
+    //   case 'Markham':
+    //     document.getElementById('storeLocation').innerHTML = "CF Markville, Markham"
+    //     this.storeService.setLocation("CF Markville, Markham")
+    //     break
+    //   case 'Mississauga':
+    //     document.getElementById('storeLocation').innerHTML = "Square One Shopping Centre, Mississauga"
+    //     this.storeService.setLocation("Square One Shopping Centre, Mississauga")
+    //     break
+    //   default:
+    //     document.getElementById('storeLocation').innerHTML = "No store selected"
+    // }
   }
+
+  // getAllStores() {
+  //   this.storeService.getAllStores();
+  // }
 
   selectStore() {
     this.storeService.selectStore();
@@ -63,5 +69,8 @@ export class StoreSelectorNavComponent {
 
   ngOnInit() {
     this.storeService.getLocationOnLoad()
+    this.storeService.getAllStores().subscribe(response => {
+      this.stores = response;
+    });
   }
 }

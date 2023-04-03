@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,6 +21,7 @@ export class CheckoutComponent {
   provinces = ["AB", "BC", "MB", "NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"];
   defaultProvince = "ON";
   currentStore = "";
+  currentStoreId;
   //0: shipping, 1: delivery, 2: payment, 3: complete
   checkoutStep = 0;
 
@@ -28,6 +30,7 @@ export class CheckoutComponent {
     private storeSelectorService: StoreSelectorService,
     private geocodingService: GeocodingService,
     private formBuilder: FormBuilder,
+    private httpClient: HttpClient
   ) {}
 
   shipToForm = this.formBuilder.group({
@@ -124,6 +127,7 @@ export class CheckoutComponent {
 
   toDelivery() {
     this.currentStore = this.storeSelectorService.getLocation();
+    this.currentStoreId = this.storeSelectorService.getLocationID();
     this.shipToForm.controls['postcode'].setValue(this.formatPostcode(this.postcode.value));
 
     this.checkoutStep += 1;
@@ -134,13 +138,51 @@ export class CheckoutComponent {
   }
 
   submitOrder() {
+    const cartItemIds = JSON.parse(sessionStorage.getItem('cart'))["cartItemIds"]
+    this.verifyPayment();
+    // console.log(cartItemIds)
+    // console.log(this.cartSubtotal())
+    // console.log(this.currentStore, this.currentStoreId)
+    // console.log(this.shipToForm.value)
+    //console.log(this.paymentForm.value)
+
+    let payload = {
+      "cartItems": cartItemIds,
+      "subtotal": this.cartSubtotal(),
+      "storeId": this.currentStoreId,
+      "destAddress": this.address.value,
+      "destCity": this.city.value,
+      "destProvince": this.province.value,
+      "destPostcode": this.postcode.value,
+      "userId": sessionStorage.getItem('userid')
+    }
+
+    this.httpClient.post<any>('api/checkout', payload)
+      .subscribe((result) => {
+        if (result.status == "OK") {
+          this.clearCart();
+          this.router.navigate(['/invoice'], {queryParams: {order: result["orderId"]}})
+        }
+      }) 
+
+    // this.httpClient.post<any>('api/checkout', payload)
+    // .pipe(catchError((err) => {
+    //   return throwError(err);
+    // }));
+
+    //this.checkoutStep += 1;
+  }
+
+  verifyPayment() {
+    // does nothing for now; only formats data
     this.paymentForm.controls['card'].setValue(this.formatCardNum(this.card.value));
     this.paymentForm.controls['expiry'].setValue(this.formatExpiry(this.expiry.value));
     this.paymentForm.controls['paymentPC'].setValue(this.formatPostcode(this.paymentPC.value));
-    console.log(this.shipToForm.value)
-    console.log(this.paymentForm.value)
+  }
 
-    this.checkoutStep += 1;
+  clearCart() {
+    sessionStorage.removeItem("cart");
+    sessionStorage.removeItem("fullCart");
   }
 
   /* changeCheckoutStep(move: string) {

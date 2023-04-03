@@ -20,7 +20,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-4" data-bs-dismiss="modal">
-        <div class="store card mb-3">
+        <!-- <div class="store card mb-3">
           <div class="card-body">
             <h5 class="store-name card-title">Queen St W, Toronto</h5>
             <p class="card-text">Phone number: 416-128-3280</p>
@@ -38,6 +38,13 @@
           <div class="card-body">
             <h5 class="store-name card-title">Square One Shopping Centre, Mississauga</h5>
             <p class="card-text">Phone number: 416-927-5682</p>
+            <button class="store btn btn-primary stretched-link" (click)="this.selectStore()">Select this store</button>
+          </div>
+        </div> -->
+        <div class="store card mb-3" *ngFor="let store of this.stores">
+          <div class="card-body" id="{{store.StoreID}}">
+            <h5 class="store-name card-title">{{store.StoreName}}, {{store.StoreCity}}</h5>
+            <p class="card-text">Phone number: {{store.StorePhone}}</p>
             <button class="store btn btn-primary stretched-link" (click)="this.selectStore()">Select this store</button>
           </div>
         </div>

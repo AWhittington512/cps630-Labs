@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ItemsComponent } from './items/items.component';
 import { IndexComponent } from './index/index.component';
+import { ReviewsComponent } from './reviews/reviews.component';
 import { AboutComponent } from './about/about.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { InvoiceComponent } from './invoice/invoice.component';
@@ -25,6 +26,7 @@ import { ReviewsComponent } from './reviews/reviews.component';
     NavbarComponent,
     ItemsComponent,
     IndexComponent,
+    ReviewsComponent,
     AboutComponent,
     CheckoutComponent,
     InvoiceComponent,

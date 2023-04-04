@@ -171,20 +171,56 @@
               <h5>{{this.cartSubtotal() | currency}}</h5>
             </div>
             <div class="d-flex justify-content-between p-2">
+              <h5>Discounts</h5>
+              <span *ngIf="activeCoupon.CouponDiscount != 1; else noDiscount">
+                <h5 class="text-end">-{{this.cartSubtotal() * (1-activeCoupon.CouponDiscount) | currency}}</h5>
+                <div class="row border rounded p-2 align-items-center">
+                  <div class="col">
+                    <small>Coupon <strong>{{activeCoupon.CouponCode}}</strong> applied</small>
+                  </div>
+                  <div class="col col-sm-2">
+                    <button type="button" class="btn-close" (click)="deactivateCoupon()"></button>
+                  </div>
+                </div>
+                
+              </span>
+              <ng-template #noDiscount>
+                <h5>-{{0 | currency}}</h5>
+              </ng-template>
+            </div>
+            <div class="d-flex justify-content-between p-2">
               <h5>Taxes</h5>
-              <h5>{{this.cartSubtotal() * 0.13 | currency}}</h5>
+              <span *ngIf="activeCoupon.CouponDiscount != 1; else taxes">
+                <h5>{{this.cartSubtotal() * (activeCoupon.CouponDiscount) * 0.13 | currency}}</h5>
+              </span>
+              <ng-template #taxes>
+                <h5>{{this.cartSubtotal() * 0.13 | currency}}</h5>
+              </ng-template>
             </div>
             <hr>
             <div class="d-flex justify-content-between p-2">
               <h4>Total</h4>
-              <h4>{{this.cartSubtotal() * 1.13 | currency}}</h4>
+              <span *ngIf="activeCoupon.CouponDiscount != 1; else total">
+                <h5>{{this.cartSubtotal() * (activeCoupon.CouponDiscount) * 1.13 | currency}}</h5>
+              </span>
+              <ng-template #total>
+                <h5>{{this.cartSubtotal() * 1.13 | currency}}</h5>
+              </ng-template>
+            </div>
+            <div class="justify-content-between p-2">
+                <h5>Have a coupon code?</h5>
+                <div class="input-group" id="coupon-form">
+                  <input type="text" class="form-control" id="coupon">
+                  <button class="btn btn-outline-secondary" (click)="validateCoupon()">&#8594;</button>
+                </div>
+                <span id="coupon-error" style="color:red;"></span>
             </div>
           </div>
         </div>
         <div class="row justify-content-evenly">
-          <button class="btn btn-outline-secondary w-auto" (click)="back()"><- Back</button>
-          <button *ngIf="this.checkoutStep == 0" class="btn btn-outline-primary w-auto" (click)="toDelivery()" [disabled]="!shipToForm.valid">Next -></button>
-          <button *ngIf="this.checkoutStep == 1" class="btn btn-outline-primary w-auto" (click)="toPayment()">Next -></button>
+          <button class="btn btn-outline-secondary w-auto" (click)="back()">&#8592; Back</button>
+          <button *ngIf="this.checkoutStep == 0" class="btn btn-outline-primary w-auto" (click)="toDelivery()" [disabled]="!shipToForm.valid">Next &#8594;</button>
+          <button *ngIf="this.checkoutStep == 1" class="btn btn-outline-primary w-auto" (click)="toPayment()">Next &#8594;</button>
           <button *ngIf="this.checkoutStep == 2" class="btn btn-outline-primary w-auto" (click)="submitOrder()" [disabled]="!paymentForm.valid">Submit order</button>
         </div>
       </div>

@@ -38,6 +38,15 @@ app.post('/api/items', (req, res) => {
     console.log(req.body);
 })
 
+app.get('/api/coupon', (req, res) => {
+    con.query("select * from Coupon", function (err, rows) {
+        if (err) {
+            return res.json({ status: "ERR", err });
+        };
+        return res.json(rows);
+    });
+})
+
 app.get('/api/invoice/:orderId', (req, res) => {
     const orderId = req.params.orderId;
 
@@ -62,9 +71,20 @@ app.post('/api/checkout', (req, res) => {
     const destProvince = req.body.destProvince;
     const destPostcode = req.body.destPostcode;
     const user = parseInt(req.body.userId);
+    const couponId = req.body.coupon.CouponID;
     //const dateIssued = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    con.query("insert into order_info (Subtotal, PaymentCode, UserID) values (?, 1, ?)", [subtotal, user], function (err, result, fields) {
+    var orderQuery = "";
+    var orderValues = [];
+    if (couponId != 0) {
+        orderQuery = "insert into order_info (Subtotal, PaymentCode, UserID, CouponID) values (?, 1, ?, ?)";
+        orderValues = [subtotal, user, couponId];
+    } else {
+        orderQuery = "insert into order_info (Subtotal, PaymentCode, UserID) values (?, 1, ?)";
+        orderValues = [subtotal, user];
+    }
+
+    con.query(orderQuery, orderValues, function (err, result, fields) {
         if (err) {
             return res.json({ status: "ERR", err });
         } else {

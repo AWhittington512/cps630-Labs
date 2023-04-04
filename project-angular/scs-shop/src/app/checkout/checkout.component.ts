@@ -22,6 +22,7 @@ export class CheckoutComponent {
   defaultProvince = "ON";
   currentStore = "";
   currentStoreId;
+  activeCoupon = {CouponID: 0, CouponCode: "", CouponDiscount: 1};
   //0: shipping, 1: delivery, 2: payment, 3: complete
   checkoutStep = 0;
 
@@ -154,8 +155,11 @@ export class CheckoutComponent {
       "destCity": this.city.value,
       "destProvince": this.province.value,
       "destPostcode": this.postcode.value,
-      "userId": sessionStorage.getItem('userid')
+      "userId": sessionStorage.getItem('userid'),
+      "coupon": this.activeCoupon,
     }
+
+    //console.log(payload)
 
     this.httpClient.post<any>('api/checkout', payload)
       .subscribe((result) => {
@@ -163,14 +167,29 @@ export class CheckoutComponent {
           this.clearCart();
           this.router.navigate(['/invoice'], {queryParams: {order: result["orderId"]}})
         }
-      }) 
+      })
+  }
 
-    // this.httpClient.post<any>('api/checkout', payload)
-    // .pipe(catchError((err) => {
-    //   return throwError(err);
-    // }));
+  validateCoupon() {
+    const couponCode = (<HTMLInputElement>document.getElementById("coupon")).value.toUpperCase();
+    if (couponCode) {
+      //console.log(couponCode);
+      this.httpClient.get('api/coupon').subscribe((result: Array<any>) => {
+        const coupon = result.find(coupon => coupon.CouponCode == couponCode);
+        if (coupon) {
+          this.activeCoupon = coupon;
+          console.log(this.activeCoupon);
+          (<HTMLInputElement>document.getElementById("coupon")).value = coupon.CouponCode;
+          document.getElementById('coupon-error').innerHTML = "";
+        } else {
+          document.getElementById('coupon-error').innerHTML = "Not a valid coupon";
+        }
+      })
+    }
+  }
 
-    //this.checkoutStep += 1;
+  deactivateCoupon() {
+    this.activeCoupon = {CouponID: 0, CouponCode: "", CouponDiscount: 1};
   }
 
   verifyPayment() {
@@ -184,28 +203,4 @@ export class CheckoutComponent {
     sessionStorage.removeItem("cart");
     sessionStorage.removeItem("fullCart");
   }
-
-  /* changeCheckoutStep(move: string) {
-    if (move == "next") {
-      if (this.checkoutStep < 3) {
-        this.checkoutStep += 1;
-
-        if (this.checkoutStep == 1) {
-          this.currentStore = this.storeSelectorService.getLocation();
-          this.shipToForm.controls['postcode'].setValue(this.formatPostcode(this.postcode.value))
-          //console.log(this.shipToForm)
-          // this.geocodingService.getLocation(this.currentStore).subscribe((response: GeocoderResponse) => {
-          //   console.log(response.results)
-          // })
-        }
-      } else {
-        this.checkoutStep = 0;
-      }
-      //(this.checkoutStep <= 3) ? this.checkoutStep += 1 : this.checkoutStep = 0;
-    } else {
-      (this.checkoutStep > 0) ? this.checkoutStep -= 1 : this.router.navigate(['/cart']);
-    }
-    
-    console.log(this.checkoutStep);
-  } */
 }

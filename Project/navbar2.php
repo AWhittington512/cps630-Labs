@@ -47,6 +47,11 @@
               ');
             }
             // $connection->close();
+            if (isset($_POST['logout'])) {
+                session_destroy();
+                header("location: " . $_SERVER['PHP_SELF']);
+                exit;
+            }
           ?>
           <a class="btn btn-primary ms-2" data-bs-toggle="modal" href="#userModal" role="button">Welcome, <?php echo $_SESSION["username"];?>!</a>
           <a href="cart.php" class="nav-item nav-link ms-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/></svg></a>
@@ -72,6 +77,9 @@
           <p><?php echo $_SESSION['address'] . ", " . $_SESSION['postcode'];?></p>
           <h5 class="fs-5 lead">Balance</h5>
           <p><?php echo $_SESSION['balance'];?></p>
+          <form method="post">
+            <button type="submit" class="btn btn-danger" name="logout">Log Out</button>
+          </form>
         </div>
       </div>
     </div>

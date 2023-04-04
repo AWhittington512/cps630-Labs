@@ -17,6 +17,7 @@ import { MapComponent } from './map/map.component';
 import { StoreselectorCheckoutComponent } from './storeselector-checkout/storeselector-checkout.component';
 import { StoreSelectorNavComponent } from './storeselector-nav/storeselector-nav.component';
 import { CartComponent } from './cart/cart.component';
+import { ReviewsComponent } from './reviews/reviews.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { CartComponent } from './cart/cart.component';
     StoreselectorCheckoutComponent,
     StoreSelectorNavComponent,
     CartComponent,
+    ReviewsComponent,
   ],
   imports: [
     BrowserModule,

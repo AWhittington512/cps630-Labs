@@ -9,8 +9,8 @@
           <div class="navbar-nav ms-auto">
             <a routerLink="/" class="nav-item nav-link ms-2">Home</a>
             <a routerLink="/items" class="nav-item nav-link ms-2">Shop</a>
-            <a href="/about" class="nav-item nav-link ms-2">About Us</a>
-            <a href="#" class="nav-item nav-link ms-2">Reviews</a>
+            <a routerLink="/about" class="nav-item nav-link ms-2">About Us</a>
+            <a routerLink="/reviews" class="nav-item nav-link ms-2">Reviews</a>
             <a href="#" class="nav-item nav-link ms-2">Services</a>
             <a class="btn btn-primary ms-2" data-bs-toggle="modal" href="#logInModal" role="button" id="loginButton" *ngIf="!this.currentUser['name']">Login</a>
             <a class="btn btn-primary ms-2" data-bs-toggle="modal" href="#userModal" role="button" id="userInfoButton" *ngIf="this.currentUser['name'] != null">Welcome, {{this.currentUser["name"]}}!</a>

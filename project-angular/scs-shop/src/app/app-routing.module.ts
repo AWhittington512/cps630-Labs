@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: '', component: IndexComponent },
   { path: 'items', component: ItemsComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'reviews', component: ReviewsComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'invoice', component: InvoiceComponent},
   {path: 'cart', component: CartComponent},

@@ -15,6 +15,19 @@ const con = mysql.createConnection({
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+function getAllRows(tableName) {
+    return new Promise((resolve, reject) => {
+        con.query("select * from " + tableName, (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+            
+        });
+    })
+}
+
 con.connect(function(err) {
     if (err) {
         return res.json({ status: "ERR", err });
@@ -22,29 +35,37 @@ con.connect(function(err) {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello');
+    res.send('SCS backend API');
 });
 
-app.get('/api/items', (req, res) => {
-    con.query("select * from Item", function (err, rows) {
-        if (err) {
-            return res.json({ status: "ERR", err });
-        };
-        return res.json(rows);
-    });
-});
-
-app.post('/api/items', (req, res) => {
-    console.log(req.body);
-})
-
-app.get('/api/coupon', (req, res) => {
+/* app.get('/api/coupon', (req, res) => {
     con.query("select * from Coupon", function (err, rows) {
         if (err) {
             return res.json({ status: "ERR", err });
         };
         return res.json(rows);
     });
+}) */
+
+app.get('/api/items', async (req, res) => {
+    const result = await getAllRows("Item").catch(err => {
+        return res.json({status: "ERR", err});
+    });
+    return res.json(result);
+});
+
+app.get('/api/coupon', async (req, res) => {
+    const result = await getAllRows("Coupon").catch(err => {
+        return res.json({status: "ERR", err});
+    });
+    return res.json(result);
+})
+
+app.get('/api/stores', async (req, res) => {
+    const result = await getAllRows("Store").catch(err => {
+        return res.json({status: "ERR", err});
+    });
+    return res.json(result);
 })
 
 app.get('/api/invoice/:orderId', (req, res) => {
@@ -132,18 +153,9 @@ app.post('/api/checkout', (req, res) => {
     })
 })
 
-app.post('/api/checkout/fake', (req, res) => {
+/* app.post('/api/checkout/fake', (req, res) => {
     return res.json({status: "OK", "orderId": 2});
-})
-
-app.get('/api/stores', (req, res) => {
-    con.query("select * from Store", function (err, rows) {
-        if (err) {
-            return res.json({ status: "ERR", err });
-        };
-        return res.json(rows);
-    });
-})
+}) */
 
 // login/signup
 app.post('/api/login', (req, res) => {
@@ -207,5 +219,5 @@ app.post('/api/admin/query', (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`SCS backend listening on port ${port}`)
 })

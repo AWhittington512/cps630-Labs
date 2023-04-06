@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+var crypto = require('crypto');
 
 const app = express();
 const port = 3000;
@@ -158,30 +159,45 @@ app.post('/api/checkout', (req, res) => {
 }) */
 
 // login/signup
-app.post('/api/login', (req, res) => {
-    con.query('SELECT * FROM user_info WHERE Email = ? AND PW = ?', [req.body.email, req.body.password], function (err, rows) {
-        if (err) {
-            return res.json({ status: "ERR", err });
-        };
+function hashPassword(pw, salt) {
+    //const salt = crypto.randomBytes(16).toString('base64');
+    //const salt = "peepoo";
+    
+    return crypto.createHash("md5").update(pw + salt).digest('hex');
+    //return salt;
+}
 
-        if (rows && rows.length > 0) {
-            return res.json(rows);
-        } else {
-            res.status(400).send('Invalid login');
-        }
-    });
-});
+function validateHash(currentp, dbhash, salt) {
+    const hashed = hashPassword(currentp, salt);
+    return hashed === dbhash ? true : false;
+}
+
+app.get('/pwtest', (req, res) => {
+    const salt = crypto.randomBytes(16).toString('base64');
+    const result = hashPassword("andrew123", salt);
+    res.send([result, salt]);
+    //console.log(result.length)
+})
+
+app.post('/pwtest2', (req, res) => {
+    const pw = req.body.password;
+    const salt = req.body.salt;
+    const hash = req.body.hash;
+    res.send({password: pw, match: validateHash(pw, hash, salt)});
+})
 
 app.post('/api/signup', (req, res) => {
-    var name = req.body.name;
-    var email = req.body.email;
-    var password = req.body.password;
-    var phone = req.body.telephone;
-    var address = req.body.streetaddr;
-    var postcode = req.body.postcode;
+    const name = req.body.name;
+    const email = req.body.email;
+    const phone = req.body.telephone;
+    const address = req.body.streetaddr;
+    const postcode = req.body.postcode;
 
-    const insertQuery = 'INSERT INTO user_info (UserName, Phone, Email, UserAddress, CityCode, PW) VALUES (?, ?, ?, ?, ?, ?)';
-    con.query(insertQuery, [name, phone, email, address, postcode, password],
+    const salt = crypto.randomBytes(16).toString('base64');
+    const password = hashPassword(req.body.password, salt);
+
+    const insertQuery = 'INSERT INTO user_info (UserName, Phone, Email, UserAddress, CityCode, PW, PWSalt) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    con.query(insertQuery, [name, phone, email, address, postcode, password, salt],
         function (err, rows) {
             if (err) {
                 return res.json({ status: "ERR", err });
@@ -192,6 +208,33 @@ app.post('/api/signup', (req, res) => {
     );
 });
 
+app.post('/api/login', (req, res) => {
+    const email = req.body.email;
+    const loginPw = req.body.password;
+
+    con.query('SELECT * FROM user_info WHERE Email = ?', [req.body.email], function (err, rows) {
+        if (err) {
+            return res.json({ status: "ERR", err });
+        };
+
+        if (rows && rows.length > 0) {
+            // emails are unique
+
+            const existingHash = rows[0].PW;
+            const salt = rows[0].PWSalt;
+
+            if (validateHash(loginPw, existingHash, salt)) {
+                return res.json(rows)
+            } else {
+                res.status(400).send('Invalid password')
+            }
+            //res.send(rows[0]);
+        } else {
+            res.status(400).send('Account with this email does not exist');
+        }
+    });
+});
+
 app.post('/api/signup/exists', (req, res) => {
     var email = req.body.email;
     con.query('SELECT * FROM user_info WHERE email = ?', [email], function (err, rows) {
@@ -200,7 +243,7 @@ app.post('/api/signup/exists', (req, res) => {
         };
 
         if (rows && rows.length > 0) {
-            return res.json({ status: "User exists" });
+            return res.json({ status: "User with this email already exists" });
         } else {
             return res.json({ status: "OK" });
         }

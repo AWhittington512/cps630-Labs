@@ -1,6 +1,10 @@
 <app-navbar></app-navbar>
 <app-storeselector-nav></app-storeselector-nav>
 
+<div class="toast-container position-fixed top-0 p-3">
+    <ngb-toast *ngIf="showToast"> {{toastMsg}} </ngb-toast>
+</div>
+
 <div class="container">
     <h1>Items</h1>
 
@@ -21,11 +25,18 @@
             <div id="{{item.ItemID}}" class='col border rounded p-3' draggable='true' *ngFor="let item of items" (dragstart)="this.onDrag($event)">
                 <img src='assets/products/{{ item.Picture_URL }}' width='300' height='300' draggable='false'>
                 <h2>{{ item.ItemName }}</h2>
-                <!-- <select name='size' id='size' class='form-select form-select-sm'>
-                    <option value='s'>S</option>
-                    <option value='m'>M</option>
-                    <option value='l'>L</option>
-                </select> -->
+                <div class="m-2">
+                    <label for="size">Size</label>
+                    <select name="size" id="size-{{item.ItemID}}" class="form-select form-select-sm">;
+                        <option value="{{size}}" *ngFor="let size of sizes">{{size}}</option>
+                    </select>
+                </div>
+                <div class="m-2">
+                    <label for="quantity">Quantity</label>
+                    <select name="quantity" id="quantity-{{item.ItemID}}" class="form-select form-select-sm">
+                        <option value="{{q}}" *ngFor="let q of quantities">{{q}}</option>
+                    </select>
+                </div>
                 <p>{{ item.ItemPrice | currency }}</p>
                 <button type='button' class='btn btn-outline-primary' (click)="this.addToCart($event)">Add to Cart</button>
             </div>

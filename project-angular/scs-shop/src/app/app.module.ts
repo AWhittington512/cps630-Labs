@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ItemsComponent } from './items/items.component';
 import { IndexComponent } from './index/index.component';
-import { ReviewsComponent } from './reviews/reviews.component';
 import { AboutComponent } from './about/about.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { InvoiceComponent } from './invoice/invoice.component';
@@ -19,6 +18,9 @@ import { StoreselectorCheckoutComponent } from './storeselector-checkout/storese
 import { StoreSelectorNavComponent } from './storeselector-nav/storeselector-nav.component';
 import { CartComponent } from './cart/cart.component';
 import { ReviewsComponent } from './reviews/reviews.component';
+import { DbMaintainComponent } from './db-maintain/db-maintain.component';
+import { ServicesComponent } from './services/services.component';
+import { OrdersComponent } from './orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,9 @@ import { ReviewsComponent } from './reviews/reviews.component';
     StoreSelectorNavComponent,
     CartComponent,
     ReviewsComponent,
+    DbMaintainComponent,
+    ServicesComponent,
+    OrdersComponent,
   ],
   imports: [
     BrowserModule,

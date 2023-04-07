@@ -10,6 +10,7 @@ import { CartComponent } from './cart/cart.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { DbMaintainComponent } from './db-maintain/db-maintain.component';
 import { ServicesComponent } from './services/services.component';
+import { OrdersComponent } from './orders/orders.component';
 
 const routes: Routes = [
   { path: '', component: IndexComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'admin', component: DbMaintainComponent },
   { path: 'services', component: ServicesComponent},
+  { path: 'orders', component: OrdersComponent }
 ];
 
 @NgModule({

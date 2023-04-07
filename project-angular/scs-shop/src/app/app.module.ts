@@ -20,6 +20,7 @@ import { CartComponent } from './cart/cart.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { DbMaintainComponent } from './db-maintain/db-maintain.component';
 import { ServicesComponent } from './services/services.component';
+import { OrdersComponent } from './orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ServicesComponent } from './services/services.component';
     ReviewsComponent,
     DbMaintainComponent,
     ServicesComponent,
+    OrdersComponent,
   ],
   imports: [
     BrowserModule,

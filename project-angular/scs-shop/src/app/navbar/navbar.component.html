@@ -11,7 +11,8 @@
             <a routerLink="/items" class="nav-item nav-link ms-2">Shop</a>
             <a routerLink="/about" class="nav-item nav-link ms-2">About Us</a>
             <a routerLink="/reviews" class="nav-item nav-link ms-2">Reviews</a>
-            <a routerLink="/" class="nav-item nav-link ms-2">Services</a>
+            <a routerLink="/services" class="nav-item nav-link ms-2">Services</a>
+            <a routerLink="/orders" class="nav-item nav-link ms-2" *ngIf="this.currentUser['name'] != null">My Orders</a>
             <div class="dropdown ms-2" *ngIf="currentUser['isAdmin'] == 'Y'">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Admin

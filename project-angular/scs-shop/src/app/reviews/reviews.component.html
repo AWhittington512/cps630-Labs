@@ -1,14 +1,33 @@
 <app-navbar></app-navbar>
 
-<div class="container-fluid p-3 text-center">
-  <h1 class="text-center">Reviews</h1>
-  <h6 class="text-center lead" *ngIf="reviewCountIsOne()">
-    {{reviewCount}} review
-  </h6>
-  <h6 class="text-center lead" *ngIf="!reviewCountIsOne()">
-    {{reviewCount}} reviews
-  </h6>
+<div class="bg-dark bg-gradient d-flex align-items-center justify-content-center flex-column" style="height:300px;">
+    <h1 class="display-4 text-white">Reviews</h1>
+    <h6 class="text-center lead text-white" *ngIf="reviewCountIsOne()">
+        {{reviewCount}} review
+      </h6>
+    <h6 class="text-center lead text-white" *ngIf="!reviewCountIsOne()">
+        {{reviewCount}} reviews
+    </h6>
+</div>
 
+<div class="container-fluid d-flex mt-3">
+  <a class="btn btn-outline-primary m-auto my-3" data-bs-toggle="modal" href="#reviewsModal" role="button" id="reviewsModalButton" *ngIf="loggedIn()">Write a review</a>
+  <a class="btn btn-outline-primary m-auto my-3" data-bs-toggle="modal" href="#logInModal" role="button" id="reviewsModalButton" *ngIf="!loggedIn()">Write a review</a>
+</div>
+<div class="container p-3">
+  <div class="card m-auto mb-4" id="{{ review.id }}" *ngFor="let review of reviews">
+    <div class="card-header d-flex align-items-center">
+      <img class="rounded-circle me-2" width="30px" src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png">
+      {{ review.name }}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{review.review_title}}</h5>
+      <h6 class="card-subtitle mb-2 text-secondary">
+        Gave a {{review.rating}}/5 for {{review.product_name}} on {{getDate(review.created_at)}}
+      </h6>
+        <p class="card-text">{{review.review_text}}</p>
+    </div>
+  </div>
 </div>
 
 <div class="modal fade" id="reviewsModal" aria-hidden="true" aria-labelledby="reviewsModalLabel" tabindex="-1">
@@ -80,28 +99,8 @@
               <span id="formMessage" class="text-primary"></span>
             </div>
             <button type="submit" class="btn btn-primary d-flex m-auto" [disabled]="!reviewForm.valid">Submit</button>
-          </form>
-          
+        </form>
       </div>
-    </div>
-  </div>
-</div>
-<div class="container-fluid d-flex">
-  <a class="btn btn-primary m-auto my-3" data-bs-toggle="modal" href="#reviewsModal" role="button" id="reviewsModalButton" *ngIf="loggedIn()">Write a review</a>
-  <a class="btn btn-primary m-auto my-3" data-bs-toggle="modal" href="#logInModal" role="button" id="reviewsModalButton" *ngIf="!loggedIn()">Write a review</a>
-</div>
-<div class="container p-3">
-  <div class="card m-auto mb-4" id="{{ review.id }}" *ngFor="let review of reviews">
-    <div class="card-header d-flex align-items-center">
-      <img class="rounded-circle me-2" width="30px" src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png">
-      {{ review.name }}
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">{{review.review_title}}</h5>
-      <h6 class="card-subtitle mb-2 text-secondary">
-        Gave a {{review.rating}}/5 for {{review.product_name}} on {{getDate(review.created_at)}}
-      </h6>
-        <p class="card-text">{{review.review_text}}</p>
     </div>
   </div>
 </div>

@@ -227,6 +227,48 @@ CREATE TABLE `user_info` (
   `Administrator` char(1) NOT NULL DEFAULT 'N'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+CREATE TABLE `product_reviews` (
+  `id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `review_title` varchar(255) NOT NULL,
+  `review_text` text NOT NULL,
+  `rating` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_reviews`
+--
+
+INSERT INTO `product_reviews` (`id`, `product_name`, `review_title`, `review_text`, `rating`, `name`, `user_id`, `created_at`) VALUES
+(1, 'T-Shirt', 'Quality is amazing!', 'This t-shirt from scs has the best quality out of all the t-shirts I own. Will buy again!', 5, 'Andrew', 10, '2023-04-06 06:00:45'),
+(2, 'Sweater', 'Could be thicker :(', 'This sweater is great for its price, but it could be a bit thicker for staying warm during Canadian winters.', 3, 'Bill', 3, '2023-04-06 07:21:50');
+
+--
+-- Indexes for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+-- AUTO_INCREMENT for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+--
+-- Constraints for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  ADD CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`UserID`);
+COMMIT;
 --
 -- Dumping data for table `user_info`
 --
@@ -240,10 +282,6 @@ INSERT INTO `user_info` (`UserID`, `UserName`, `Phone`, `Email`, `UserAddress`, 
 (10, 'Andrew', '4161112222', 'andrew@email.com', '1 Andrew Road', 'A1A 0A0', NULL, 'f7f0e8879a6ae87ddbbeb919315ebf2d', 'cgMO7+leKj7t2uKwxnb7Sw==', NULL, 'N'),
 (15, 'Bingo', '4161222222', 'b@a.com', '1 Bingo Road', 'M4V 4E6', NULL, '822406d2e223696e0b28d1b51f7b1b25', 'EFI9fpa6k8H88zWehfH6JQ==', NULL, 'N'),
 (16, 'Jennifer', '4161112333', 'jen@jmail.com', '3 Jennifer St', 'M6C 2D9', NULL, 'bbc079930fe87ddfd35ecb2a55274f3d', '04kYsWFxtORi33EVnAcYNQ==', NULL, 'N');
-
---
--- Indexes for dumped tables
---
 
 --
 -- Indexes for table `Coupon`

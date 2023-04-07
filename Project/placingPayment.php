@@ -15,7 +15,8 @@
   <?php include 'navbar2.php'; ?>
 
   <!-- <div class="d-inline-flex p-2"></div>Invoice #12345</div> -->
-  <div class="row">
+  <div class="container-fluid">
+  <div class="row m-0">
     <div class="col">
       <div class="row p-2">
         <h1>Payment</h1>
@@ -36,7 +37,7 @@
       <div class="row p-2">
         <h2>Pay by card</h2>
         <h3>Card details</h3>
-        <form>
+        <form action="complete.php">
           <label class="form-label">Card number</label>
           <input type="text" class="form-control" placeholder="1234 5678 9012 3456" required>
 
@@ -54,7 +55,7 @@
               <input type="text" class="form-control" placeholder="A1A 1A1" required>
             </div>
           </div>
-        </form>
+        
       </div>
 
     </div>
@@ -106,10 +107,14 @@
       </div>
       <div class="row justify-content-evenly">
         <a href="placingShip.php" class="btn btn-outline-secondary w-auto"><- Back</a>
-            <a href="complete.php" class="btn btn-outline-primary w-auto">Place Order</a>
+            <button type="submit" class="btn btn-outline-primary w-auto">
+                Place Order
+            </button>
       </div>
+      </form>
     </div>
   </div>
+    </div>
 
 </body>
 

@@ -1,4 +1,6 @@
 <?php session_start(); ?>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -17,10 +19,13 @@ if (isset($_POST['remove'])) {
   for ($i = 0; $i <= count($_SESSION['cart']); $i++) {
     if ($_SESSION['cart'][$i]['productID'] == $_POST['IDtoRemove']) {
       unset($_SESSION['cart'][$i]);
+      header("Refresh:0");
     }
   }
-} else if (isset($_POST['clearCart'])) {
+} 
+if (isset($_POST['clearCart'])) {
   unset($_SESSION['cart']);
+  header("Refresh:0");
 }
 
 function getSubtotal() {

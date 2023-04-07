@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
-import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { GoogleMap, MapInfoWindow, MapMarker, MapDirectionsService, MapGeocoder } from '@angular/google-maps';
 import { GeocoderResponse } from '../models/geocoder-response.model';
 import { GeocodingService } from '../geocoding.service';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -10,7 +11,67 @@ import { GeocodingService } from '../geocoding.service';
   styleUrls: ['./map.component.css'],
 })
 export class MapComponent {
-  onMapDragEnd(event: google.maps.KmlMouseEvent) {
+  center: google.maps.LatLngLiteral = {lat: 43.663586, lng: -79.4418618};
+  zoom = 9;
+
+  directionsResults$: Observable<google.maps.DirectionsResult|undefined>;
+
+  constructor(
+    mapDirectionsService: MapDirectionsService,
+    private geocoder: MapGeocoder
+  ) {
+    const trip = JSON.parse(sessionStorage.getItem("trip"));
+    console.log(trip)
+
+    const store = trip["source"];
+    const dest = trip["dest"];
+
+    geocoder.geocode({
+      address: store,
+      region: "CA"
+    }).subscribe(({results}) => {
+      //console.log(results)
+      const origin = results[0]["geometry"]["location"];
+
+      geocoder.geocode({
+        address: dest,
+        region: "CA"
+      }).subscribe(({results}) => {
+        const dest = results[0]["geometry"]["location"];
+
+        const request: google.maps.DirectionsRequest = {
+          destination: dest,
+          origin: origin,
+          travelMode: google.maps.TravelMode.DRIVING
+        };
+  
+        this.directionsResults$ = mapDirectionsService.route(request).pipe(map(response => response.result));
+      })
+    });
+  }
+
+  static activateMap(info) {
+    const source = [info["StoreAddress"], info["StoreCity"], info["StoreProvince"]].join(", ");
+    const dest = [info["DestAddress"], info["DestCity"], info["DestProvince"], info["DestPostcode"]].join(", ")
+
+    const trip = {
+      "TripID": info["TripID"],
+      "source": source,
+      "dest": dest
+    }
+
+    sessionStorage.setItem("trip", JSON.stringify(trip))
+    //json.stringify, store in local
+
+    if (sessionStorage.getItem("trip")) {
+      return true;
+    } else {
+      return false;
+    }
+     //return true once data stored
+  }
+
+  /* onMapDragEnd(event: google.maps.KmlMouseEvent) {
     const point: google.maps.LatLngLiteral = {
       lat: event.latLng.lat(),
       lng: event.latLng.lng(),
@@ -83,5 +144,5 @@ export class MapComponent {
 
   openInfoWindow(marker: MapMarker) {
     this.infoWindow.open(marker);
-  }
+  } */
 }

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { StoreSelectorService } from '../store-selector.service';
 import { CartService } from '../cart.service';
 import { AuthService } from '../auth.service';
+import { MapComponent } from '../map/map.component';
 
 @Component({
   selector: 'app-checkout',
@@ -23,6 +24,7 @@ export class CheckoutComponent {
   defaultProvince = "ON";
   currentStore = "";
   currentStoreId;
+  mapActive = false;
   activeCoupon = {CouponID: 0, CouponCode: "", CouponDiscount: 1};
   //0: shipping, 1: delivery, 2: payment
   checkoutStep = 0;
@@ -136,7 +138,21 @@ export class CheckoutComponent {
     this.currentStoreId = this.storeSelectorService.getLocationID();
     this.shipToForm.controls['postcode'].setValue(this.formatPostcode(this.postcode.value));
 
-    this.checkoutStep += 1;
+    this.storeSelectorService.getStore(this.currentStoreId).subscribe(response => {
+      //console.log(response["info"][0])
+      const info = {
+        "StoreAddress": response["info"][0]["StoreAddress"],
+        "StoreCity": response["info"][0]["StoreCity"],
+        "StoreProvince": response["info"][0]["StoreProvince"],
+        "DestAddress": this.address.value,
+        "DestCity": this.city.value,
+        "DestProvince": this.province.value,
+        "DestPostcode": this.postcode.value
+      }
+      
+      this.mapActive = MapComponent.activateMap(info);
+      this.checkoutStep += 1;
+    })
   }
 
   toPayment() {
@@ -168,6 +184,7 @@ export class CheckoutComponent {
           const orderId = result["orderId"];
           this.cartService.clearCart(this.currentUser).subscribe(result => {
             if (result["status"] == "OK") {
+              sessionStorage.removeItem("trip");
               this.router.navigate(['/invoice'], {queryParams: {order: orderId}})
             } else {
               console.log(result);

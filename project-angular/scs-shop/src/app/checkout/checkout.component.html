@@ -85,8 +85,9 @@
             </div>
           </div>
           <div class="row p-2" *ngIf="this.checkoutStep == 1">
-            <div *ngIf="currentStoreId === '1'" ></div>
-            <app-map></app-map>
+            <span *ngIf="mapActive">
+              <app-map></app-map>
+            </span>
           </div>
         </div>
 

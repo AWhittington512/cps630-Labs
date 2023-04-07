@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, FormControl, AbstractControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { CartService } from '../cart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -25,7 +26,8 @@ export class NavbarComponent {
   constructor (
     private auth: AuthService,
     private formBuilder: FormBuilder,
-    private cart: CartService
+    private cart: CartService,
+    private router: Router
   ) {};
 
   loginForm = this.formBuilder.group({
@@ -133,7 +135,8 @@ export class NavbarComponent {
 
   clearCurrentUser() {
     this.auth.logout();
-    window.location.reload();
+    this.router.navigate(['/'])
+    //window.location.reload();
   }
 
   ngOnInit() {

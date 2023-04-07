@@ -10,6 +10,10 @@ export class StoreSelectorService {
     private httpClient: HttpClient
   ) { }
 
+  getStore(storeId) {
+    return this.httpClient.get(`api/store/${storeId}`);
+  }
+
   getAllStores() {
     return this.httpClient.get('api/stores');
   }

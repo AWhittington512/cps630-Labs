@@ -116,7 +116,7 @@
       <p>Local truck delivery</p>
       <h3>Originating store</h3>
       <ng-container *ngFor="let row of rows; let i = index">
-        <p *ngIf="i === 0">{{ row.StoreName }} <app-map></app-map></p>
+        <p *ngIf="i === 0">{{ row.StoreName }} <span *ngIf="mapActive"><app-map></app-map></span></p>
       </ng-container>
     </div>
   </div>

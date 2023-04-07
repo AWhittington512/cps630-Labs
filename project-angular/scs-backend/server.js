@@ -72,6 +72,16 @@ app.get('/api/stores', async (req, res) => {
     return res.json(result);
 })
 
+app.get('/api/store/:storeId', (req, res) => {
+    const storeId = req.params.storeId;
+    con.query("select * from Store where StoreID = ?", [storeId], (err, rows) => {
+        if (err) {
+            return res.json({ status: "ERR", err });
+        };
+        return res.json({status: "OK", info: rows});
+    })
+})
+
 app.get('/api/reviews', async (req, res) => {
     try {
         const result = await getAllRows("Product_Reviews");

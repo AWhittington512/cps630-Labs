@@ -165,8 +165,14 @@ export class CheckoutComponent {
     this.cartService.checkout(payload)
       .subscribe((result) => {
         if (result["status"] == "OK") {
-          this.cartService.clearCart(this.currentUser);
-          this.router.navigate(['/invoice'], {queryParams: {order: result["orderId"]}})
+          const orderId = result["orderId"];
+          this.cartService.clearCart(this.currentUser).subscribe(result => {
+            if (result["status"] == "OK") {
+              this.router.navigate(['/invoice'], {queryParams: {order: orderId}})
+            } else {
+              console.log(result);
+            }
+          });
         }
       });
   }

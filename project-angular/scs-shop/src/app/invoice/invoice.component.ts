@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-invoice',
@@ -10,10 +11,12 @@ import { ActivatedRoute } from '@angular/router';
 export class InvoiceComponent {
   order: any;
   rows: any;
+  activeCoupon = {CouponID: 0, CouponCode: "", CouponDiscount: 1};
 
   constructor (
     private route: ActivatedRoute,
     private httpClient: HttpClient,
+    private cart: CartService
   ) {}
 
   ngOnInit() {
@@ -24,6 +27,12 @@ export class InvoiceComponent {
       this.httpClient.get('api/invoice/' + this.order)
         .subscribe(response => {
           this.rows = response;
+          console.log(response)
+          if (response[0]["CouponID"]) {
+            this.cart.getAllCoupons().subscribe((result: Array<any>) => {
+              this.activeCoupon = result.filter(item => {return item["CouponID"] == this.rows[0]["CouponID"]})[0];
+            })
+          }
         })
     })
   }

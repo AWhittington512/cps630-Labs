@@ -96,7 +96,7 @@ app.get('/api/invoice/:orderId', (req, res) => {
     const orderId = req.params.orderId;
 
     con.query(
-        "select * from order_info o, shopping s, trip t where o.OrderID = ? and o.OrderID = s.OrderID and o.OrderID = t.OrderID",
+        "SELECT * FROM order_info o INNER JOIN shopping s ON o.OrderID = s.OrderID INNER JOIN trip t ON o.OrderID = t.OrderID LEFT JOIN item i ON s.ItemID = i.ItemID  LEFT JOIN STORE store ON s.StoreID = store.StoreID WHERE o.OrderID = ?",
         [orderId], 
         (err, rows) => {
         if (err) {

@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class InvoiceComponent {
   order: any;
-  rows : any;
+  rows: any;
 
   constructor (
     private route: ActivatedRoute,

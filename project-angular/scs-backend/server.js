@@ -124,18 +124,13 @@ app.post('/api/checkout', (req, res) => {
             return res.json({ status: "ERR", err });
         } else {
             const orderId = result.insertId;
+            
+            var shoppingRows = []
+            for (let item of cart) {
+                shoppingRows.push([orderId, store, item["item"], item["quantity"], item["size"]])
+            }
 
-            // shopping block
-            var quant = cart.reduce((obj, item) => {
-                obj[item] = (obj[item] || 0) + 1;
-                return obj
-            }, {})
-
-            var shoppingRows = Object.keys(quant).map((key) => {
-                return [orderId, store, parseInt(key), quant[key]]
-            })
-
-            con.query("insert into shopping (OrderID, StoreID, ItemID, OrderQuantity) values ?", [shoppingRows], (err) => {
+            con.query("insert into shopping (OrderID, StoreID, ItemID, OrderQuantity, ItemSize) values ?", [shoppingRows], (err) => {
                 if (err) {
                     return res.json({status: "ERR", err})
                 } else {
@@ -162,6 +157,66 @@ app.post('/api/checkout', (req, res) => {
             })
 
             return res.json({status: "OK", "orderId": orderId});
+        }
+    })
+})
+
+app.post('/api/cart', (req, res) => {
+    const user = req.body.user;
+
+    con.query('select * from shopping_cart c inner join item i on c.ItemID = i.ItemID where c.UserID=?', [user], (err, info) => {
+        if (err) {
+            return res.json({ status: "ERR", err });
+        } else {
+            return res.json({ status: "OK", info });
+        }
+    })
+})
+
+app.post('/api/cart/add', (req, res) => {
+    const user = req.body.user;
+    const item = req.body.item;
+    const size = req.body.size;
+    const quant = req.body.quantity;
+
+    con.query(
+        'insert into shopping_cart (UserID, ItemID, Quantity, ItemSize) values (?,?,?,?)',
+        [user, item, quant, size],
+        (err, info) => {
+            if (err) {
+                return res.json({ status: "ERR", err });
+            } else {
+                return res.json({ status: "OK", info });
+            }
+        }
+    )
+})
+
+app.post('/api/cart/delete', (req,res) => {
+    const user = req.body.user;
+    const item = req.body.item;
+    const size = req.body.size;
+
+    con.query(
+        'delete from shopping_cart where UserID=? and ItemID=? and ItemSize=?',
+        [user, item, size],
+        (err, info) => {
+            if (err) {
+                return res.json({ status: "ERR", err });
+            } else {
+                return res.json({ status: "OK", info });
+            }
+        }
+    );
+})
+
+app.post('/api/cart/deleteAll', (req,res) => {
+    const user = req.body.user;
+    con.query('delete from shopping_cart where UserID = ?', [user], (err, info) => {
+        if (err) {
+            return res.json({ status: "ERR", err });
+        } else {
+            return res.json({ status: "OK", info });
         }
     })
 })

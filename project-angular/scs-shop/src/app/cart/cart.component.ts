@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ItemService } from '../item.service';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -9,20 +10,27 @@ import { ItemService } from '../item.service';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent {
-  availableItems : any;
-  cartItems;
-  fullCart = []
+  currentUser;
+  fullCart = [];
+  quantities = [1,2,3,4,5];
 
   constructor(
     private itemService: ItemService,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private cart: CartService
   ) { }
 
   ngOnInit() {
     //console.log(this.auth.loggedIn());
-    console.log(this.auth.getCurrentUser());      
-    this.itemService.getItems()
+    this.currentUser = this.auth.getCurrentUser();
+    this.cart.getCart(this.currentUser).subscribe(result => {
+      console.log(result)
+      if (result["status"] == "OK") {
+        this.fullCart = result["info"];
+      }
+    })   
+    /* this.itemService.getItems()
       .subscribe(response => {
         this.availableItems = response;
         //console.log(this.availableItems);
@@ -34,11 +42,11 @@ export class CartComponent {
         }
         
         //console.log(this.fullCart)
-      });
+      }); */
   }
 
   // item ids from cart => full item info
-  mapCartItems(cart: Array<string>) {
+  /* mapCartItems(cart: Array<string>) {
     let itemList = cart.map((id) => {
       // const itemInfo = this.availableItems.filter(item => item.ItemID == id)[0];
       // itemInfo.InCart = 1;
@@ -46,16 +54,36 @@ export class CartComponent {
     })
     //console.log(itemList)
     return itemList;
-  }
+  } */
   
   clearCart() {
-    sessionStorage.removeItem("cart");
-    window.location.reload();
+    //sessionStorage.removeItem("cart");
+    this.cart.clearCart(this.currentUser).subscribe(result => {
+      if (result["status"] == "OK") {
+        window.location.reload();
+      } else {
+        console.log(result);
+      }
+    });
   }
 
-  // deleteItem() {
-  //   console.log(event.target)
-  // }
+  deleteItem(event) {
+    var [itemId, size] = event.target.parentElement.parentElement.id.split("-");
+
+    const payload = {
+      "user": this.currentUser,
+      "item": itemId,
+      "size": size
+    }
+    //console.log(payload)
+    this.cart.deleteItem(payload).subscribe(result => {
+      if (result["status"] == "OK") {
+        window.location.reload();
+      } else {
+        console.log(result);
+      }
+    })
+  }
 
   cartSubtotal() {
     let prices = this.fullCart.map((item) => {

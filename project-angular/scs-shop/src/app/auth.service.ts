@@ -35,6 +35,7 @@ export class AuthService {
     sessionStorage.removeItem('address');
     sessionStorage.removeItem('postcode');
     sessionStorage.removeItem('balance');
+    sessionStorage.removeItem('isAdmin');
   }
 
   signup (signupInfo: Object) {

@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StoreSelectorService } from '../store-selector.service';
+import { CartService } from '../cart.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-checkout',
@@ -15,22 +17,22 @@ export class CheckoutComponent {
   static CVVCHECK: RegExp = /^\d{3}$/;
   static CCCHECK: RegExp = /^\d{4}\ {0,1}\d{4}\ {0,1}\d{4}\ {0,1}\d{4}$/;
 
+  currentUser;
   cart = []
   provinces = ["AB", "BC", "MB", "NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"];
   defaultProvince = "ON";
   currentStore = "";
   currentStoreId;
-  //balance = Number(sessionStorage.getItem('balance'));
   activeCoupon = {CouponID: 0, CouponCode: "", CouponDiscount: 1};
-  //0: shipping, 1: delivery, 2: payment, 3: complete
+  //0: shipping, 1: delivery, 2: payment
   checkoutStep = 0;
-  //checkoutStep = 2;
 
   constructor (
     private router: Router,
     private storeSelectorService: StoreSelectorService,
     private formBuilder: FormBuilder,
-    private httpClient: HttpClient
+    private cartService: CartService,
+    private auth: AuthService
   ) {}
 
   shipToForm = this.formBuilder.group({
@@ -108,8 +110,12 @@ export class CheckoutComponent {
   }
 
   ngOnInit() {
-    this.cart = JSON.parse(sessionStorage.getItem("fullCart"));
-    //this.checkoutStep = "shipping"; 
+    this.currentUser = this.auth.getCurrentUser();
+    this.cartService.getCart(this.currentUser).subscribe(result => {
+      if (result["status"] == "OK") {
+        this.cart = result["info"];
+      }
+    });
   }
 
   cartSubtotal() {
@@ -134,54 +140,42 @@ export class CheckoutComponent {
   }
 
   toPayment() {
-    //this.balance = Number(sessionStorage.getItem('balance'));
     this.checkoutStep += 1;
   }
 
-  /* useBalance() {
-    if ((<HTMLInputElement>document.getElementById('balance')).checked) {
-      console.log("active");
-    }
-    //console.log(this.balance);
-  } */
-
   submitOrder() {
-    const cartItemIds = JSON.parse(sessionStorage.getItem('cart'))["cartItemIds"]
     this.verifyPayment();
-    // console.log(cartItemIds)
-    // console.log(this.cartSubtotal())
-    // console.log(this.currentStore, this.currentStoreId)
-    // console.log(this.shipToForm.value)
-    //console.log(this.paymentForm.value)
+
+    const cartItems = this.cart.map(item => {
+      return {"item": item.ItemID, "quantity": item.Quantity, "size": item.ItemSize};
+    })
 
     let payload = {
-      "cartItems": cartItemIds,
+      "cartItems": cartItems,
       "subtotal": this.cartSubtotal(),
       "storeId": this.currentStoreId,
       "destAddress": this.address.value,
       "destCity": this.city.value,
       "destProvince": this.province.value,
       "destPostcode": this.postcode.value,
-      "userId": sessionStorage.getItem('userid'),
+      "userId": this.currentUser,
       "coupon": this.activeCoupon,
     }
 
-    //console.log(payload)
-
-    this.httpClient.post<any>('api/checkout', payload)
+    this.cartService.checkout(payload)
       .subscribe((result) => {
-        if (result.status == "OK") {
-          this.clearCart();
+        if (result["status"] == "OK") {
+          this.cartService.clearCart(this.currentUser);
           this.router.navigate(['/invoice'], {queryParams: {order: result["orderId"]}})
         }
-      })
+      });
   }
 
   validateCoupon() {
     const couponCode = (<HTMLInputElement>document.getElementById("coupon")).value.toUpperCase();
     if (couponCode) {
       //console.log(couponCode);
-      this.httpClient.get('api/coupon').subscribe((result: Array<any>) => {
+      this.cartService.getAllCoupons().subscribe((result: Array<any>) => {
         const coupon = result.find(coupon => coupon.CouponCode == couponCode);
         if (coupon) {
           this.activeCoupon = coupon;
@@ -204,10 +198,5 @@ export class CheckoutComponent {
     this.paymentForm.controls['card'].setValue(this.formatCardNum(this.card.value));
     this.paymentForm.controls['expiry'].setValue(this.formatExpiry(this.expiry.value));
     this.paymentForm.controls['paymentPC'].setValue(this.formatPostcode(this.paymentPC.value));
-  }
-
-  clearCart() {
-    sessionStorage.removeItem("cart");
-    sessionStorage.removeItem("fullCart");
   }
 }

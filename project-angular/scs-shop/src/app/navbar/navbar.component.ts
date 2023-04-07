@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, FormControl, AbstractControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,6 +11,8 @@ import { FormBuilder, FormGroup, FormControl, AbstractControl, Validators, Valid
 
 export class NavbarComponent {
   currentUser = {};
+  showToast = false;
+  toastMsg = "";
 
   static LETTERS: RegExp = /[a-z]/i;
   static NUMBERS: RegExp = /[0-9]/;
@@ -22,6 +25,7 @@ export class NavbarComponent {
   constructor (
     private auth: AuthService,
     private formBuilder: FormBuilder,
+    private cart: CartService
   ) {};
 
   loginForm = this.formBuilder.group({
@@ -150,30 +154,26 @@ export class NavbarComponent {
 
   onDrop(event) {
     event.preventDefault();
-    const itemId = event.dataTransfer.getData("text");
-    //console.log(itemId);
+    const item = JSON.parse(event.dataTransfer.getData("text"));
+    console.log(item)
 
-    var cartItems = {};
-    if (! sessionStorage.getItem("cart")) {
-      cartItems = {
-        "cartItemIds": [itemId]
-      }
+    if (this.auth.getCurrentUser()) {
+      this.cart.addToCart(item).subscribe(result => {
+        console.log(result)
+        if (result["status"] != "ERR") {
+          this.toastMsg = "Added to cart";
+          this.showToast = true;
+          setTimeout(() => { this.showToast = false }, 3000);
+        } else {
+          this.toastMsg = "Item is already in cart";
+          this.showToast = true;
+          setTimeout(() => { this.showToast = false }, 3000);
+        }
+      })
     } else {
-      cartItems = JSON.parse(sessionStorage.getItem("cart"));
-      cartItems["cartItemIds"].push(itemId);
-    }
-
-    sessionStorage.setItem("cart", JSON.stringify(cartItems));
-    console.log(cartItems);
-  }
-
-  getCartItemsNumber() {
-    let cartItems = sessionStorage.getItem("cart");
-    //console.log(cartItems.length);
-    if (cartItems) {
-      return JSON.parse(cartItems)["cartItemIds"].length;
-    } else {
-      return 0;
+      this.toastMsg = "Please log in to shop";
+      this.showToast = true;
+      setTimeout(() => { this.showToast = false }, 3000);
     }
   }
 }

@@ -34,9 +34,9 @@ class Product implements Renderable
                 <div class="m-2">
                     <label for="productSize">Size</label>
                     <select name="productSize" id="productSize" class="form-select form-select-sm">;
-                        <option value="s">S</option>
-                        <option value="m">M</option>
-                        <option value="l">L</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
                     </select>
                 </div>
                 <div class="m-2">

@@ -28,6 +28,18 @@ function getAllRows(tableName) {
     })
 }
 
+function getRowCount(tableName) {
+    return new Promise((resolve, reject) => {
+        con.query("select count(*) from " + tableName, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    })
+}
+
 con.connect(function(err) {
     if (err) {
         return res.json({ status: "ERR", err });
@@ -67,6 +79,17 @@ app.get('/api/stores', async (req, res) => {
     });
     return res.json(result);
 })
+
+app.get('/api/reviews', async (req, res) => {
+    try {
+        const result = await getAllRows("Product_Reviews");
+        const countResult = await getRowCount("Product_Reviews");
+        const count = countResult[0]["count(*)"];
+        return res.json({ status: "OK", result, count });
+    } catch (err) {
+        return res.json({ status: "ERR", err });
+    }
+});
 
 app.get('/api/invoice/:orderId', (req, res) => {
     const orderId = req.params.orderId;
@@ -187,6 +210,26 @@ app.post('/api/signup', (req, res) => {
                 return res.json({ status: "ERR", err });
             };
 
+            return res.json({status: "OK"});
+        }
+    );
+});
+
+
+app.post('/api/add-review', (req, res) => {
+    var product = req.body.product;
+    var title = req.body.title;
+    var review = req.body.review;
+    var rating = req.body.rating;
+    var username = req.body.username;
+    var userid = req.body.userid;
+
+    const insertQuery = 'INSERT INTO product_reviews (product_name, review_title, review_text, rating, name, user_id) VALUES (?, ?, ?, ?, ?, ?)';
+    con.query(insertQuery, [product, title, review, rating, username, userid],
+        function (err, rows) {
+            if (err) {
+                return res.json({status: "ERR", err});
+            };
             return res.json({status: "OK"});
         }
     );

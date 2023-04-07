@@ -127,15 +127,6 @@ export class NavbarComponent {
       })
   }
 
-  /* setCurrentUser(userInfo: Object) {
-    sessionStorage.setItem('name', userInfo["UserName"]);
-    sessionStorage.setItem('email', userInfo["Email"]);
-    sessionStorage.setItem('phone', userInfo["Phone"]);
-    sessionStorage.setItem('address', userInfo["UserAddress"]);
-    sessionStorage.setItem('postcode', userInfo["CityCode"]);
-    sessionStorage.setItem('balance', userInfo["Balance"]);
-  } */
-
   clearCurrentUser() {
     this.auth.logout();
     window.location.reload();
@@ -148,7 +139,8 @@ export class NavbarComponent {
       "phone": sessionStorage.getItem('phone'),
       "address": sessionStorage.getItem('address'),
       "postcode": sessionStorage.getItem('postcode'),
-      "balance": sessionStorage.getItem('balance')
+      "balance": sessionStorage.getItem('balance'),
+      "isAdmin": sessionStorage.getItem('isAdmin')
     }
   }
 

@@ -2,8 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { GeocodingService } from '../geocoding.service';
-import { GeocoderResponse } from '../models/geocoder-response.model';
 import { StoreSelectorService } from '../store-selector.service';
 
 @Component({
@@ -22,14 +20,15 @@ export class CheckoutComponent {
   defaultProvince = "ON";
   currentStore = "";
   currentStoreId;
+  //balance = Number(sessionStorage.getItem('balance'));
   activeCoupon = {CouponID: 0, CouponCode: "", CouponDiscount: 1};
   //0: shipping, 1: delivery, 2: payment, 3: complete
   checkoutStep = 0;
+  //checkoutStep = 2;
 
   constructor (
     private router: Router,
     private storeSelectorService: StoreSelectorService,
-    private geocodingService: GeocodingService,
     private formBuilder: FormBuilder,
     private httpClient: HttpClient
   ) {}
@@ -135,8 +134,16 @@ export class CheckoutComponent {
   }
 
   toPayment() {
+    //this.balance = Number(sessionStorage.getItem('balance'));
     this.checkoutStep += 1;
   }
+
+  /* useBalance() {
+    if ((<HTMLInputElement>document.getElementById('balance')).checked) {
+      console.log("active");
+    }
+    //console.log(this.balance);
+  } */
 
   submitOrder() {
     const cartItemIds = JSON.parse(sessionStorage.getItem('cart'))["cartItemIds"]

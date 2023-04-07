@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 07, 2023 at 12:05 PM
+-- Generation Time: Apr 07, 2023 at 08:23 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -78,7 +78,6 @@ CREATE TABLE `order_info` (
   `Subtotal` decimal(10,2) NOT NULL,
   `PaymentCode` int(11) DEFAULT NULL,
   `UserID` int(11) NOT NULL,
-  `TripID` int(11) DEFAULT NULL,
   `CouponID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -86,16 +85,18 @@ CREATE TABLE `order_info` (
 -- Dumping data for table `order_info`
 --
 
-INSERT INTO `order_info` (`OrderID`, `DateIssued`, `DateReceived`, `Subtotal`, `PaymentCode`, `UserID`, `TripID`, `CouponID`) VALUES
-(1, '2023-03-28 20:25:07', NULL, '24.99', 1, 6, 1, NULL),
-(8, '2023-04-03 01:35:05', NULL, '49.98', 1, 6, 7, NULL),
-(9, '2023-04-03 01:38:05', NULL, '319.89', 1, 6, 8, NULL),
-(10, '2023-04-04 00:09:51', NULL, '24.99', 1, 6, 9, 1),
-(11, '2023-04-04 00:10:54', NULL, '19.99', 1, 6, 10, NULL),
-(12, '2023-04-06 02:38:35', NULL, '19.99', 1, 16, 11, 1),
-(19, '2023-04-07 05:21:37', NULL, '39.98', 1, 10, 13, 1),
-(22, '2023-04-07 05:59:55', NULL, '299.90', 1, 10, 16, 2),
-(23, '2023-04-07 06:02:05', NULL, '24.99', 1, 10, 17, NULL);
+INSERT INTO `order_info` (`OrderID`, `DateIssued`, `DateReceived`, `Subtotal`, `PaymentCode`, `UserID`, `CouponID`) VALUES
+(1, '2023-03-28 20:25:07', NULL, '24.99', 1, 6, NULL),
+(8, '2023-04-03 01:35:05', NULL, '49.98', 1, 6, NULL),
+(9, '2023-04-03 01:38:05', NULL, '319.89', 1, 6, NULL),
+(10, '2023-04-04 00:09:51', NULL, '24.99', 1, 6, 1),
+(11, '2023-04-04 00:10:54', NULL, '19.99', 1, 6, NULL),
+(12, '2023-04-06 02:38:35', NULL, '19.99', 1, 16, 1),
+(19, '2023-04-07 05:21:37', NULL, '39.98', 1, 10, 1),
+(22, '2023-04-07 05:59:55', NULL, '299.90', 1, 10, 2),
+(23, '2023-04-07 06:02:05', NULL, '24.99', 1, 10, NULL),
+(24, '2023-04-07 13:50:58', NULL, '19.99', 1, 16, NULL),
+(26, '2023-04-07 14:13:49', NULL, '24.99', 1, 16, 2);
 
 -- --------------------------------------------------------
 
@@ -154,7 +155,9 @@ INSERT INTO `shopping` (`ReceiptID`, `OrderID`, `StoreID`, `ItemID`, `OrderQuant
 (21, 19, 2, 1, 1, 'M'),
 (22, 19, 2, 1, 1, 'S'),
 (25, 22, 2, 3, 1, 'L'),
-(26, 23, 2, 2, 1, 'M');
+(26, 23, 2, 2, 1, 'M'),
+(27, 24, 3, 1, 1, 'L'),
+(29, 26, 2, 2, 1, 'L');
 
 -- --------------------------------------------------------
 
@@ -189,7 +192,7 @@ CREATE TABLE `store` (
 --
 
 INSERT INTO `store` (`StoreID`, `StoreName`, `StoreAddress`, `StoreCity`, `StoreProvince`, `StorePhone`) VALUES
-(1, 'Queen St W', '', 'Toronto', 'ON', '4161283280'),
+(1, 'Queen St W', '252 Queen St W', 'Toronto', 'ON', '4161283280'),
 (2, 'CF Markville', '5000 Highway 7', 'Markham', 'ON', '4161241199'),
 (3, 'Square One Shopping Centre', '100 City Centre Dr', 'Mississauga', 'ON', '4169275682');
 
@@ -217,15 +220,16 @@ CREATE TABLE `trip` (
 --
 
 INSERT INTO `trip` (`TripID`, `OrderID`, `StoreID`, `DestAddress`, `DestCity`, `DestProvince`, `DestPostcode`, `Distance`, `TruckID`, `TotalPrice`) VALUES
-(1, 1, 2, '3', '', '', '', '45.00', 1, '123.20'),
 (7, 8, 1, '1 Toronto St', 'Toronto', 'ON', 'M1C 3A2', NULL, NULL, NULL),
 (8, 9, 1, '1 Toronto St', 'Toronto', 'ON', 'M1C 3A2', NULL, NULL, NULL),
 (9, 10, 1, '1 Toronto St', 'Toronto', 'ON', 'M1C 3A2', NULL, NULL, NULL),
 (10, 11, 1, '1 Test Road', 'Teston', 'ON', 'L2E 2E3', NULL, NULL, NULL),
-(11, 12, 1, '3 Jennifer St', 'Toronto', 'ON', 'M6C 2D9', NULL, NULL, NULL),
-(13, 19, 2, '2 Andy Lane', 'Markham', 'ON', 'L6C 2E6', NULL, NULL, NULL),
-(16, 22, 2, '2 Andy Lane', 'Markham', 'ON', 'L6C 2E6', NULL, NULL, NULL),
-(17, 23, 2, '2 Andy Lane', 'Markham', 'ON', 'L6C 2E6', NULL, NULL, NULL);
+(11, 12, 1, '350 Victoria St', 'Toronto', 'ON', 'M5B 2K3', NULL, NULL, NULL),
+(13, 19, 2, '15 Water Walk Drive', 'Markham', 'ON', 'L6G 0G2', NULL, NULL, NULL),
+(16, 22, 2, '15 Water Walk Drive', 'Markham', 'ON', 'L6G 0G2', NULL, NULL, NULL),
+(17, 23, 2, '15 Water Walk Drive', 'Markham', 'ON', 'L6G 0G2', NULL, NULL, NULL),
+(18, 24, 3, '65 Watergarden Dr', 'Mississauga', 'ON', 'L5R 0G9', NULL, NULL, NULL),
+(20, 26, 2, '200 Cochrane Dr', 'Markham', 'ON', 'L3R 8E8', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -274,7 +278,6 @@ INSERT INTO `user_info` (`UserID`, `UserName`, `Phone`, `Email`, `UserAddress`, 
 (1, 'Adam Whittington', '1234567890', 'adam.whittington@torontomu.ca', NULL, NULL, 'adam.whittington', '$2y$10$aBkrMy5Pv/XcfORtX7DuguU75axjS0XRLajVI3N8G6NNcNAVvRDqC', '', '0.00', 'Y'),
 (2, 'Adam Whittington', '1111111111', 'adam.whittington@ryerson.ca', '1, 1, 1 A1A 1A1', '0', '', 'password1', '', '0.00', 'Y'),
 (3, 'Bill', '6471234567', 'bill@bill.ca', '122 Street Road', 'L3R 9E2', NULL, 'abcd1234', '', '0.00', 'N'),
-(5, 'Asd', '1230994949', 'dsfds@gmail.com', '', 'l3r8e8', NULL, '1234asdf', '', '0.00', 'N'),
 (6, 'asdasd', '6471122222', 'a@b.com', '3 Ab Road', 'l4g0j8', NULL, 'asdf1234', '', '0.00', 'N'),
 (10, 'Andrew', '4161112222', 'andrew@email.com', '1 Andrew Road', 'A1A 0A0', NULL, 'f7f0e8879a6ae87ddbbeb919315ebf2d', 'cgMO7+leKj7t2uKwxnb7Sw==', '364.10', 'Y'),
 (15, 'Bingo', '4161222222', 'b@a.com', '1 Bingo Road', 'M4V 4E6', NULL, '822406d2e223696e0b28d1b51f7b1b25', 'EFI9fpa6k8H88zWehfH6JQ==', '0.00', 'N'),
@@ -303,7 +306,6 @@ ALTER TABLE `item`
 ALTER TABLE `order_info`
   ADD PRIMARY KEY (`OrderID`),
   ADD KEY `UserID` (`UserID`),
-  ADD KEY `TripID` (`TripID`),
   ADD KEY `CouponID` (`CouponID`);
 
 --
@@ -376,7 +378,7 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `order_info`
 --
 ALTER TABLE `order_info`
-  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `product_reviews`
@@ -388,7 +390,7 @@ ALTER TABLE `product_reviews`
 -- AUTO_INCREMENT for table `shopping`
 --
 ALTER TABLE `shopping`
-  MODIFY `ReceiptID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `ReceiptID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `store`
@@ -400,7 +402,7 @@ ALTER TABLE `store`
 -- AUTO_INCREMENT for table `trip`
 --
 ALTER TABLE `trip`
-  MODIFY `TripID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `TripID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `truck`
@@ -423,7 +425,6 @@ ALTER TABLE `user_info`
 --
 ALTER TABLE `order_info`
   ADD CONSTRAINT `order_info_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user_info` (`UserID`),
-  ADD CONSTRAINT `order_info_ibfk_4` FOREIGN KEY (`TripID`) REFERENCES `trip` (`TripID`) ON DELETE CASCADE,
   ADD CONSTRAINT `order_info_ibfk_5` FOREIGN KEY (`CouponID`) REFERENCES `Coupon` (`CouponID`);
 
 --

@@ -150,7 +150,7 @@ app.post('/api/checkout', (req, res) => {
                         (err, result, fields) => {
                             if (err) {
                                 return res.json({status: "ERR", err})
-                            } else {
+                            } /* else {
                                 con.query(
                                     "update order_info set TripID = ? where OrderID = ?", 
                                     [result.insertId, orderId],
@@ -160,7 +160,7 @@ app.post('/api/checkout', (req, res) => {
                                         }
                                     }
                                 )
-                            }
+                            } */
                         }
                     )
                 }

@@ -30,19 +30,6 @@ export class CartComponent {
         this.fullCart = result["info"];
       }
     })   
-    /* this.itemService.getItems()
-      .subscribe(response => {
-        this.availableItems = response;
-        //console.log(this.availableItems);
-
-        this.cartItems = sessionStorage.getItem("cart");
-        //console.log(this.cartItems);
-        if (this.cartItems) {
-          this.fullCart = this.mapCartItems(JSON.parse(this.cartItems)["cartItemIds"]);
-        }
-        
-        //console.log(this.fullCart)
-      }); */
   }
 
   // item ids from cart => full item info

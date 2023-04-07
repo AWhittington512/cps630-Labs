@@ -175,34 +175,5 @@ export class NavbarComponent {
       this.showToast = true;
       setTimeout(() => { this.showToast = false }, 3000);
     }
-    
-
-    /* var cartItems = {};
-    if (! sessionStorage.getItem("cart")) {
-      cartItems = {
-        "cartItemIds": [itemId]
-      }
-    } else {
-      cartItems = JSON.parse(sessionStorage.getItem("cart"));
-      cartItems["cartItemIds"].push(itemId);
-    }
-
-    sessionStorage.setItem("cart", JSON.stringify(cartItems));
-    console.log(cartItems); */
   }
-
-  /* getCartItemsNumber() {
-    const user = this.auth.getCurrentUser();
-    //let cartItems = sessionStorage.getItem("cart");
-    //console.log(cartItems.length);
-    if (user) {
-      this.cart.getCart(user).subscribe(result => {
-
-      })
-      return 9;
-      //return JSON.parse(cartItems)["cartItemIds"].length;
-    } else {
-      return null;
-    }
-  } */
 }

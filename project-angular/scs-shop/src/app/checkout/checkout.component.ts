@@ -23,11 +23,9 @@ export class CheckoutComponent {
   defaultProvince = "ON";
   currentStore = "";
   currentStoreId;
-  //balance = Number(sessionStorage.getItem('balance'));
   activeCoupon = {CouponID: 0, CouponCode: "", CouponDiscount: 1};
-  //0: shipping, 1: delivery, 2: payment, 3: complete
+  //0: shipping, 1: delivery, 2: payment
   checkoutStep = 0;
-  //checkoutStep = 2;
 
   constructor (
     private router: Router,
@@ -116,10 +114,8 @@ export class CheckoutComponent {
     this.cartService.getCart(this.currentUser).subscribe(result => {
       if (result["status"] == "OK") {
         this.cart = result["info"];
-        //console.log(this.cart)
       }
     });
-    //this.checkoutStep = "shipping"; 
   }
 
   cartSubtotal() {
@@ -144,26 +140,11 @@ export class CheckoutComponent {
   }
 
   toPayment() {
-    //this.balance = Number(sessionStorage.getItem('balance'));
     this.checkoutStep += 1;
   }
 
-  /* useBalance() {
-    if ((<HTMLInputElement>document.getElementById('balance')).checked) {
-      console.log("active");
-    }
-    //console.log(this.balance);
-  } */
-
   submitOrder() {
-    //console.log(this.cart);
-
     this.verifyPayment();
-    // console.log(cartItemIds)
-    // console.log(this.cartSubtotal())
-    // console.log(this.currentStore, this.currentStoreId)
-    // console.log(this.shipToForm.value)
-    //console.log(this.paymentForm.value)
 
     const cartItems = this.cart.map(item => {
       return {"item": item.ItemID, "quantity": item.Quantity, "size": item.ItemSize};
@@ -186,18 +167,8 @@ export class CheckoutComponent {
         if (result["status"] == "OK") {
           this.cartService.clearCart(this.currentUser);
           this.router.navigate(['/invoice'], {queryParams: {order: result["orderId"]}})
-          //console.log(result)
         }
       });
-    //console.log(payload)
-
-    /*this.httpClient.post<any>('api/checkout', payload)
-      .subscribe((result) => {
-        if (result.status == "OK") {
-          this.cartService.clearCart();
-          this.router.navigate(['/invoice'], {queryParams: {order: result["orderId"]}})
-        }
-      }) */
   }
 
   validateCoupon() {

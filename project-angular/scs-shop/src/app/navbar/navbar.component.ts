@@ -135,7 +135,12 @@ export class NavbarComponent {
 
   clearCurrentUser() {
     this.auth.logout();
-    this.router.navigate(['/'])
+    if (this.router.url == '/') {
+      window.location.reload();
+    } else {
+      this.router.navigate(['/'])
+    }
+    
     //window.location.reload();
   }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 03, 2023 at 07:40 AM
+-- Generation Time: Apr 06, 2023 at 08:42 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -88,7 +88,10 @@ CREATE TABLE `order_info` (
 INSERT INTO `order_info` (`OrderID`, `DateIssued`, `DateReceived`, `Subtotal`, `PaymentCode`, `UserID`, `TripID`, `CouponID`) VALUES
 (1, '2023-03-28 20:25:07', NULL, '24.99', 1, 6, 1, NULL),
 (8, '2023-04-03 01:35:05', NULL, '49.98', 1, 6, 7, NULL),
-(9, '2023-04-03 01:38:05', NULL, '319.89', 1, 6, 8, NULL);
+(9, '2023-04-03 01:38:05', NULL, '319.89', 1, 6, 8, NULL),
+(10, '2023-04-04 00:09:51', NULL, '24.99', 1, 6, 9, 1),
+(11, '2023-04-04 00:10:54', NULL, '19.99', 1, 6, 10, NULL),
+(12, '2023-04-06 02:38:35', NULL, '19.99', 1, 16, 11, 1);
 
 -- --------------------------------------------------------
 
@@ -113,7 +116,10 @@ INSERT INTO `shopping` (`ReceiptID`, `OrderID`, `StoreID`, `ItemID`, `OrderQuant
 (11, 1, 2, 2, 1),
 (12, 8, 1, 2, 2),
 (13, 9, 1, 1, 1),
-(14, 9, 1, 3, 1);
+(14, 9, 1, 3, 1),
+(15, 10, 1, 2, 1),
+(16, 11, 1, 1, 1),
+(17, 12, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -177,7 +183,10 @@ CREATE TABLE `trip` (
 INSERT INTO `trip` (`TripID`, `OrderID`, `StoreID`, `DestAddress`, `DestCity`, `DestProvince`, `DestPostcode`, `Distance`, `TruckID`, `TotalPrice`) VALUES
 (1, 1, 2, '3', '', '', '', '45.00', 1, '123.20'),
 (7, 8, 1, '1 Toronto St', 'Toronto', 'ON', 'M1C 3A2', NULL, NULL, NULL),
-(8, 9, 1, '1 Toronto St', 'Toronto', 'ON', 'M1C 3A2', NULL, NULL, NULL);
+(8, 9, 1, '1 Toronto St', 'Toronto', 'ON', 'M1C 3A2', NULL, NULL, NULL),
+(9, 10, 1, '1 Toronto St', 'Toronto', 'ON', 'M1C 3A2', NULL, NULL, NULL),
+(10, 11, 1, '1 Test Road', 'Teston', 'ON', 'L2E 2E3', NULL, NULL, NULL),
+(11, 12, 1, '3 Jennifer St', 'Toronto', 'ON', 'M6C 2D9', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -213,6 +222,7 @@ CREATE TABLE `user_info` (
   `CityCode` varchar(7) DEFAULT NULL,
   `LoginID` varchar(255) DEFAULT NULL,
   `PW` varchar(255) NOT NULL,
+  `PWSalt` varchar(24) NOT NULL,
   `Balance` decimal(10,2) DEFAULT NULL,
   `Administrator` char(1) NOT NULL DEFAULT 'N'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -221,13 +231,15 @@ CREATE TABLE `user_info` (
 -- Dumping data for table `user_info`
 --
 
-INSERT INTO `user_info` (`UserID`, `UserName`, `Phone`, `Email`, `UserAddress`, `CityCode`, `LoginID`, `PW`, `Balance`, `Administrator`) VALUES
-(1, 'Adam Whittington', '1234567890', 'adam.whittington@torontomu.ca', NULL, NULL, 'adam.whittington', '$2y$10$aBkrMy5Pv/XcfORtX7DuguU75axjS0XRLajVI3N8G6NNcNAVvRDqC', NULL, 'Y'),
-(2, 'Adam Whittington', '1111111111', 'adam.whittington@ryerson.ca', '1, 1, 1 A1A 1A1', '0', '', 'password1', NULL, 'Y'),
-(3, 'Bill', '6471234567', 'bill@bill.ca', '122 Street Road', 'L3R 9E2', NULL, 'abcd1234', NULL, 'N'),
-(5, 'Asd', '1230994949', 'dsfds@gmail.com', '', 'l3r8e8', NULL, '1234asdf', NULL, 'N'),
-(6, 'asdasd', '3242342343', 'a@b.com', '', 'l4g0j8', NULL, 'asdf1234', NULL, 'N'),
-(10, 'Andrew', '4161112222', 'andrew@email.com', '1 Andrew Road', 'A1A 0A0', NULL, 'andrew123', NULL, 'N');
+INSERT INTO `user_info` (`UserID`, `UserName`, `Phone`, `Email`, `UserAddress`, `CityCode`, `LoginID`, `PW`, `PWSalt`, `Balance`, `Administrator`) VALUES
+(1, 'Adam Whittington', '1234567890', 'adam.whittington@torontomu.ca', NULL, NULL, 'adam.whittington', '$2y$10$aBkrMy5Pv/XcfORtX7DuguU75axjS0XRLajVI3N8G6NNcNAVvRDqC', '', NULL, 'Y'),
+(2, 'Adam Whittington', '1111111111', 'adam.whittington@ryerson.ca', '1, 1, 1 A1A 1A1', '0', '', 'password1', '', NULL, 'Y'),
+(3, 'Bill', '6471234567', 'bill@bill.ca', '122 Street Road', 'L3R 9E2', NULL, 'abcd1234', '', NULL, 'N'),
+(5, 'Asd', '1230994949', 'dsfds@gmail.com', '', 'l3r8e8', NULL, '1234asdf', '', NULL, 'N'),
+(6, 'asdasd', '3242342343', 'a@b.com', '', 'l4g0j8', NULL, 'asdf1234', '', NULL, 'N'),
+(10, 'Andrew', '4161112222', 'andrew@email.com', '1 Andrew Road', 'A1A 0A0', NULL, 'f7f0e8879a6ae87ddbbeb919315ebf2d', 'cgMO7+leKj7t2uKwxnb7Sw==', NULL, 'N'),
+(15, 'Bingo', '4161222222', 'b@a.com', '1 Bingo Road', 'M4V 4E6', NULL, '822406d2e223696e0b28d1b51f7b1b25', 'EFI9fpa6k8H88zWehfH6JQ==', NULL, 'N'),
+(16, 'Jennifer', '4161112333', 'jen@jmail.com', '3 Jennifer St', 'M6C 2D9', NULL, 'bbc079930fe87ddfd35ecb2a55274f3d', '04kYsWFxtORi33EVnAcYNQ==', NULL, 'N');
 
 --
 -- Indexes for dumped tables
@@ -317,13 +329,13 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `order_info`
 --
 ALTER TABLE `order_info`
-  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `shopping`
 --
 ALTER TABLE `shopping`
-  MODIFY `ReceiptID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ReceiptID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `store`
@@ -335,7 +347,7 @@ ALTER TABLE `store`
 -- AUTO_INCREMENT for table `trip`
 --
 ALTER TABLE `trip`
-  MODIFY `TripID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `TripID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `truck`
@@ -347,7 +359,7 @@ ALTER TABLE `truck`
 -- AUTO_INCREMENT for table `user_info`
 --
 ALTER TABLE `user_info`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables

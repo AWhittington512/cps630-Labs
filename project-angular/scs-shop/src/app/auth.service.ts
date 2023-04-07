@@ -62,6 +62,10 @@ export class AuthService {
     return sessionStorage.getItem('userid');
   }
 
+  getCurrentUsername() {
+    return sessionStorage.getItem('name')
+  }
+
   loggedIn() {
     return (sessionStorage.getItem('userid')) ? true : false;
   }

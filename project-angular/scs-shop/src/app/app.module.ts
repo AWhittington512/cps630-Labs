@@ -33,7 +33,6 @@ import { ReviewsComponent } from './reviews/reviews.component';
     StoreselectorCheckoutComponent,
     StoreSelectorNavComponent,
     CartComponent,
-    ReviewsComponent,
   ],
   imports: [
     BrowserModule,

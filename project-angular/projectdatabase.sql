@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 06, 2023 at 08:42 AM
+-- Generation Time: Apr 07, 2023 at 12:05 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `Coupon` (
   `CouponID` int(11) NOT NULL,
   `CouponCode` text NOT NULL,
-  `CouponDiscount` decimal(10,2) NOT NULL
+  `CouponDiscount` decimal(2,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -38,7 +38,8 @@ CREATE TABLE `Coupon` (
 --
 
 INSERT INTO `Coupon` (`CouponID`, `CouponCode`, `CouponDiscount`) VALUES
-(1, 'WELCOME15', '0.85');
+(1, 'WELCOME15', '0.85'),
+(2, 'BIGSALE', '0.25');
 
 -- --------------------------------------------------------
 
@@ -91,7 +92,36 @@ INSERT INTO `order_info` (`OrderID`, `DateIssued`, `DateReceived`, `Subtotal`, `
 (9, '2023-04-03 01:38:05', NULL, '319.89', 1, 6, 8, NULL),
 (10, '2023-04-04 00:09:51', NULL, '24.99', 1, 6, 9, 1),
 (11, '2023-04-04 00:10:54', NULL, '19.99', 1, 6, 10, NULL),
-(12, '2023-04-06 02:38:35', NULL, '19.99', 1, 16, 11, 1);
+(12, '2023-04-06 02:38:35', NULL, '19.99', 1, 16, 11, 1),
+(19, '2023-04-07 05:21:37', NULL, '39.98', 1, 10, 13, 1),
+(22, '2023-04-07 05:59:55', NULL, '299.90', 1, 10, 16, 2),
+(23, '2023-04-07 06:02:05', NULL, '24.99', 1, 10, 17, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_reviews`
+--
+
+CREATE TABLE `product_reviews` (
+  `id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `review_title` varchar(255) NOT NULL,
+  `review_text` text NOT NULL,
+  `rating` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_reviews`
+--
+
+INSERT INTO `product_reviews` (`id`, `product_name`, `review_title`, `review_text`, `rating`, `name`, `user_id`, `created_at`) VALUES
+(1, 'T-Shirt', 'Quality is amazing!', 'This t-shirt from scs has the best quality out of all the t-shirts I own. Will buy again!', 5, 'Andrew', 10, '2023-04-06 10:00:45'),
+(2, 'Sweater', 'Could be thicker :(', 'This sweater is great for its price, but it could be a bit thicker for staying warm during Canadian winters.', 3, 'Bill', 3, '2023-04-06 11:21:50'),
+(13, 'Puffer Jacket', 'Booooooooo', 'So expensive and not warm!!!!!! Do not buy!!', 1, 'Andrew', 10, '2023-04-07 04:54:38');
 
 -- --------------------------------------------------------
 
@@ -104,22 +134,27 @@ CREATE TABLE `shopping` (
   `OrderID` int(11) NOT NULL,
   `StoreID` int(11) NOT NULL,
   `ItemID` int(11) NOT NULL,
-  `OrderQuantity` int(11) NOT NULL DEFAULT 1
+  `OrderQuantity` int(11) NOT NULL DEFAULT 1,
+  `ItemSize` varchar(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `shopping`
 --
 
-INSERT INTO `shopping` (`ReceiptID`, `OrderID`, `StoreID`, `ItemID`, `OrderQuantity`) VALUES
-(1, 1, 2, 1, 1),
-(11, 1, 2, 2, 1),
-(12, 8, 1, 2, 2),
-(13, 9, 1, 1, 1),
-(14, 9, 1, 3, 1),
-(15, 10, 1, 2, 1),
-(16, 11, 1, 1, 1),
-(17, 12, 1, 1, 1);
+INSERT INTO `shopping` (`ReceiptID`, `OrderID`, `StoreID`, `ItemID`, `OrderQuantity`, `ItemSize`) VALUES
+(1, 1, 2, 1, 1, ''),
+(11, 1, 2, 2, 1, ''),
+(12, 8, 1, 2, 2, ''),
+(13, 9, 1, 1, 1, ''),
+(14, 9, 1, 3, 1, ''),
+(15, 10, 1, 2, 1, ''),
+(16, 11, 1, 1, 1, ''),
+(17, 12, 1, 1, 1, ''),
+(21, 19, 2, 1, 1, 'M'),
+(22, 19, 2, 1, 1, 'S'),
+(25, 22, 2, 3, 1, 'L'),
+(26, 23, 2, 2, 1, 'M');
 
 -- --------------------------------------------------------
 
@@ -130,7 +165,8 @@ INSERT INTO `shopping` (`ReceiptID`, `OrderID`, `StoreID`, `ItemID`, `OrderQuant
 CREATE TABLE `shopping_cart` (
   `UserID` int(11) NOT NULL,
   `ItemID` int(11) NOT NULL,
-  `Quantity` int(11) DEFAULT NULL
+  `Quantity` int(11) DEFAULT NULL,
+  `ItemSize` varchar(2) NOT NULL DEFAULT 'S'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -186,7 +222,10 @@ INSERT INTO `trip` (`TripID`, `OrderID`, `StoreID`, `DestAddress`, `DestCity`, `
 (8, 9, 1, '1 Toronto St', 'Toronto', 'ON', 'M1C 3A2', NULL, NULL, NULL),
 (9, 10, 1, '1 Toronto St', 'Toronto', 'ON', 'M1C 3A2', NULL, NULL, NULL),
 (10, 11, 1, '1 Test Road', 'Teston', 'ON', 'L2E 2E3', NULL, NULL, NULL),
-(11, 12, 1, '3 Jennifer St', 'Toronto', 'ON', 'M6C 2D9', NULL, NULL, NULL);
+(11, 12, 1, '3 Jennifer St', 'Toronto', 'ON', 'M6C 2D9', NULL, NULL, NULL),
+(13, 19, 2, '2 Andy Lane', 'Markham', 'ON', 'L6C 2E6', NULL, NULL, NULL),
+(16, 22, 2, '2 Andy Lane', 'Markham', 'ON', 'L6C 2E6', NULL, NULL, NULL),
+(17, 23, 2, '2 Andy Lane', 'Markham', 'ON', 'L6C 2E6', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -222,72 +261,35 @@ CREATE TABLE `user_info` (
   `CityCode` varchar(7) DEFAULT NULL,
   `LoginID` varchar(255) DEFAULT NULL,
   `PW` varchar(255) NOT NULL,
-  `PWSalt` varchar(24) NOT NULL,
-  `Balance` decimal(10,2) DEFAULT NULL,
+  `Salt` varchar(24) NOT NULL,
+  `Balance` decimal(10,2) NOT NULL DEFAULT 0.00,
   `Administrator` char(1) NOT NULL DEFAULT 'N'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
-CREATE TABLE `product_reviews` (
-  `id` int(11) NOT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `review_title` varchar(255) NOT NULL,
-  `review_text` text NOT NULL,
-  `rating` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `product_reviews`
---
-
-INSERT INTO `product_reviews` (`id`, `product_name`, `review_title`, `review_text`, `rating`, `name`, `user_id`, `created_at`) VALUES
-(1, 'T-Shirt', 'Quality is amazing!', 'This t-shirt from scs has the best quality out of all the t-shirts I own. Will buy again!', 5, 'Andrew', 10, '2023-04-06 06:00:45'),
-(2, 'Sweater', 'Could be thicker :(', 'This sweater is great for its price, but it could be a bit thicker for staying warm during Canadian winters.', 3, 'Bill', 3, '2023-04-06 07:21:50');
-
---
--- Indexes for table `product_reviews`
---
-ALTER TABLE `product_reviews`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
--- AUTO_INCREMENT for table `product_reviews`
---
-ALTER TABLE `product_reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
---
---
--- Constraints for table `product_reviews`
---
-ALTER TABLE `product_reviews`
-  ADD CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`UserID`);
-COMMIT;
 --
 -- Dumping data for table `user_info`
 --
 
-INSERT INTO `user_info` (`UserID`, `UserName`, `Phone`, `Email`, `UserAddress`, `CityCode`, `LoginID`, `PW`, `PWSalt`, `Balance`, `Administrator`) VALUES
-(1, 'Adam Whittington', '1234567890', 'adam.whittington@torontomu.ca', NULL, NULL, 'adam.whittington', '$2y$10$aBkrMy5Pv/XcfORtX7DuguU75axjS0XRLajVI3N8G6NNcNAVvRDqC', '', NULL, 'Y'),
-(2, 'Adam Whittington', '1111111111', 'adam.whittington@ryerson.ca', '1, 1, 1 A1A 1A1', '0', '', 'password1', '', NULL, 'Y'),
-(3, 'Bill', '6471234567', 'bill@bill.ca', '122 Street Road', 'L3R 9E2', NULL, 'abcd1234', '', NULL, 'N'),
-(5, 'Asd', '1230994949', 'dsfds@gmail.com', '', 'l3r8e8', NULL, '1234asdf', '', NULL, 'N'),
-(6, 'asdasd', '3242342343', 'a@b.com', '', 'l4g0j8', NULL, 'asdf1234', '', NULL, 'N'),
-(10, 'Andrew', '4161112222', 'andrew@email.com', '1 Andrew Road', 'A1A 0A0', NULL, 'f7f0e8879a6ae87ddbbeb919315ebf2d', 'cgMO7+leKj7t2uKwxnb7Sw==', NULL, 'N'),
-(15, 'Bingo', '4161222222', 'b@a.com', '1 Bingo Road', 'M4V 4E6', NULL, '822406d2e223696e0b28d1b51f7b1b25', 'EFI9fpa6k8H88zWehfH6JQ==', NULL, 'N'),
-(16, 'Jennifer', '4161112333', 'jen@jmail.com', '3 Jennifer St', 'M6C 2D9', NULL, 'bbc079930fe87ddfd35ecb2a55274f3d', '04kYsWFxtORi33EVnAcYNQ==', NULL, 'N');
+INSERT INTO `user_info` (`UserID`, `UserName`, `Phone`, `Email`, `UserAddress`, `CityCode`, `LoginID`, `PW`, `Salt`, `Balance`, `Administrator`) VALUES
+(1, 'Adam Whittington', '1234567890', 'adam.whittington@torontomu.ca', NULL, NULL, 'adam.whittington', '$2y$10$aBkrMy5Pv/XcfORtX7DuguU75axjS0XRLajVI3N8G6NNcNAVvRDqC', '', '0.00', 'Y'),
+(2, 'Adam Whittington', '1111111111', 'adam.whittington@ryerson.ca', '1, 1, 1 A1A 1A1', '0', '', 'password1', '', '0.00', 'Y'),
+(3, 'Bill', '6471234567', 'bill@bill.ca', '122 Street Road', 'L3R 9E2', NULL, 'abcd1234', '', '0.00', 'N'),
+(5, 'Asd', '1230994949', 'dsfds@gmail.com', '', 'l3r8e8', NULL, '1234asdf', '', '0.00', 'N'),
+(6, 'asdasd', '6471122222', 'a@b.com', '3 Ab Road', 'l4g0j8', NULL, 'asdf1234', '', '0.00', 'N'),
+(10, 'Andrew', '4161112222', 'andrew@email.com', '1 Andrew Road', 'A1A 0A0', NULL, 'f7f0e8879a6ae87ddbbeb919315ebf2d', 'cgMO7+leKj7t2uKwxnb7Sw==', '364.10', 'Y'),
+(15, 'Bingo', '4161222222', 'b@a.com', '1 Bingo Road', 'M4V 4E6', NULL, '822406d2e223696e0b28d1b51f7b1b25', 'EFI9fpa6k8H88zWehfH6JQ==', '0.00', 'N'),
+(16, 'Jennifer', '4161112333', 'jen@jmail.com', '3 Jennifer St', 'M6C 2D9', NULL, 'bbc079930fe87ddfd35ecb2a55274f3d', '04kYsWFxtORi33EVnAcYNQ==', '0.00', 'N');
+
+--
+-- Indexes for dumped tables
+--
 
 --
 -- Indexes for table `Coupon`
 --
 ALTER TABLE `Coupon`
-  ADD PRIMARY KEY (`CouponID`);
+  ADD PRIMARY KEY (`CouponID`),
+  ADD UNIQUE KEY `CouponCode` (`CouponCode`) USING HASH;
 
 --
 -- Indexes for table `item`
@@ -305,6 +307,13 @@ ALTER TABLE `order_info`
   ADD KEY `CouponID` (`CouponID`);
 
 --
+-- Indexes for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `shopping`
 --
 ALTER TABLE `shopping`
@@ -317,7 +326,7 @@ ALTER TABLE `shopping`
 -- Indexes for table `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
-  ADD PRIMARY KEY (`UserID`,`ItemID`),
+  ADD PRIMARY KEY (`UserID`,`ItemID`,`ItemSize`) USING BTREE,
   ADD KEY `ItemID` (`ItemID`);
 
 --
@@ -355,7 +364,7 @@ ALTER TABLE `user_info`
 -- AUTO_INCREMENT for table `Coupon`
 --
 ALTER TABLE `Coupon`
-  MODIFY `CouponID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `CouponID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `item`
@@ -367,13 +376,19 @@ ALTER TABLE `item`
 -- AUTO_INCREMENT for table `order_info`
 --
 ALTER TABLE `order_info`
-  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `shopping`
 --
 ALTER TABLE `shopping`
-  MODIFY `ReceiptID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ReceiptID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `store`
@@ -385,7 +400,7 @@ ALTER TABLE `store`
 -- AUTO_INCREMENT for table `trip`
 --
 ALTER TABLE `trip`
-  MODIFY `TripID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `TripID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `truck`
@@ -410,6 +425,12 @@ ALTER TABLE `order_info`
   ADD CONSTRAINT `order_info_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `user_info` (`UserID`),
   ADD CONSTRAINT `order_info_ibfk_4` FOREIGN KEY (`TripID`) REFERENCES `trip` (`TripID`) ON DELETE CASCADE,
   ADD CONSTRAINT `order_info_ibfk_5` FOREIGN KEY (`CouponID`) REFERENCES `Coupon` (`CouponID`);
+
+--
+-- Constraints for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  ADD CONSTRAINT `product_reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`UserID`);
 
 --
 -- Constraints for table `shopping`

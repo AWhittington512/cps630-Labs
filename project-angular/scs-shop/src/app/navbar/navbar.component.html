@@ -6,12 +6,26 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-          <div class="navbar-nav ms-auto">
+          <div class="navbar-nav ms-auto align-middle justify-content-center">
             <a routerLink="/" class="nav-item nav-link ms-2">Home</a>
             <a routerLink="/items" class="nav-item nav-link ms-2">Shop</a>
             <a routerLink="/about" class="nav-item nav-link ms-2">About Us</a>
             <a routerLink="/reviews" class="nav-item nav-link ms-2">Reviews</a>
-            <a routerLink="/" class="nav-item nav-link ms-2">Services</a>
+            <a routerLink="/services" class="nav-item nav-link ms-2">Services</a>
+            <a routerLink="/orders" class="nav-item nav-link ms-2" *ngIf="this.currentUser['name'] != null">My Orders</a>
+            <div class="dropdown ms-2" *ngIf="currentUser['isAdmin'] == 'Y'">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Admin
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item disabled">DB Maintain</a>
+                <a routerLink="/admin" [queryParams]="{mode: 'create'}" class="dropdown-item">Insert</a>
+                <a routerLink="/admin" [queryParams]="{mode: 'read'}" class="dropdown-item">Select</a>
+                <a routerLink="/admin" [queryParams]="{mode: 'update'}" class="dropdown-item">Update</a>
+                <a routerLink="/admin" [queryParams]="{mode: 'delete'}" class="dropdown-item">Delete</a>
+                <!-- <a class="dropdown-item">Search</a> -->
+              </div>
+            </div>
             <a class="btn btn-primary ms-2" data-bs-toggle="modal" href="#logInModal" role="button" id="loginButton" *ngIf="!this.currentUser['name']">Login</a>
             <a class="btn btn-primary ms-2" data-bs-toggle="modal" href="#userModal" role="button" id="userInfoButton" *ngIf="this.currentUser['name'] != null">Welcome, {{this.currentUser["name"]}}!</a>
             <a routerLink="/cart" class="nav-item nav-link ms-2 mr-0" (dragover)="this.allowDrop($event)" (drop)="this.onDrop($event)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/></svg>
@@ -164,7 +178,7 @@
             <h5 class="fs-5 lead">Address</h5>
             <p>{{this.currentUser["address"]}}, {{this.currentUser["postcode"]}}</p>
             <h5 class="fs-5 lead">Balance</h5>
-            <p>{{this.currentUser["balance"]}}</p>
+            <p>{{this.currentUser["balance"] | currency}}</p>
             <button class="btn btn-danger" data-bs-dismiss="modal" (click)="this.clearCurrentUser()">Logout</button>
           </div>
         </div>

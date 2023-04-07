@@ -88,7 +88,10 @@ export class ReviewsComponent implements OnInit {
   addReview() {
     this.ReviewsService.addReview(this.reviewForm.value).subscribe((result) => {
         if (result.status == 'OK') {
-            document.getElementById('formMessage').innerHTML = "Your review has been posted!";
+            document.getElementById('formMessage').innerHTML = "Your review has been posted! Reloading in 3...";
+            setTimeout(function() {
+              window.location.reload();
+            }, 3000);
         } else {
             console.log(result.status)
             document.getElementById('formMessage').innerHTML = "Couldn't post review, please try again later.";

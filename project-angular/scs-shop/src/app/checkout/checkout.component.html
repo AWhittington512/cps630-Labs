@@ -101,6 +101,22 @@
         </div>
 
         <div class="row p-2" *ngIf="this.checkoutStep == 2">
+          <!-- <div class="row p-2">
+            <h2>Pay with user balance</h2>
+            <form>
+              <div class="form-check">
+                <span *ngIf="balance != 0; else noBalance">
+                  <input class="form-check-input" type="checkbox" value="" id="balance" (change)="useBalance()">
+                  <label class="form-check-label" for="balance">Pay with balance of <strong>{{balance | currency}}</strong></label>
+                  <input type="text" class="form-control">
+                </span>
+                <ng-template #noBalance>
+                  <input class="form-check-input" type="checkbox" value="" id="balance" disabled>
+                  <label class="form-check-label" for="balance">Pay with balance of <strong>{{balance | currency}}</strong></label>
+                </ng-template>
+              </div>
+            </form>
+          </div> -->
           <div class="row p-2">
             <h2>Pay by card</h2>
             <h3>Card details</h3>

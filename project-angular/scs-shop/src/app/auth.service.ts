@@ -19,7 +19,6 @@ export class AuthService {
     return this.httpClient.post<any>(this.loginUrl, {"email": email, "password": password})
       .pipe(map(user => {
         if (user) {
-          //localStorage.setItem('currentUser', JSON.stringify(user[0]['Email']));
           return user[0];
         }
       }),
@@ -56,6 +55,7 @@ export class AuthService {
     sessionStorage.setItem('address', userInfo["UserAddress"]);
     sessionStorage.setItem('postcode', userInfo["CityCode"]);
     sessionStorage.setItem('balance', userInfo["Balance"]);
+    sessionStorage.setItem('isAdmin', userInfo["Administrator"]);
   }
 
   getCurrentUser() {

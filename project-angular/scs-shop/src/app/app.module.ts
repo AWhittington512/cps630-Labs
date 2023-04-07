@@ -18,6 +18,9 @@ import { StoreselectorCheckoutComponent } from './storeselector-checkout/storese
 import { StoreSelectorNavComponent } from './storeselector-nav/storeselector-nav.component';
 import { CartComponent } from './cart/cart.component';
 import { ReviewsComponent } from './reviews/reviews.component';
+import { DbMaintainComponent } from './db-maintain/db-maintain.component';
+import { ServicesComponent } from './services/services.component';
+import { OrdersComponent } from './orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,10 @@ import { ReviewsComponent } from './reviews/reviews.component';
     StoreselectorCheckoutComponent,
     StoreSelectorNavComponent,
     CartComponent,
+    ReviewsComponent,
+    DbMaintainComponent,
+    ServicesComponent,
+    OrdersComponent,
   ],
   imports: [
     BrowserModule,

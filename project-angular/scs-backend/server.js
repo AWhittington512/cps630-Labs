@@ -51,15 +51,6 @@ app.get('/', (req, res) => {
     res.send('SCS backend API');
 });
 
-/* app.get('/api/coupon', (req, res) => {
-    con.query("select * from Coupon", function (err, rows) {
-        if (err) {
-            return res.json({ status: "ERR", err });
-        };
-        return res.json(rows);
-    });
-}) */
-
 app.get('/api/items', async (req, res) => {
     const result = await getAllRows("Item").catch(err => {
         return res.json({status: "ERR", err});
@@ -117,7 +108,6 @@ app.post('/api/checkout', (req, res) => {
     const destPostcode = req.body.destPostcode;
     const user = parseInt(req.body.userId);
     const couponId = req.body.coupon.CouponID;
-    //const dateIssued = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     var orderQuery = "";
     var orderValues = [];
@@ -138,7 +128,6 @@ app.post('/api/checkout', (req, res) => {
             // shopping block
             var quant = cart.reduce((obj, item) => {
                 obj[item] = (obj[item] || 0) + 1;
-                //console.log(obj)
                 return obj
             }, {})
 
@@ -177,29 +166,20 @@ app.post('/api/checkout', (req, res) => {
     })
 })
 
-/* app.post('/api/checkout/fake', (req, res) => {
-    return res.json({status: "OK", "orderId": 2});
-}) */
-
 // login/signup
-function hashPassword(pw, salt) {
-    //const salt = crypto.randomBytes(16).toString('base64');
-    //const salt = "peepoo";
-    
-    return crypto.createHash("md5").update(pw + salt).digest('hex');
-    //return salt;
+function createHash(input, salt) {
+    return crypto.createHash("md5").update(input + salt).digest('hex');
 }
 
 function validateHash(currentp, dbhash, salt) {
-    const hashed = hashPassword(currentp, salt);
+    const hashed = createHash(currentp, salt);
     return hashed === dbhash ? true : false;
 }
 
-app.get('/pwtest', (req, res) => {
+/* app.get('/pwtest', (req, res) => {
     const salt = crypto.randomBytes(16).toString('base64');
-    const result = hashPassword("andrew123", salt);
+    const result = createHash("andrew123", salt);
     res.send([result, salt]);
-    //console.log(result.length)
 })
 
 app.post('/pwtest2', (req, res) => {
@@ -207,7 +187,7 @@ app.post('/pwtest2', (req, res) => {
     const salt = req.body.salt;
     const hash = req.body.hash;
     res.send({password: pw, match: validateHash(pw, hash, salt)});
-})
+}) */
 
 app.post('/api/signup', (req, res) => {
     const name = req.body.name;
@@ -217,9 +197,9 @@ app.post('/api/signup', (req, res) => {
     const postcode = req.body.postcode;
 
     const salt = crypto.randomBytes(16).toString('base64');
-    const password = hashPassword(req.body.password, salt);
+    const password = createHash(req.body.password, salt);
 
-    const insertQuery = 'INSERT INTO user_info (UserName, Phone, Email, UserAddress, CityCode, PW, PWSalt) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const insertQuery = 'INSERT INTO user_info (UserName, Phone, Email, UserAddress, CityCode, PW, Salt) VALUES (?, ?, ?, ?, ?, ?, ?)';
     con.query(insertQuery, [name, phone, email, address, postcode, password, salt],
         function (err, rows) {
             if (err) {
@@ -263,14 +243,15 @@ app.post('/api/login', (req, res) => {
             // emails are unique
 
             const existingHash = rows[0].PW;
-            const salt = rows[0].PWSalt;
+            const salt = rows[0].Salt;
 
             if (validateHash(loginPw, existingHash, salt)) {
+                delete rows[0].PW;
+                delete rows[0].Salt;
                 return res.json(rows)
             } else {
                 res.status(400).send('Invalid password')
             }
-            //res.send(rows[0]);
         } else {
             res.status(400).send('Account with this email does not exist');
         }
@@ -293,13 +274,73 @@ app.post('/api/signup/exists', (req, res) => {
 });
 
 // admin apis
+app.get('/api/admin/all', (req, res) => {
+    con.query("SELECT table_name FROM information_schema.tables WHERE table_schema ='projectdatabase'",
+    (err, rows) => {
+        if (err) {
+            return res.json({ status: "ERR", err });
+        };
+        const tableNames = rows.map(row => {
+            return row.table_name;
+        })
+        console.log(tableNames)
+        return res.json({tables: tableNames});
+    })
+})
+
+app.post('/api/admin/cols', (req, res) => {
+    con.query("show columns from " + req.body.table, (err, rows) => {
+        if (err) {
+            return res.json({ status: "ERR", err });
+        };
+        const cols = rows.map(row => {
+            return row.Field;
+        })
+        console.log(cols)
+        return res.json({columns: cols});
+    })
+})
+
+// select/delete
 app.post('/api/admin/query', (req, res) => {
     var query = req.body.query;
     con.query(query, function (err, rows) {
         if (err) {
             return res.json({ status: "ERR", err });
         };
-        return res.json(rows);
+        return res.json({status: "OK", info: rows});
+    })
+})
+
+app.post('/api/admin/insert', (req, res) => {
+    const table = req.body.table;
+    const cols = Object.keys(req.body.cols);
+    const vals = Object.values(req.body.cols);
+
+    var inputs = [];
+    vals.forEach(i => inputs.push("?"));
+
+    let query = `insert into ${table} (${cols.join()}) values (${inputs.join(",")})`;
+    con.query(query, vals, (err, rows) => {
+        if (err) {
+            return res.json({ status: "ERR", err });
+        };
+        return res.json({status: "OK", info: rows});
+    })
+})
+
+app.post('/api/admin/update', (req, res) => {
+    const table = req.body.table;
+    const cols = Object.keys(req.body.cols);
+    const vals = Object.values(req.body.cols);
+    const where = req.body.where;
+
+    let query = `update ${table} set ${cols.join("=?,")}=? where ${where}`
+    con.query(query, vals, (err, rows) => {
+        if (err) {
+            return res.json({ status: "ERR", err });
+        };
+        return res.json({status: "OK", info: rows});
     })
 })
 

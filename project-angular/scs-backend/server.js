@@ -348,7 +348,7 @@ app.get('/api/admin/all', (req, res) => {
         const tableNames = rows.map(row => {
             return row.table_name;
         })
-        console.log(tableNames)
+        //console.log(tableNames)
         return res.json({tables: tableNames});
     })
 })
@@ -361,7 +361,7 @@ app.post('/api/admin/cols', (req, res) => {
         const cols = rows.map(row => {
             return row.Field;
         })
-        console.log(cols)
+        //console.log(cols)
         return res.json({columns: cols});
     })
 })

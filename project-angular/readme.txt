@@ -19,7 +19,7 @@ with phpMyAdmin, the same database can be used.
 
 - To run the Angular frontend:
 --- 1. cd to "project-angular/scs-shop" from the project root on a terminal/command prompt
---- 2. With Node.js and/or Angular installed, run "npm install" to install all required modules
+--- 2. With Node.js and/or Angular installed, run "npm install --force" to install all required modules
 --- 3. Ensure the Node.js backend is running. Once running, the frontend can be served by running 
 the command "ng serve --proxy-config proxy.config.json"
 --- 4. Once the terminal states the frontend has been compiled successfully, the frontend can then be viewed 

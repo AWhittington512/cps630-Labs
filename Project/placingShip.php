@@ -18,7 +18,9 @@
       $_SESSION['name'] = $_POST['firstName'] . ' ' . $_POST['lastName'];
       $_SESSION['shippingAddr'] = $_POST['shippingAddr'] . ', ' . $_POST['cityAddr'] . ', ' . $_POST['provinceAddr'] . ' ' . $_POST['postcodeAddr'];
     }
-    setInfo();
+    if (isset($_POST['next'])) {
+        setInfo();
+    }
   ?>
 
   <!-- <div class="d-inline-flex p-2"></div>Invoice #12345</div> -->
@@ -31,14 +33,12 @@
         <div class="row p-2">
           <div class="col">
             <h2>From branch</h2>
-            <p><?php echo $_POST['store'] ?></p>
+            <p><?php echo $_SESSION['store'] ?></p>
           </div>
           <div class="col">
             <h2>Ship to</h2>
-            <p><?php echo $_POST['firstName'] . ' ' . $_POST['lastName']; ?><br>
-              <?php echo $_POST['shippingAddr']; ?><br>
-              <?php echo $_POST['cityAddr'] . ', ' . $_POST['provinceAddr']; ?><br>
-              <?php echo $_POST['postcodeAddr']; ?>
+            <p><?php echo $_SESSION['name']?><br>
+              <?php echo $_SESSION['shippingAddr']; ?>
             </p>
           </div>
         </div>

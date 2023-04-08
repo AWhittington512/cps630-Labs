@@ -123,7 +123,7 @@
           <div class="d-flex justify-content-center m-2">
             <a href="cart.php" class="btn btn-outline-secondary w-auto"><- Back</a>
                 <a href="placingShip.php">
-                  <button type="submit" class="btn btn-outline-primary w-auto">Next -></button>
+                  <button type="submit" name="next" class="btn btn-outline-primary w-auto">Next -></button>
                 </a>
           </div>
         </div>
